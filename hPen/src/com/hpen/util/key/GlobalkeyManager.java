@@ -11,7 +11,7 @@ public class GlobalkeyManager {
 		setGlobalKeyEvent();
 	}
 	public static void setGlobalKeyEvent(){
-		JIntellitype.setLibraryLocation(new File("jintellitype.dll"));
+		JIntellitype.setLibraryLocation(new File("dll/jintellitype.dll"));
 		ins = JIntellitype.getInstance();
 		ins.addHotKeyListener(new HotkeyListener() {
 			public void onHotKey(int key) {
