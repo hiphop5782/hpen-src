@@ -1,0 +1,32 @@
+#hpen mode setting
+hpen.shortcut.capture=ALT+1
+hpen.shortcut.draw=ALT+2
+hpen.shortcut.livezoom=ALT+3
+hpen.shortcut.magnify=ALT+4
+
+#hpen draw setting
+hpen.shortcut.draw.color1=F1
+hpen.shortcut.draw.color2=F2
+hpen.shortcut.draw.color3=F3
+hpen.shortcut.draw.color4=F4
+hpen.shortcut.draw.color5=F5
+hpen.shortcut.draw.color6=F6
+hpen.shortcut.draw.color7=F7
+hpen.shortcut.draw.color8=F8
+hpen.shortcut.draw.color9=F9
+hpen.shortcut.draw.color10=F10
+
+hpen.shortcut.draw.circle=W
+hpen.shortcut.draw.square=Q
+hpen.shortcut.draw.line=E
+hpen.shortcut.draw.line.curve=V
+hpen.shortcut.draw.arrow.reverse=R
+hpen.shortcut.draw.arrow.correct=F
+hpen.shortcut.draw.arrow.both=G
+hpen.shortcut.draw.thunder=D
+hpen.shortcut.draw.x=X
+
+hpen.shortcut.draw.clear=C
+hpen.shortcut.draw.restore=CTRL+R
+hpen.shortcut.draw.save=CTRL+S
+hpen.shortcut.draw.text=T

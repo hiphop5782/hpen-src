@@ -1,0 +1,19 @@
+#
+#Tue Mar 20 09:36:43 KST 2018
+hpen.draw.point.color=000000
+hpen.draw.point.color9=8000FF
+hpen.draw.point.color8=FF80FF
+hpen.draw.point.color7=80FFFF
+hpen.draw.point.color6=FF8042
+hpen.draw.point.color5=00FF00
+hpen.draw.point.color4=FFFF00
+hpen.draw.point.color3=0000FF
+hpen.draw.point.color2=FF0000
+hpen.draw.text.family=%EA%B5%B4%EB%A6%BC
+hpen.draw.point.color1=000000
+hpen.draw.point.color0=FFFFFF
+hpen.draw.point.thickness=5
+hpen.draw.text.korean=true
+hpen.draw.icon.size=30
+hpen.draw.text.size=65
+hpen.draw.save.location=.

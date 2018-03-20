@@ -1,0 +1,9 @@
+#
+#Tue Mar 20 09:36:43 KST 2018
+hpen.capture.zoom.rate=5
+hpen.capture.save.clipboard=true
+hpen.capture.save.location=image/capture
+hpen.capture.border.color=000000
+hpen.capture.border.thickness=3
+hpen.capture.livecapture=false
+hpen.capture.zoom.size=200
