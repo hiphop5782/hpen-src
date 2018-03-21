@@ -10,9 +10,9 @@ import com.hpen.util.file.VersionManager;
 public class Starter {
 	public static void main(String[] args) {
 		try{
+			ClassManager.initialize();
 			VersionManager.checkNewestVersionOnGithub();
 			RegisterManager.makelnk(System.getProperty("user.dir"), "hpen.exe");
-			ClassManager.initialize();
 			UIManager.setLookAndFeel("com.jtattoo.plaf.mcwin.McWinLookAndFeel");
 		}catch(Exception e){
 			e.printStackTrace();

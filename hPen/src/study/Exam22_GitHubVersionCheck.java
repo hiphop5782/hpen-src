@@ -6,6 +6,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.hpen.util.file.VersionManager;
+import com.hpen.value.Version;
 
 public class Exam22_GitHubVersionCheck {
 	public static void main(String[] args) throws Exception{
@@ -23,7 +24,7 @@ public class Exam22_GitHubVersionCheck {
 		Matcher m = Pattern.compile(regex).matcher(page);
 		if(m.find()) {
 			System.out.println(m.group(1));
-			System.out.println(VersionManager.before(m.group(1)));
+			System.out.println(VersionManager.isNew(Version.getInstance().getVersion(), m.group(1)));
 		}
 		
 //		System.out.println("2.2.1".compareTo("2.2.0"));

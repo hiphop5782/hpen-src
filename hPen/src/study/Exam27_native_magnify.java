@@ -43,10 +43,10 @@ public class Exam27_native_magnify {
 				while(true) {
 					double zoom = MyHook.getZoom();
 					Rectangle rect = MyHook.getRect();
-//					System.out.println(rect+"zoom = "+zoom);
+					System.out.println(rect+"zoom = "+zoom);
 					
-					byte[] b = MyHook.getScreenshotForMagnifyScreen();
-					System.out.println(Arrays.toString(b));
+//					byte[] b = MyHook.getScreenshotForMagnifyScreen();
+//					System.out.println(Arrays.toString(b));
 					//BufferedImage image = MyHook.getScreenshotImageForMagnifyScreen();
 					//System.out.println(image);
 					

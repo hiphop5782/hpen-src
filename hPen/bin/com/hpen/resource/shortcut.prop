@@ -14,7 +14,7 @@ hpen.shortcut.draw.color6=F6
 hpen.shortcut.draw.color7=F7
 hpen.shortcut.draw.color8=F8
 hpen.shortcut.draw.color9=F9
-hpen.shortcut.draw.color10=F10
+hpen.shortcut.draw.color0=F10
 
 hpen.shortcut.draw.circle=W
 hpen.shortcut.draw.square=Q
@@ -30,3 +30,5 @@ hpen.shortcut.draw.clear=C
 hpen.shortcut.draw.restore=CTRL+R
 hpen.shortcut.draw.save=CTRL+S
 hpen.shortcut.draw.text=T
+hpen.shortcut.draw.undo=CTRL+Z
+hpen.shortcut.draw.redo=CTRL+Y

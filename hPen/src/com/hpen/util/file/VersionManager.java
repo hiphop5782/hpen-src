@@ -1,10 +1,6 @@
 package com.hpen.util.file;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.net.URL;
-import java.util.Properties;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -14,6 +10,13 @@ import com.hpen.util.DialogManager;
 import com.hpen.value.Version;
 
 public class VersionManager {
+	
+	/**
+	 * X.X.X 형태의 버전을 00000 형태의 int 값으로 변환하는 메소드
+	 * @param version	X.X.X 형태의 버전 값
+	 * @return	int 버전 값
+	 * @throws IllegalArgumentException	형식에 맞지 않는 버전일 경우
+	 */
 	private static int convert(String version) throws IllegalArgumentException{
 		String regex = "^\\d\\.\\d\\.\\d$";
 		if(!version.matches(regex))
@@ -29,24 +32,22 @@ public class VersionManager {
 		return version_int;
 	}
 	
-	public static boolean before(String version2) {
-		try {
-			int VINT = convert(Version.version);
-			int NEW_VINT = convert(version2);
-			return NEW_VINT - VINT > 0;
-		}catch(Exception e) {
-			return false;
-		}
+	public static boolean isNew(String originVersion, String targetVersion) {
+		int origin = convert(originVersion);
+		int target = convert(targetVersion);
+		return target - origin > 0;
 	}
 	
-	public static String load(){
-		try(Scanner s = new Scanner(Starter.class.getResourceAsStream("resource/version.hpen"));){
-			String version = s.nextLine();
-			return version;
-		}catch(Exception e) {
-			e.printStackTrace();
-			return null;
-		}
+	public static boolean isSame(String originVersion, String targetVersion) {
+		int origin = convert(originVersion);
+		int target = convert(targetVersion);
+		return target - origin == 0;
+	}
+	
+	public static boolean isBefore(String originVersion, String targetVersion) {
+		int origin = convert(originVersion);
+		int target = convert(targetVersion);
+		return target - origin < 0;
 	}
 	
 	public static String getLatestVersionOnGithub() {
@@ -77,10 +78,11 @@ public class VersionManager {
 			+ "https://github.com/hiphop5782/hPen/releases<br><br>"
 			+ "최신 버전을 다운받으시겠습니까?<br><br></html>";
 	public static void checkNewestVersionOnGithub() {
-		String latestVersion = getLatestVersionOnGithub();
-		if(latestVersion == null) return;
+		String originVersion = Version.getInstance().getVersion();
+		String githubVersion = getLatestVersionOnGithub();
+		if(githubVersion == null) return;
 		
-		if(before(latestVersion)) {
+		if(isNew(originVersion, githubVersion)) {
 			int select = DialogManager.confirm(download_message);
 			if(select == 0) {
 				try {

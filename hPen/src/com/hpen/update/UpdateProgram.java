@@ -24,13 +24,17 @@ public class UpdateProgram {
 //			String version = args[0];
 //			String destFolderPath = args.length >= 2?args[1]:System.getProperty("user.dir");
 			
+			Class.forName("com.hpen.property.PropertyLoader");
+			String originVersion = Version.getInstance().getVersion();
 			String latestVersion = VersionManager.getLatestVersionOnGithub();
-			if(!VersionManager.before(latestVersion)) {
+			if(!VersionManager.isNew(originVersion, latestVersion)) {
 				System.out.println("최신 버전 사용중");
 				System.exit(0);
 			}
+			
 			String destFolderPath = System.getProperty("user.dir");
-			File f = DownloadManager.getManager().download("https://github.com/hiphop5782/hPen/archive/master.zip", "hpen.zip");
+			File f = DownloadManager.getManager().download(
+					"https://github.com/hiphop5782/hPen/archive/hPen"+latestVersion+".zip", "hpen.zip");
 			ZipManager.getManager().unzip(f.getAbsolutePath(), destFolderPath, true, true);
 //			JOptionPane.showMessageDialog(null, "프로그램 업데이트가 완료되었습니다", "재시작 알림", JOptionPane.PLAIN_MESSAGE);
 			ExecuteManager.getManager().execute("cmd.exe /c "+destFolderPath+File.separator+"hpen.exe");

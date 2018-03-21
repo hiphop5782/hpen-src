@@ -46,7 +46,7 @@ public class PropertyFrame extends JFrame{
 		display();
 		event();
 		menu();
-		super.setTitle(Version.value+" 환경 설정");
+		super.setTitle(Version.getInstance().toString()+" 환경 설정");
 		super.setSize(550, 500);
 		Dimension di = Toolkit.getDefaultToolkit().getScreenSize();
 		int x = (di.width - getWidth())/2;

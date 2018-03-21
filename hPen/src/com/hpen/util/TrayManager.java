@@ -44,7 +44,7 @@ public class TrayManager{
 		if(!SystemTray.isSupported())
 			throw new Exception("트레이를 지원하지 않습니다");
 		tray = new TrayIcon(ProgramIcon.getIcon());
-		tray.setToolTip(Version.value);
+		tray.setToolTip(Version.getInstance().toString());
 		SystemTray.getSystemTray().add(tray);
 		
 		add();
