@@ -31,7 +31,7 @@ import com.hpen.draw.shapes.Icon;
 import com.hpen.draw.ui.component.WrapLayout;
 
 public class IconManager extends JDialog{
-	public static final int icon_size = 40;
+	public static final int icon_size = 30;
 	
 	private JScrollPane scroll = new JScrollPane();
 	private JPanel panel = new JPanel(new WrapLayout(WrapLayout.LEFT));
