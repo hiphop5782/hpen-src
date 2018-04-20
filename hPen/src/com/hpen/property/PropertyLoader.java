@@ -20,7 +20,7 @@ public class PropertyLoader {
 		String propertyFolderName = System.getProperty("user.home");
 		File propertyFolder = new File(propertyFolderName, ".hPen");
 		try {
-			if(propertyFolder.exists()) { 
+			if(propertyFolder.isDirectory()) { 
 				loadUserProperty();
 				return;
 			}
@@ -30,7 +30,7 @@ public class PropertyLoader {
 	
 	public static void loadUserProperty() throws FileNotFoundException {
 		Version.getInstance().setValues(
-				load(getResourceStream("resource/version.prop")));
+				load(getPropertyStream("version.prop")));
 		ShortcutOption.getInstance().setOptions(
 				load(getPropertyStream("shortcut.prop")));
 		DrawingOption.getInstance().setOptions(
@@ -57,7 +57,7 @@ public class PropertyLoader {
 	}
 	
 	public static void save() {
-		File dir = new File(System.getProperty("user.home"));
+		File dir = new File(System.getProperty("user.home"), ".hPen");
 		File shortcut = new File(dir, "shortcut.prop");
 		File draw = new File(dir, "draw.prop");
 		File capture = new File(dir, "capture.prop");
@@ -83,6 +83,8 @@ public class PropertyLoader {
 	
 	public static boolean createPropertyFolder(){
 		File folder = new File(System.getProperty("user.home")+File.separator+".hPen");
+		if(folder.isFile())
+			folder.delete();
 		if(!folder.exists()) {
 			folder.mkdirs();
 			return false;
@@ -105,7 +107,7 @@ public class PropertyLoader {
 	}
 	
 	public static InputStream getPropertyStream(String name) throws FileNotFoundException {
-		File dir = new File(System.getProperty("user.home"));
+		File dir = new File(System.getProperty("user.home"), ".hPen");
 		File target = new File(dir, name);
 		return new FileInputStream(target);
 	}
