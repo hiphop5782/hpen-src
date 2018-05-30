@@ -58,6 +58,7 @@ public class PropertyLoader {
 	
 	public static void save() {
 		File dir = new File(System.getProperty("user.home"), ".hPen");
+		dir.mkdirs();
 		File shortcut = new File(dir, "shortcut.prop");
 		File draw = new File(dir, "draw.prop");
 		File capture = new File(dir, "capture.prop");
