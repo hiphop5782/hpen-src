@@ -5,7 +5,11 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.hpen.Starter;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
 import com.hpen.util.DialogManager;
 import com.hpen.value.Version;
 
@@ -51,25 +55,20 @@ public class VersionManager {
 	}
 	
 	public static String getLatestVersionOnGithub() {
+		String result = null;
 		try {
-			URL url = new URL("https://github.com/hiphop5782/hPen/releases");
-			StringBuffer buffer = new StringBuffer();
-			try(Scanner s = new Scanner(url.openStream(), "UTF-8");){
-				while(s.hasNextLine()) {
-					buffer.append(s.nextLine());
-				}
-			}
-			String page = buffer.toString();
-//			String regex = "<div class=\"release label-latest\">.*?<h1 class=\"release-title\">.*?<a.*?>(\\d\\.\\d\\.\\d) Release</a>.*?</h1>";
-			String regex = "(\\d\\.\\d\\.\\d)\\sRelease";
-			Matcher m = Pattern.compile(regex).matcher(page);
+			Document document = Jsoup.connect("https://github.com/hiphop5782/hPen/releases").get();
+			Element tag = document.select("div.label-latest div.text-normal a").get(0);
+			String regex = "(\\d+\\.\\d+\\.\\d+)";
+			Matcher m = Pattern.compile(regex).matcher(tag.text());
 			if(m.find()) {
-				return m.group(1);
+				result = m.group(1);
 			}
 		}catch(Exception e) {
-			//DialogManager.alert("최신 버전 정보를 찾을 수 없습니다");
+			e.printStackTrace();
 		}
-		return null;
+		System.out.println("result = "+result);
+		return result;
 	}
 	
 	public static final String download_message = 
@@ -79,7 +78,9 @@ public class VersionManager {
 			+ "최신 버전을 다운받으시겠습니까?<br><br></html>";
 	public static void checkNewestVersionOnGithub() {
 		String originVersion = Version.getInstance().getVersion();
+		System.out.println("originVersion = "+originVersion);
 		String githubVersion = getLatestVersionOnGithub();
+		System.out.println("githubVersion = "+githubVersion);
 		if(githubVersion == null) return;
 		
 		if(isNew(originVersion, githubVersion)) {

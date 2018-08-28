@@ -17,5 +17,8 @@
 	<classpathentry kind="lib" path="lib/jazzlib.jar"/>
 	<classpathentry kind="lib" path="lib/JTattoo-1.6.11.jar"/>
 	<classpathentry kind="lib" path="lib/jnativehook-2.1.0.jar"/>
+	<classpathentry kind="lib" path="lib/jsoup-1.11.3.jar"/>
+	<classpathentry kind="lib" path="lib/jkeymaster-1.2.jar"/>
+	<classpathentry kind="lib" path="lib/slf4j-api-1.7.25.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

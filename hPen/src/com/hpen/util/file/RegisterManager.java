@@ -75,9 +75,9 @@ public class RegisterManager {
 	public static void createShortcutToDesktop(){
 		File link = new File("hpen.exe.lnk");
 		File target = new File(desktop, "hpen.lnk");
-		System.out.println("link exist = "+link.exists());
-		System.out.println("desktop detected = "+desktop.exists());
-		System.out.println("target exist = "+target.exists());
+//		System.out.println("link exist = "+link.exists());
+//		System.out.println("desktop detected = "+desktop.exists());
+//		System.out.println("target exist = "+target.exists());
 		try {
 			FileUtils.copyFile(link, target);
 		}catch(Exception e) {
@@ -93,7 +93,7 @@ public class RegisterManager {
 		File target = new File("C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\Startup");
 		if (!target.exists())
 			return;
-		if (Arrays.toString(target.list()).contains("hpen.lnk"))
+		if (Arrays.toString(target.list()).toLowerCase().contains("hpen"))
 			return;
 
 		File link = new File("hpen.exe.lnk");
@@ -116,7 +116,7 @@ public class RegisterManager {
 		File target = new File("C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\Startup");
 		if (!target.exists())
 			return false;
-		if (Arrays.toString(target.list()).contains("hpen.lnk"))
+		if (Arrays.toString(target.list()).toLowerCase().contains("hpen"))
 			return true;
 		return false;
 	}
@@ -125,7 +125,7 @@ public class RegisterManager {
 		File dir = new File(System.getProperty("user.home")+"\\Desktop");
 		if (!dir.exists())
 			return false;
-		if (Arrays.toString(dir.list()).contains("hpen.lnk"))
+		if (Arrays.toString(dir.list()).toLowerCase().contains("hpen"))
 			return true;
 		return false;
 	}

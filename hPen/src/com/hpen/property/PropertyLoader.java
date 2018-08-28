@@ -29,8 +29,8 @@ public class PropertyLoader {
 	}
 	
 	public static void loadUserProperty() throws FileNotFoundException {
-		Version.getInstance().setValues(
-				load(getPropertyStream("version.prop")));
+//		Version.getInstance().setValues(
+//				load(getPropertyStream("version.prop")));
 		ShortcutOption.getInstance().setOptions(
 				load(getPropertyStream("shortcut.prop")));
 		DrawingOption.getInstance().setOptions(
@@ -43,8 +43,8 @@ public class PropertyLoader {
 	}
 	
 	public static void loadDefaultProperty() {
-		Version.getInstance().setValues(
-				load(getResourceStream("resource/version.prop")));
+//		Version.getInstance().setValues(
+//				load(getResourceStream("resource/version.prop")));
 		ShortcutOption.getInstance().setOptions(
 				load(getResourceStream("resource/shortcut.prop")));
 		DrawingOption.getInstance().setOptions(
