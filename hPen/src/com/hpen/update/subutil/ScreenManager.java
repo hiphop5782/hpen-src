@@ -1,14 +1,13 @@
 package com.hpen.update.subutil;
 
-import java.awt.Dimension;
 import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.MouseInfo;
-import java.awt.Point;
 import java.awt.PointerInfo;
 import java.awt.Rectangle;
-import java.awt.SecondaryLoop;
+import java.awt.Robot;
+import java.awt.image.BufferedImage;
 
 /**
  * 화면을 제어하는 기능을 가진 Manager<br>
@@ -23,8 +22,17 @@ public class ScreenManager {
 	}
 	private ScreenManager() {}
 	
+
+	public BufferedImage getCurrentMonitorImage() {
+		try {
+			Robot r = new Robot();
+			return r.createScreenCapture(getCurrentMonitorRect());
+		}catch(Exception e) {
+			return null;
+		}
+	}
+	
 	/**
-	 * 
 	 * @return 현재 커서가 위치한 모니터의 Rectangle정보
 	 */
 	public Rectangle getCurrentMonitorRect() {

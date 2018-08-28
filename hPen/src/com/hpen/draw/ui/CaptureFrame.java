@@ -1,6 +1,5 @@
 package com.hpen.draw.ui;
 
-import java.awt.AWTException;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -24,14 +23,11 @@ import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.TimerTask;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileFilter;
 
-import com.hakademy.screen.ScreenSaver;
 import com.hpen.draw.ui.component.SaveImageFileChooser;
 import com.hpen.property.CaptureOption;
 import com.hpen.property.DrawingOption;
@@ -56,10 +52,10 @@ public class CaptureFrame extends JFrame {
 	public static void start() {
 		if(cf.isVisible()) return;
 		
+		cf.setWindowTransparent();
 		cf.prepare();
 		cf.eventbind();
 		cf.setVisible(true);
-		cf.setWindowTransparent();
 	}
 	
 	private ScreenPainter screenPainter;
@@ -255,10 +251,8 @@ public class CaptureFrame extends JFrame {
 	private BufferedImage bg = null;
 
 	private void setWindowTransparent() {
-		try{
-			bg = ScreenSaver.getMonitorScreenShotAtCursor();
-			repaint();
-		}catch(AWTException e){}
+		bg = ScreenManager.getManager().getCurrentMonitorImage();
+		repaint();
 	}
 
 	@Override
@@ -309,7 +303,7 @@ public class CaptureFrame extends JFrame {
 		if (!isDragged) {
 			try {
 				backScreen.setColor(Color.black);
-				Rectangle r = ScreenSaver.getMonitorRectAtCursor();
+				Rectangle r = ScreenManager.getManager().getCurrentMonitorRect();
 				Point p = screenData.getCursorAtFrame(CaptureFrame.this);
 				backScreen.drawLine(p.x, 0, p.x, r.height);
 				backScreen.drawLine(0, p.y, r.width, p.y);
@@ -383,7 +377,7 @@ public class CaptureFrame extends JFrame {
 		Point cursor = screenData.getCursorAtFrame(CaptureFrame.this);
 		Point end = screenData.getEndAtFrame(CaptureFrame.this);
 		
-		Rectangle screen = ScreenSaver.getMonitorRectAtCursor();
+		Rectangle screen = ScreenManager.getManager().getCurrentMonitorRect();
 		boolean result = 
 				(start.x > screen.width - (zoomsize + zoomgap * 2) && start.y > screen.height - (zoomsize + zoomgap * 2))
 				|| (cursor.x > screen.width - (zoomsize + zoomgap * 2) && cursor.y > screen.height - (zoomsize + zoomgap * 2))

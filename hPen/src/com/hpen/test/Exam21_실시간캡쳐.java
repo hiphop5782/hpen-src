@@ -5,7 +5,7 @@ import java.awt.image.BufferedImage;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import com.hakademy.screen.ScreenSaver;
+import com.hpen.update.subutil.ScreenManager;
 
 public class Exam21_½Ç½Ã°£Ä¸ÃÄ {
 	static BufferedImage im;
@@ -27,7 +27,8 @@ public class Exam21_½Ç½Ã°£Ä¸ÃÄ {
 			//int height = MouseInfo.getPointerInfo().getDevice().getDisplayMode().getHeight();
 			//System.out.println(width+", "+height);
 			
-			im = ScreenSaver.getMonitorScreenShotAtCursor();
+//			im = ScreenSaver.getMonitorScreenShotAtCursor();
+			im = ScreenManager.getManager().getCurrentMonitorImage();
 			panel.repaint();
 			Thread.sleep(100);
 		}

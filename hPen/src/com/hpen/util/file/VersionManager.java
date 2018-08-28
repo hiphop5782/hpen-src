@@ -67,7 +67,7 @@ public class VersionManager {
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
-		System.out.println("result = "+result);
+//		System.out.println("result = "+result);
 		return result;
 	}
 	
@@ -78,9 +78,9 @@ public class VersionManager {
 			+ "최신 버전을 다운받으시겠습니까?<br><br></html>";
 	public static void checkNewestVersionOnGithub() {
 		String originVersion = Version.getInstance().getVersion();
-		System.out.println("originVersion = "+originVersion);
+//		System.out.println("originVersion = "+originVersion);
 		String githubVersion = getLatestVersionOnGithub();
-		System.out.println("githubVersion = "+githubVersion);
+//		System.out.println("githubVersion = "+githubVersion);
 		if(githubVersion == null) return;
 		
 		if(isNew(originVersion, githubVersion)) {

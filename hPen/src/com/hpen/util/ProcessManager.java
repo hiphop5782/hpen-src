@@ -1,15 +1,11 @@
 package com.hpen.util;
 
 import java.lang.reflect.Field;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
-import com.melloware.jintellitype.Main;
 import com.sun.jna.Platform;
 import com.sun.jna.Pointer;
 import com.sun.jna.platform.win32.Kernel32;
 import com.sun.jna.platform.win32.WinNT;
-import com.sun.jna.platform.win32.WinNT.HANDLE;
 
 public class ProcessManager {
 	public static int getPid(Process p) {
@@ -26,7 +22,7 @@ public class ProcessManager {
 				int pid = kernel.GetProcessId(handle);
 				return pid;
 			} catch (Exception ex) {
-				Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+//				Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
 			}
 		} else if (Platform.isLinux()) {
 			try {
@@ -35,7 +31,7 @@ public class ProcessManager {
 				int pid = (Integer) f.get(p);
 				return pid;
 			} catch (Exception ex) {
-				Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+//				Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
 			}
 		} else {
 		}

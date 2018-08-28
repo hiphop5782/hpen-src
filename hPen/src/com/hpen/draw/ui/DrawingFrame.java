@@ -24,7 +24,6 @@ import javax.swing.InputMap;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import com.hakademy.screen.ScreenSaver;
 import com.hpen.draw.shapes.Curve;
 import com.hpen.draw.shapes.Icon;
 import com.hpen.draw.shapes.Shape;
@@ -86,10 +85,10 @@ public class DrawingFrame extends JFrame{
 	public static void start(){
 		if(df.isVisible()) return;
 		
+		df.setWindowTransparent();
 		df.prepare();
 		df.eventbind();
 		df.setVisible(true);
-		df.setWindowTransparent();
 	}
 	private ScreenData screenData;
 	private ScreenPainter screenPainter;
@@ -105,14 +104,11 @@ public class DrawingFrame extends JFrame{
 		setVisible(false);
 	}
 	
-	private BufferedImage bg = null;
+	private BufferedImage bg;
 	private void setWindowTransparent(){
-		try {
-			bg = ScreenSaver.getMonitorScreenShotAtCursor();
-			repaint();
-		} catch (AWTException e) {
-			e.printStackTrace();
-		}
+//		bg = ScreenSaver.getMonitorScreenShotAtCursor();
+		bg = ScreenManager.getManager().getCurrentMonitorImage();
+		repaint();
 		
 		//스크린샷 테스트
 		//try {
@@ -501,12 +497,10 @@ public class DrawingFrame extends JFrame{
 	 * 화면 저장 메소드
 	 */
 	private void saveScreen() throws AWTException{
-		BufferedImage capture = ScreenSaver.getMonitorScreenShotAtCursor();
-		ScreenSaver.sleep(0.5);
 		int sel = chooser.showSaveDialog(this);
 		if(sel != 0) return;
 
-		chooser.saveImage(capture, this.getClass());
+		chooser.saveImage(bg, this.getClass());
 	}
 	
 	/**
