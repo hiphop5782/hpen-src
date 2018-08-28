@@ -168,7 +168,7 @@ public class DrawingFrame extends JFrame{
 	}
 	private void prepare(){
 		setBounds(ScreenManager.getManager().getCurrentMonitorRect());
-		setCursor(CursorManager.createCircleCursor());
+		getContentPane().setCursor(CursorManager.createCircleCursor());
 		screenData = new ScreenData();
 		curve = new Curve();
 		text = new Text();
@@ -375,15 +375,15 @@ public class DrawingFrame extends JFrame{
 	private void setCursor() {
 		switch(mode) {
 		case TEXT_MODE:
-			setCursor(CursorManager.createTextCursor());			
+			this.getContentPane().setCursor(CursorManager.createTextCursor());			
 			break;
 		case DRAWING_MODE:
-			setCursor(CursorManager.createCircleCursor());			
+			this.getContentPane().setCursor(CursorManager.createCircleCursor());			
 			break;
 		case ICON_MODE:
 			break;
 		case CHOICE_MODE:
-			setCursor(CursorManager.createGrabCursor());
+			this.getContentPane().setCursor(CursorManager.createGrabCursor());
 			break;
 		}
 	}
@@ -595,7 +595,7 @@ public class DrawingFrame extends JFrame{
 			if(e.getButton() == MouseEvent.BUTTON3){
 				selectedIcon = IconManager.showIconDialog(DrawingFrame.this);
 				if(selectedIcon == null) return;
-				setCursor(CursorManager.createIconCursor(selectedIcon));
+				getContentPane().setCursor(CursorManager.createIconCursor(selectedIcon));
 				mode = ICON_MODE;
 				return;
 			}
@@ -667,7 +667,7 @@ public class DrawingFrame extends JFrame{
 				}else if(e.getWheelRotation() < 0) {
 					options.increaseFontSize();
 				}
-				setCursor(CursorManager.decreaseTextCursor());
+				getContentPane().setCursor(CursorManager.createTextCursor());
 				break;
 			case ICON_MODE:
 				if(e.getWheelRotation() > 0) {
@@ -675,7 +675,7 @@ public class DrawingFrame extends JFrame{
 				}else if(e.getWheelRotation() < 0) {
 					options.increaseIconSize();
 				}
-				setCursor(CursorManager.createIconCursor(selectedIcon));
+				getContentPane().setCursor(CursorManager.createIconCursor(selectedIcon));
 				break;
 			case CHOICE_MODE:
 				break;
@@ -687,7 +687,7 @@ public class DrawingFrame extends JFrame{
 					else if(e.getWheelRotation() < 0){
 						options.increasePointThickness();
 					}
-					setCursor(CursorManager.decreaseCircleCursor());
+					getContentPane().setCursor(CursorManager.createCircleCursor());
 				}
 			}
 		}
@@ -728,7 +728,7 @@ public class DrawingFrame extends JFrame{
 			}
 				
 		}
-//		빈도를 높이려 했지만 오히려 역효과 발생... 안티에얼라이싱만 적용하여 일차 테스트 후 수정할 것
+//		빈도를 높이려 했지만 오히려 역효과 발생... 안티얼라이싱만 적용하여 일차 테스트 후 수정할 것
 //		private static final long EVENT_FREQUENCY = 10; //ms
 //	    private ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 //	    private ScheduledFuture<?> mouseDraggedFrequencyTimer;

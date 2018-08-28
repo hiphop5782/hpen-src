@@ -2,6 +2,7 @@ package com.hpen.draw.ui;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -112,7 +113,7 @@ public class CaptureFrame extends JFrame {
 		setUndecorated(true);
 		setAlwaysOnTop(true);
 		setResizable(false);
-		setCursor(CursorManager.createEmptyCursor());
+		getContentPane().setCursor(CursorManager.createEmptyCursor());
 		
 		setFocusTraversalKeysEnabled(false);
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);

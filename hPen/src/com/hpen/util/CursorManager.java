@@ -42,6 +42,7 @@ public class CursorManager {
 		return createCircleCursor(Color.black, size);
 	}
 	public static Cursor createCircleCursor(Color color, int size){
+//		System.out.println("createCircleCursor("+color+", "+size+")");
 		if(size > CURSOR_MAXIMUM_SIZE || size < CURSOR_MINIMUM_SIZE) 
 			return null;
 		try{
@@ -54,19 +55,6 @@ public class CursorManager {
 		}catch(Exception e){
 			return null;
 		}
-	}
-	public static Cursor increaseCircleCursor(){
-		if(DrawingOption.getInstance().getPointThickness() > CURSOR_MAXIMUM_SIZE
-				|| DrawingOption.getInstance().getPointThickness() < CURSOR_MINIMUM_SIZE)
-			return null;
-		return createCircleCursor(DrawingOption.getInstance().getPointColor(), DrawingOption.getInstance().getPointThickness());
-	}
-	
-	public static Cursor decreaseCircleCursor(){
-		if(DrawingOption.getInstance().getPointThickness() > CURSOR_MAXIMUM_SIZE
-				|| DrawingOption.getInstance().getPointThickness() < CURSOR_MINIMUM_SIZE)
-			return null;
-		return createCircleCursor(DrawingOption.getInstance().getPointColor(), DrawingOption.getInstance().getPointThickness());
 	}
 	
 	public static Cursor createTextCursor(){
@@ -95,20 +83,6 @@ public class CursorManager {
 			e.printStackTrace();
 			return null;
 		}
-	}
-	
-	public static Cursor increaseTextCursor(){
-		if(DrawingOption.getInstance().getPointThickness() > TEXT_MAXIMUM_SIZE
-				|| DrawingOption.getInstance().getPointThickness() < TEXT_MINIMUM_SIZE)
-			return null;
-		return createTextCursor(DrawingOption.getInstance().getPointColor(), DrawingOption.getInstance().getFontSize());
-	}
-	
-	public static Cursor decreaseTextCursor(){
-		if(DrawingOption.getInstance().getPointThickness() > TEXT_MAXIMUM_SIZE
-				|| DrawingOption.getInstance().getPointThickness() < TEXT_MINIMUM_SIZE)
-			return null;
-		return createTextCursor(DrawingOption.getInstance().getPointColor(), DrawingOption.getInstance().getFontSize());
 	}
 	
 	private static Font iconSizeFont = new Font("±¼¸²", Font.PLAIN, 14);
