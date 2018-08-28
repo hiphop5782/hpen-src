@@ -1,5 +1,5 @@
-//package com.hpen.test;
-//
+package com.hpen.test;
+
 //import java.awt.AWTException;
 //import java.awt.Rectangle;
 //import java.awt.Robot;
@@ -12,7 +12,7 @@
 //import org.jnativehook.mouse.NativeMouseEvent;
 //import org.jnativehook.mouse.NativeMouseMotionListener;
 //
-//public class Exam26_마우스가두기 {
+public class Exam26_마우스가두기 {
 //	
 //	static class MouseLocker implements NativeMouseMotionListener{
 //		Robot r;
@@ -70,4 +70,4 @@
 //		}
 //		
 //	}
-//}
+}

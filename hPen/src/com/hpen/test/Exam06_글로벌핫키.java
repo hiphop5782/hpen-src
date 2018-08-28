@@ -1,13 +1,13 @@
-//package com.hpen.test;
-//
-//import java.io.File;
-//
-//import javax.swing.JFrame;
+package com.hpen.test;
+
+import java.io.File;
+
+import javax.swing.JFrame;
 //
 //import com.melloware.jintellitype.HotkeyListener;
 //import com.melloware.jintellitype.JIntellitype;
 //
-//public class Exam06_±Û·Î¹úÇÖÅ° {
+public class Exam06_±Û·Î¹úÇÖÅ° {
 //	public static void main(String[] args) {
 //		JIntellitype.setLibraryLocation(new File("dll/jintellitype.dll"));
 //		JIntellitype ins = JIntellitype.getInstance();
@@ -31,4 +31,4 @@
 //		fr.setVisible(true);
 //		
 //	}
-//}
+}
