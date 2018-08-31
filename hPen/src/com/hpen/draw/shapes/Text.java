@@ -8,6 +8,7 @@ import java.awt.Point;
 import java.awt.RenderingHints;
 
 import com.hpen.property.DrawingOption;
+import com.hpen.util.English2KoreanParser;
 import com.hpen.util.KoreanCharacter;
 
 public class Text extends Rect{
@@ -31,7 +32,8 @@ public class Text extends Rect{
 	public void append(String str){
 //		[기존방식] 메인 버퍼(textBuffer)에 직접 추가.. 넘어가도 돌아오면 수정됨
 		if(DrawingOption.getInstance().isKorean()) {
-			str = KoreanCharacter.parseKorean(str);
+//			str = KoreanCharacter.parseKorean(str);
+			str = English2KoreanParser.getParser().parse(str);
 		}
 		textBuffer.append(str);
 		
