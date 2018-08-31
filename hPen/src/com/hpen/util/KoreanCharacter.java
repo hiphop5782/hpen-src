@@ -235,7 +235,6 @@ public class KoreanCharacter {
 				}
 			}
 		}
-//		System.out.println("분해 결과 : "+sample);
 		return sample;
 	}
 	public static String mergeString(String text) throws Exception{

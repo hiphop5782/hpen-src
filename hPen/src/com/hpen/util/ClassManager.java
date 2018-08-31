@@ -1,8 +1,11 @@
 package com.hpen.util;
 
+import com.hpen.util.key.KeyboardPrevent;
+
 public class ClassManager {
 	public static void initialize() {
 		try {
+			Class.forName("com.hpen.util.key.KeyboardPrevent");
 			Class.forName("com.hpen.util.key.GlobalkeyManager");
 //			Class.forName("com.hpen.util.file.VersionManager");
 //			Class.forName("com.hpen.value.Version");

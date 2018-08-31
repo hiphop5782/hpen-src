@@ -37,6 +37,7 @@ import com.hpen.util.CursorManager;
 import com.hpen.util.ScreenData;
 import com.hpen.util.image.IconManager;
 import com.hpen.util.key.KeyManager;
+import com.hpen.util.key.KeyboardPrevent;
 
 /**
  * 캡쳐 스크린 필기 화면
@@ -85,11 +86,25 @@ public class DrawingFrame extends JFrame{
 	public static void start(){
 		if(df.isVisible()) return;
 		
+		df.setKeyboardPrevent();
 		df.setWindowTransparent();
 		df.prepare();
 		df.eventbind();
 		df.setVisible(true);
 	}
+	private void setKeyboardPrevent() {
+		KeyboardPrevent.addKey(KeyboardPrevent.WINDOWS_LEFT);
+		KeyboardPrevent.addKey(KeyboardPrevent.WINDOWS_RIGHT);
+		KeyboardPrevent.addKey(KeyboardPrevent.MENU);
+		KeyboardPrevent.addKey(KeyboardPrevent.ALT_RIGHT, ()->{
+			options.changeKorean();
+		});
+		KeyboardPrevent.blockWindowsKey();
+	}
+	private void setKeyboardUnprevent() {
+		KeyboardPrevent.unblockWindowsKey();
+	}
+
 	private ScreenData screenData;
 	private ScreenPainter screenPainter;
 	
@@ -102,8 +117,9 @@ public class DrawingFrame extends JFrame{
 		eventunbind();
 		clear();
 		setVisible(false);
+		df.setKeyboardUnprevent();
 	}
-	
+
 	private BufferedImage bg;
 	private void setWindowTransparent(){
 //		bg = ScreenSaver.getMonitorScreenShotAtCursor();
@@ -192,7 +208,6 @@ public class DrawingFrame extends JFrame{
 		/* input map setting */
 		inputMap.put(KeyManager.esc, "esc");
 		inputMap.put(KeyManager.backspace, "backspace");
-		inputMap.put(KeyManager.shift_space, "shift_space");
 		inputMap.put(KeyManager.ctrl_s, "ctrl_s");
 		inputMap.put(KeyManager.ctrl_z, "ctrl_z");
 		inputMap.put(KeyManager.ctrl_r, "ctrl_r");
@@ -241,14 +256,6 @@ public class DrawingFrame extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				if(isTextMode()){
 					text.undo();
-				}
-			}
-		});
-		actionMap.put("shift_space", new AbstractAction(){
-			private static final long serialVersionUID = -2947049820846861899L;
-			public void actionPerformed(ActionEvent e) {
-				if(isTextMode()) {
-					options.changeKorean();
 				}
 			}
 		});
@@ -509,6 +516,7 @@ public class DrawingFrame extends JFrame{
 	 *
 	 */
 	class KeyEvt extends KeyAdapter{
+		
 		@Override
 		public void keyPressed(KeyEvent e) {
 			
@@ -522,9 +530,6 @@ public class DrawingFrame extends JFrame{
 			case Character.CONTROL:
 				switch(code) {
 				case KeyEvent.VK_CONTROL:
-					if(isTextMode()) {
-						options.changeKorean(); 
-					}
 					return;
 				case KeyEvent.VK_SHIFT:
 					if(isDefaultMode()) {
@@ -728,25 +733,6 @@ public class DrawingFrame extends JFrame{
 			}
 				
 		}
-//		빈도를 높이려 했지만 오히려 역효과 발생... 안티얼라이싱만 적용하여 일차 테스트 후 수정할 것
-//		private static final long EVENT_FREQUENCY = 10; //ms
-//	    private ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-//	    private ScheduledFuture<?> mouseDraggedFrequencyTimer;
-//	    private MouseEvent lastDragEvent;
-//		@Override
-//		public void mouseDragged(MouseEvent e) {
-//			lastDragEvent = e;
-//			if (mouseDraggedFrequencyTimer == null || mouseDraggedFrequencyTimer.isCancelled() || mouseDraggedFrequencyTimer.isDone()) {
-//				mouseDraggedFrequencyTimer = scheduler.schedule(()->{
-//					screenData.setCursor(e.getX(), e.getY());
-//					screenData.setEnd(e.getX(), e.getY());
-//					if(!isText && pressedKey.isEmpty())
-//						curve.add(e.getX(), e.getY(), 
-//								options.getPointThickness(), 
-//								options.getPointColor());
-//				}, EVENT_FREQUENCY, TimeUnit.MILLISECONDS);
-//			}
-//		}
 	}
 
 }

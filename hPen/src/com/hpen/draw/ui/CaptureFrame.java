@@ -36,6 +36,7 @@ import com.hpen.property.PropertyLoader;
 import com.hpen.update.subutil.ScreenManager;
 import com.hpen.util.CursorManager;
 import com.hpen.util.ScreenData;
+import com.hpen.util.key.KeyboardPrevent;
 
 /**
  * 스크린 캡쳐 화면, 정확한 범위 지정을 지원하도록 한다 일단은 정지 화면으로 캡쳐하고 나중에 동영상 캡쳐 기능은 따로 구현
@@ -53,6 +54,7 @@ public class CaptureFrame extends JFrame {
 	public static void start() {
 		if(cf.isVisible()) return;
 		
+		KeyboardPrevent.blockWindowsKey();
 		cf.setWindowTransparent();
 		cf.prepare();
 		cf.eventbind();
@@ -78,6 +80,7 @@ public class CaptureFrame extends JFrame {
 		PropertyLoader.save();
 		eventunbind();
 		clear();
+		KeyboardPrevent.unblockWindowsKey();
 	}
 	
 	private MouseEvt mouseEvt = new MouseEvt();
