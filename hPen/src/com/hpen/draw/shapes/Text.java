@@ -56,7 +56,7 @@ public class Text extends Rect{
 //		String tmp= KoreanCharacter.seperateString(fix);
 //		String fixText = KoreanCharacter.mergeString(tmp);
 		String tmp = English2KoreanParser.getParser().seperate(fix);
-		String merge = English2KoreanParser.getParser().parse(tmp);
+		String merge = English2KoreanParser.getParser().merge(tmp);
 		textBuffer = new StringBuffer(nonFix.append(merge));
 	}
 	

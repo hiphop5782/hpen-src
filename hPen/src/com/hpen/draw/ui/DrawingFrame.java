@@ -504,7 +504,9 @@ public class DrawingFrame extends JFrame{
 	 * 화면 저장 메소드
 	 */
 	private void saveScreen() throws AWTException{
+		this.setKeyboardUnprevent();
 		int sel = chooser.showSaveDialog(this);
+		this.setKeyboardPrevent();
 		if(sel != 0) return;
 
 		chooser.saveImage(bg, this.getClass());
