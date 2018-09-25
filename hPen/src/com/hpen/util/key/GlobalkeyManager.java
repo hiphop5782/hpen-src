@@ -10,16 +10,7 @@ import com.tulskiy.keymaster.common.Provider;
 
 public class GlobalkeyManager {
 	static Process magnify_proc;
-//	static class MagnifyThread extends Thread{
-//		public MagnifyThread() {
-//			setDaemon(true);
-//		}
-//		public void run() {
-//			MagnificationManager.getManager().start();
-//		}
-//	}
-//	static Thread magnify_thread;
-	static boolean magnify = false;
+	static boolean isMagnify;
 	static {
 		Provider provider = Provider.getCurrentProvider(false);
 		provider.register(KeyManager.alt1, e->{
@@ -32,11 +23,13 @@ public class GlobalkeyManager {
 			ZoomFrame.start();
 		});
 		provider.register(KeyManager.alt4, e->{
-			if(!magnify) {
+			if(!isMagnify) {
 				MagnificationManager.getManager().start();
+				isMagnify = true;
 			}
 			else {
 				MagnificationManager.getManager().stop();
+				isMagnify = false;
 			}
 		});
 		provider.register(KeyManager.alt5, e->{

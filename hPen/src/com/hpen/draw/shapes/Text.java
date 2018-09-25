@@ -1,15 +1,12 @@
 package com.hpen.draw.shapes;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.RenderingHints;
 
+import com.hakademy.utility.converter.English2KoreanParser;
 import com.hpen.property.DrawingOption;
-import com.hpen.util.English2KoreanParser;
-import com.hpen.util.KoreanCharacter;
 
 public class Text extends Rect{
 	
