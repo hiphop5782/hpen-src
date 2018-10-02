@@ -40,9 +40,7 @@ public class ScreenData{
 			now.clear();
 		}
 		
-		if(background != null) {
-			now.setBackground(background);
-		}
+		now.setBackground(background);
 	}
 	
 	public BufferedImage getNowImage() {

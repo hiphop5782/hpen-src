@@ -1,5 +1,6 @@
 package com.hpen.util;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.LinkedList;
@@ -35,7 +36,12 @@ public class ImageAndPath {
 	private BufferedImage background;
 	public void setBackground(BufferedImage background) {
 		this.background = background;
-		image.getGraphics().drawImage(background, 0, 0, image.getWidth(), image.getHeight(), null);
+		if(background == null) {
+			image.getGraphics().setColor(Color.white);
+			image.getGraphics().fillRect(0, 0, image.getWidth(), image.getHeight());
+		}else {
+			image.getGraphics().drawImage(background, 0, 0, image.getWidth(), image.getHeight(), null);
+		}
 	}
 	
 	public void redrawImage() {
