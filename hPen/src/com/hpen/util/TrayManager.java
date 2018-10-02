@@ -22,7 +22,8 @@ public class TrayManager{
 	
 	private PopupMenu popup = new PopupMenu();
 	
-	private MenuItem note = new MenuItem("필기하기");
+	private MenuItem note = new MenuItem("필기하기(투명)");
+	private MenuItem whiteboard = new MenuItem("필기하기(화이트보드)");
 	private MenuItem capture = new MenuItem("캡쳐하기");
 	private MenuItem zoom = new MenuItem("돋보기");
 	private MenuItem setting = new MenuItem("환경설정");
@@ -54,6 +55,7 @@ public class TrayManager{
 	private void add(){
 		tray.setPopupMenu(popup);
 		popup.add(note);
+		popup.add(whiteboard);
 		popup.add(capture);
 		popup.add(zoom);
 		popup.addSeparator();
@@ -70,7 +72,10 @@ public class TrayManager{
 	
 	private void event(){
 		note.addActionListener(e->{
-			DrawingFrame.start();
+			DrawingFrame.start(DrawingFrame.TRANSPARENT);
+		});
+		whiteboard.addActionListener(e->{
+			DrawingFrame.start(DrawingFrame.WHITEBOARD);
 		});
 		capture.addActionListener(e->{
 			CaptureFrame.start();

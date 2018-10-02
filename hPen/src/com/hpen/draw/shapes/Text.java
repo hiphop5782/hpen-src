@@ -55,6 +55,7 @@ public class Text extends Rect{
 		String tmp = English2KoreanParser.getParser().seperate(fix);
 		String merge = English2KoreanParser.getParser().merge(tmp);
 		textBuffer = new StringBuffer(nonFix.append(merge));
+//		System.out.println(textBuffer.toString());
 	}
 	
 	public void undo(){

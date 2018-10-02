@@ -1,11 +1,8 @@
 package com.hpen.draw.shapes;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.RenderingHints;
-import java.awt.geom.QuadCurve2D;
 
 import com.hpen.util.MathManager;
 

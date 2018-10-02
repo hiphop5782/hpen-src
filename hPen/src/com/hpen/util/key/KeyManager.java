@@ -59,6 +59,8 @@ public class KeyManager {
 	public static final KeyStroke ctrl_z = KeyStroke.getKeyStroke(KeyEvent.VK_Z, KeyEvent.CTRL_DOWN_MASK);
 	public static final KeyStroke ctrl_s = KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK);
 	public static final KeyStroke ctrl_y = KeyStroke.getKeyStroke(KeyEvent.VK_Y, KeyEvent.CTRL_DOWN_MASK);
+	public static final KeyStroke ctrl_w = KeyStroke.getKeyStroke(KeyEvent.VK_W, KeyEvent.CTRL_DOWN_MASK);
+	public static final KeyStroke ctrl_e = KeyStroke.getKeyStroke(KeyEvent.VK_E, KeyEvent.CTRL_DOWN_MASK);
 	public static final KeyStroke ctrl_r = KeyStroke.getKeyStroke(KeyEvent.VK_R, KeyEvent.CTRL_DOWN_MASK);
 	public static final KeyStroke shift_space = KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, KeyEvent.SHIFT_DOWN_MASK);
 	
@@ -70,6 +72,27 @@ public class KeyManager {
 	public static final KeyStroke alt5 = KeyStroke.getKeyStroke(KeyEvent.VK_5, KeyEvent.ALT_DOWN_MASK);
 	public static final KeyStroke alt6 = KeyStroke.getKeyStroke(KeyEvent.VK_6, KeyEvent.ALT_DOWN_MASK);
 	
+	public static final KeyStroke numpad1 = KeyStroke.getKeyStroke(KeyEvent.VK_NUMPAD1, 0);
+	public static final KeyStroke numpad2 = KeyStroke.getKeyStroke(KeyEvent.VK_NUMPAD2, 0);
+	public static final KeyStroke numpad3 = KeyStroke.getKeyStroke(KeyEvent.VK_NUMPAD3, 0);
+	public static final KeyStroke numpad4 = KeyStroke.getKeyStroke(KeyEvent.VK_NUMPAD4, 0);
+	public static final KeyStroke numpad5 = KeyStroke.getKeyStroke(KeyEvent.VK_NUMPAD5, 0);
+	public static final KeyStroke numpad6 = KeyStroke.getKeyStroke(KeyEvent.VK_NUMPAD6, 0);
+	public static final KeyStroke numpad7 = KeyStroke.getKeyStroke(KeyEvent.VK_NUMPAD7, 0);
+	public static final KeyStroke numpad8 = KeyStroke.getKeyStroke(KeyEvent.VK_NUMPAD8, 0);
+	public static final KeyStroke numpad9 = KeyStroke.getKeyStroke(KeyEvent.VK_NUMPAD9, 0);
+	public static final KeyStroke numpad0 = KeyStroke.getKeyStroke(KeyEvent.VK_NUMPAD0, 0);
+	
+	public static final KeyStroke altnumpad1 = KeyStroke.getKeyStroke(KeyEvent.VK_NUMPAD1, KeyEvent.ALT_DOWN_MASK);
+	public static final KeyStroke altnumpad2 = KeyStroke.getKeyStroke(KeyEvent.VK_NUMPAD2, KeyEvent.ALT_DOWN_MASK);
+	public static final KeyStroke altnumpad3 = KeyStroke.getKeyStroke(KeyEvent.VK_NUMPAD3, KeyEvent.ALT_DOWN_MASK);
+	public static final KeyStroke altnumpad4 = KeyStroke.getKeyStroke(KeyEvent.VK_NUMPAD4, KeyEvent.ALT_DOWN_MASK);
+	public static final KeyStroke altnumpad5 = KeyStroke.getKeyStroke(KeyEvent.VK_NUMPAD5, KeyEvent.ALT_DOWN_MASK);
+	public static final KeyStroke altnumpad6 = KeyStroke.getKeyStroke(KeyEvent.VK_NUMPAD6, KeyEvent.ALT_DOWN_MASK);
+	public static final KeyStroke altnumpad7 = KeyStroke.getKeyStroke(KeyEvent.VK_NUMPAD7, KeyEvent.ALT_DOWN_MASK);
+	public static final KeyStroke altnumpad8 = KeyStroke.getKeyStroke(KeyEvent.VK_NUMPAD8, KeyEvent.ALT_DOWN_MASK);
+	public static final KeyStroke altnumpad9 = KeyStroke.getKeyStroke(KeyEvent.VK_NUMPAD9, KeyEvent.ALT_DOWN_MASK);
+	public static final KeyStroke altnumpad0 = KeyStroke.getKeyStroke(KeyEvent.VK_NUMPAD0, KeyEvent.ALT_DOWN_MASK);
 }
 
 

@@ -1,22 +1,123 @@
 package com.hpen.util;
 
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Window;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Stack;
 
+import javax.imageio.ImageIO;
 import javax.swing.SwingUtilities;
 
 import com.hpen.draw.shapes.Shape;
 import com.hpen.property.DrawingOption;
+import com.hpen.util.image.ImageManager;
 
 /**
  * @author Administrator
  * <h1>그림 그릴 때 필요한 데이터<h1>
  */
 public class ScreenData{
+	
+	private ImageAndPath now;
+	private ImageAndPath backup;
+	
+	public void createNowImage(int width, int height) {
+		createNowImage(width, height, null);
+	}
+	public void createNowImage(int width, int height, BufferedImage background) {
+		if(now == null) {
+			now =  new ImageAndPath(width, height);
+		}
+		else {
+			now.resize(width, height);
+			now.clear();
+		}
+		
+		if(background != null) {
+			now.setBackground(background);
+		}
+	}
+	
+	public BufferedImage getNowImage() {
+	    return now.getImage();
+	}
+	
+	public BufferedImage getNowImageCopy() {
+	    return now.getImageCopy();
+	}
+	
+	public boolean hasNowImage() {
+		return now != null && now.hasImage();
+	}
+	
+	public void drawShape(Shape shape) {
+		now.addShape(shape);
+		try {backup = now.clone();} catch (CloneNotSupportedException e) {}
+	}
+	
+	public void recoverLastScreen() {
+		try {now = backup.clone();}catch(CloneNotSupportedException e) {}
+	}
+	
+	/**
+	 * now + undo 이미지를 저장할 Collection
+	 */
+	private LinkedList<ImageAndPath> history = new LinkedList<>();
+	public void addHistory(ImageAndPath inp) {
+		history.addLast(inp);
+	}
+	public ImageAndPath removeHistory() {
+		return history.pollLast();
+	}
+	public void clearHistory() {
+		history.clear();
+	}
+	
+	public boolean hasHistory() {
+		return !history.isEmpty();
+	}
+	
+	/**
+	 * redo 이미지를 저장할 Collection 
+	 */
+	private LinkedList<ImageAndPath> future = new LinkedList<>();
+	public void addFuture(ImageAndPath inp) {
+		future.addFirst(inp);
+	}
+	public ImageAndPath removeFuture() {
+		return future.pollFirst();
+	}
+	public void clearFuture() {
+		future.clear();
+	}
+	public boolean hasFuture() {
+		return !future.isEmpty();
+	}
+	
+	/**
+	 * 임시 저장 메모리(alt+num0 ~ alt+num9)
+	 */
+	private ImageAndPath[] memory = new ImageAndPath[10];
+	public void addMemory(int index) {
+		try {
+			memory[index] = now.clone();
+		}catch(Exception e) {}
+	}
+	public ImageAndPath getMemory(int index) {
+		return memory[index];
+	}
+	public void loadMemory(int index) {
+		try {
+			now = memory[index].clone();
+		}catch(Exception e) {}
+	}
 	
 	/**
 	 * 현재 커서의 정보
@@ -114,36 +215,26 @@ public class ScreenData{
 		return	start.x + start.y >= 0 && end.x + end.y >= 0;
 	}
 	
-	/**
-	 * 도형을 저장하는 ArrayList
-	 */
-	private ArrayList<Shape> shapelist = new ArrayList<>();
-	private Stack<Shape> redolist = new Stack<>();
-	
 	@Override
 	public String toString() {
-		String str = "";
-		str += "cursor="+cursor+",\t";
-		str += "start="+start+",\t";
-		str += "end="+end+",\t";
-		//str += "";
-		//str += "";
-		return str;
+		StringBuffer buffer = new StringBuffer();
+//		buffer.append("cursor = "+cursor+", \t");
+//		buffer.append("start="+start+",\t");
+//		buffer.append("end="+end+",\t");
+		buffer.append("history = "+history.size()+", future = "+future.size());
+		buffer.append("\n");
+		return buffer.toString();
 	}
 
 	public void addShape(Shape shape) {
-		backup();
-		this.shapelist.add(shape);
+		clearFuture();
+		try {
+			addHistory(now.clone());
+		}catch(Exception e) {}
+		drawShape(shape);
+//		System.out.println("addShape = "+this);
 	}
 
-	public ArrayList<Shape> getShapelist() {
-		return this.shapelist;
-	}
-
-	public boolean isShapeEmpty() {
-		return this.shapelist == null || this.shapelist.size() == 0;
-	}
-	
 	public void clearCursor(){
 		cursor.x = -1;		cursor.y = -1;
 	}
@@ -153,44 +244,35 @@ public class ScreenData{
 	public void clearEnd(){
 		end.x = -1;			end.y = -1;
 	}
+	
 	public void clear(){
 		clearStart();
 		clearEnd();
-		clearShape();
+		clearHistory();
+		clearFuture();
+		now.clear();
+//		System.out.println("clear = "+this);
 	}
 
 	public void undo() {
-		backup();
-		Shape shape = shapelist.remove(shapelist.size()-1);
-		redolist.push(shape);
+		if(hasHistory()) {
+			addFuture(now);
+			now = removeHistory();
+		}
+//		System.out.println("undo = "+this);
 	}
 	
 	public void redo() {
-		if(redolist.size() > 0) {
-			shapelist.add(redolist.pop());
+		if(hasFuture()) {
+			addHistory(now);
+			now = removeFuture();
 		}
-	}
-
-	private static List<Shape> backup = new ArrayList<>();
-	public void clearShape() {
-		backup.clear();
-		backup.addAll(shapelist);
-		shapelist.clear();
-	}
-	
-	public void backup() {
-		backup.clear();
-		backup.addAll(shapelist);
-	}
-
-	public void recovery() {
-		shapelist.clear();
-		shapelist.addAll(backup);
+//		System.out.println("redo = "+this);
 	}
 	
 	public List<Shape> findShape(int x, int y) {
 		List<Shape> list = new ArrayList<>();
-		for(Shape shape : shapelist) {
+		for(Shape shape : now.getShapeList()) {
 			if(shape.isSamePosition(new Point(x, y))) {
 				shape.select();
 				list.add(shape);
@@ -201,8 +283,11 @@ public class ScreenData{
 		return list;
 	}
 	public void clearChoice() {
-		for(Shape s : shapelist) {
+		for(Shape s : now.getShapeList()) {
 			s.unselect();
 		}
 	}
+	
 }
+
+

@@ -17,10 +17,10 @@ public class GlobalkeyManager {
 			CaptureFrame.start();
 		});
 		provider.register(KeyManager.alt2, e->{
-			DrawingFrame.start();
+			DrawingFrame.start(DrawingFrame.TRANSPARENT);
 		});
 		provider.register(KeyManager.alt3, e->{
-			ZoomFrame.start();
+			DrawingFrame.start(DrawingFrame.WHITEBOARD);
 		});
 		provider.register(KeyManager.alt4, e->{
 			if(!isMagnify) {
@@ -33,6 +33,9 @@ public class GlobalkeyManager {
 			}
 		});
 		provider.register(KeyManager.alt5, e->{
+			ZoomFrame.start();
+		});
+		provider.register(KeyManager.alt6, e->{
 			if(magnify_proc == null) {
 				String command = System.getenv("windir")+"\\system32\\magnify.exe";
 				ProcessBuilder builder = new ProcessBuilder(new String[] {"cmd.exe", "/C", command});

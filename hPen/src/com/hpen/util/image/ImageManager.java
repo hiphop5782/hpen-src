@@ -1,8 +1,6 @@
 package com.hpen.util.image;
 
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.RenderingHints;
+import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.File;
 
@@ -11,6 +9,31 @@ import javax.imageio.ImageIO;
 import net.coobird.thumbnailator.Thumbnails;
 
 public class ImageManager {
+	
+	public static BufferedImage copyImage(BufferedImage image) {
+//		return resizeImage(image, image.getWidth(), image.getHeight());
+		
+//		deep copy
+//		ColorModel colorModel = now.getColorModel();
+//		boolean isAlphaPremultiplied = colorModel.isAlphaPremultiplied();
+//		WritableRaster raster = now.copyData(null);
+//		return new BufferedImage(colorModel, raster, isAlphaPremultiplied, null);
+		
+//		deep copy2
+		BufferedImage b = new BufferedImage(image.getWidth(), image.getHeight(), image.getType());
+	    Graphics g = b.getGraphics();
+	    g.drawImage(image, 0, 0, null);
+	    g.dispose();
+	    return b;
+	}
+	
+	/**
+	 * 이미지 리사이즈 메소드
+	 * @param image
+	 * @param width
+	 * @param height
+	 * @return
+	 */
 	public static BufferedImage resizeImage(BufferedImage image, int width, int height){
 		try{
 			return Thumbnails.of(image).size(width, height).asBufferedImage();
