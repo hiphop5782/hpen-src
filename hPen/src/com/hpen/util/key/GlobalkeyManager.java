@@ -23,10 +23,14 @@ public class GlobalkeyManager {
 			DrawingFrame.start(DrawingFrame.WHITEBOARD);
 		});
 		provider.register(KeyManager.alt4, e->{
-			MagnifyManager.work();
+			if(!DrawingFrame.isNowDisplaying()) {
+				MagnifyManager.work();
+			}
 		});
 		provider.register(KeyManager.alt5, e->{
-			ZoomFrame.start();
+			if(!DrawingFrame.isNowDisplaying()) {
+				ZoomFrame.start();
+			}
 		});
 //		provider.register(KeyManager.alt6, e->{
 //			if(magnify_proc == null) {

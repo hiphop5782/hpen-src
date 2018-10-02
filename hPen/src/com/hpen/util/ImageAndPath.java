@@ -46,9 +46,15 @@ public class ImageAndPath {
 	
 	public void redrawImage() {
 		Graphics2D g2d = (Graphics2D) image.getGraphics();
-		g2d.clearRect(0, 0, image.getWidth(), image.getHeight());
-		if(background != null)
+		
+		if(background != null) {
 			g2d.drawImage(background, 0, 0, image.getWidth(), image.getHeight(), null);
+		}
+		else {
+			g2d.setColor(Color.white);
+			g2d.fillRect(0, 0, image.getWidth(), image.getHeight());
+		}
+		
 		for(Shape shape : shapeList) {
 			shape.draw2(g2d);
 		}
@@ -75,12 +81,15 @@ public class ImageAndPath {
 		return !shapeList.isEmpty();
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public ImageAndPath clone() throws CloneNotSupportedException {
 		ImageAndPath copy = new ImageAndPath(image.getWidth(), image.getHeight());
 		copy.image = getImageCopy();
-		copy.background = ImageManager.copyImage(background);
 		copy.shapeList = (LinkedList<Shape>) shapeList.clone();
+		if(background != null) {
+			copy.background = ImageManager.copyImage(background);
+		}
 		return copy;
 	}
 

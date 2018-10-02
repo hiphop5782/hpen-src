@@ -12,9 +12,7 @@ public class Curve extends Shape{
 	
 	private List<Line> list = new ArrayList<>();
 	
-	public Curve(){
-		
-	}
+	public Curve(){}
 	
 	private int sx = -1, sy = -1;
 	
@@ -30,12 +28,18 @@ public class Curve extends Shape{
 		}
 	}
 	
-	/**
-	 *  4천개 근처가 되면 그림이 뚝뚝끊김...
-	 */
+	int index = 0;
 	@Override
 	public void draw(Graphics2D g2d) {
-		for(Line line : list){
+//		전체 다그리면 느림
+//		for(Line line : list){
+//			line.draw2(g2d);
+//		}
+		
+//		못그린 부분만 그리도록 구현
+//		System.out.println("index = "+index);
+		for( ; index < list.size(); index++) {
+			Line line = list.get(index);
 			line.draw2(g2d);
 		}
 	}

@@ -7,10 +7,12 @@ public class MagnifyManager {
 	public static void work() {
 		if(!isMagnify) {
 			MagnificationManager.getManager().start();
+//			System.out.println("start = "+Thread.activeCount());
 			isMagnify = true;
 		}
 		else {
 			MagnificationManager.getManager().stop();
+//			System.out.println("stop = "+Thread.activeCount());
 			isMagnify = false;
 		}
 	}
