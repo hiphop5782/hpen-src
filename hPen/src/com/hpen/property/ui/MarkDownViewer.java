@@ -14,8 +14,7 @@ import com.hpen.property.ProgramIcon;
 public class MarkDownViewer extends JFrame{
 	private JEditorPane editor = new JEditorPane();
 	private JScrollPane scroll = new JScrollPane(editor);
-	public MarkDownViewer(File file) throws FileNotFoundException {
-		String text = loadText(file);
+	public MarkDownViewer(String text) throws FileNotFoundException {
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setLocationByPlatform(true);
 		setIconImage(ProgramIcon.getIcon());
@@ -25,18 +24,9 @@ public class MarkDownViewer extends JFrame{
 		editor.setFont(new Font("±¼¸²", Font.PLAIN, 25));
 		editor.setText(text);
 		editor.setEditable(false);
-		
 		this.setVisible(true);
 	}
 	
-	private String loadText(File file) throws FileNotFoundException {
-		StringBuffer buffer = new StringBuffer();
-		Scanner s = new Scanner(file);
-		while(s.hasNextLine()) 
-			buffer.append(s.nextLine()+"\n");
-		s.close();
-		return buffer.toString();
-	}
 }
 
 

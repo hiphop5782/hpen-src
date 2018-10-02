@@ -1,6 +1,7 @@
 package com.hpen.util;
 
 import java.awt.CheckboxMenuItem;
+import java.awt.Desktop;
 import java.awt.MenuItem;
 import java.awt.PopupMenu;
 import java.awt.SystemTray;
@@ -14,7 +15,7 @@ import com.hpen.property.ProgramIcon;
 import com.hpen.property.ui.MarkDownViewer;
 import com.hpen.property.ui.PropertyFrame;
 import com.hpen.util.file.RegisterManager;
-import com.hpen.util.file.VersionManager;
+import com.hpen.util.file.TextReader;
 import com.hpen.value.Version;
 
 public class TrayManager{
@@ -91,8 +92,9 @@ public class TrayManager{
 				//윈도우에 연결된 프로그램으로 자동 실행하는 명령
 				//Desktop desktop = Desktop.getDesktop();
 				//desktop.edit(new File("README.md"));
-				//MarkDownViewer viewer = new MarkDownViewer(new File("README.md"));
-				Runtime.getRuntime().exec("cmd.exe /C start https://github.com/hiphop5782/hpen-src/blob/master/README.md");
+				String url = "https://raw.githubusercontent.com/hiphop5782/hpen-src/master/README.md";
+				MarkDownViewer viewer = new MarkDownViewer(TextReader.loadText(url));
+				//Runtime.getRuntime().exec("cmd.exe /C start https://github.com/hiphop5782/hpen-src/blob/master/README.md");
 			}catch(Exception err){
 				err.printStackTrace();
 			}
