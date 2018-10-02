@@ -25,6 +25,7 @@ public class MarkDownViewer extends JFrame{
 		editor.setText(text);
 		editor.setEditable(false);
 		this.setVisible(true);
+		editor.setCaretPosition(0);
 	}
 	
 }
