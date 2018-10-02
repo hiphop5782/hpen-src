@@ -1,12 +1,6 @@
-//package com.hpen.test;
-//
-//import java.util.ArrayList;
-//import java.util.regex.Matcher;
-//import java.util.regex.Pattern;
-//
-//import com.hpen.util.KoreanCharacter;
-//
-//public class Exam05_글자분리및합치기 {
+package com.hpen.test;
+
+public class Exam05_글자분리및합치기 {
 //	private static final ArrayList<Character> a1 = new ArrayList<>();
 //	static{
 //		a1.add('ㄱ');/*ㄱ*/		a1.add('ㄲ');/*ㄲ*/
@@ -177,5 +171,5 @@
 //	public static char merge(char a, char b){
 //		return merge(new int[]{a,b,0});
 //	}
-//	
-//}
+	
+}
