@@ -1,12 +1,6 @@
-//package com.hpen.test;
-//
-//import java.util.ArrayList;
-//import java.util.regex.Matcher;
-//import java.util.regex.Pattern;
-//
-//import com.hpen.util.KoreanCharacter;
-//
-//public class Exam05_글자조합찾기_정규식 {
+package com.hpen.test;
+
+public class Exam05_글자조합찾기_정규식 {
 //	public static void main(String[] args){
 //		String str = "dkssudgktpdy qksrkqtmqslek. zzzzz";
 //		str = KoreanCharacter.parseKorean(str);
@@ -27,13 +21,13 @@
 //			System.out.println(m2.group());
 //		}
 //	}
-//}
-//
-//
-//
-//
-//
-//
-//
-//
-//
+}
+
+
+
+
+
+
+
+
+
