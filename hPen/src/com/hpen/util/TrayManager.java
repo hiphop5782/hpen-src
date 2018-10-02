@@ -92,7 +92,7 @@ public class TrayManager{
 				//Desktop desktop = Desktop.getDesktop();
 				//desktop.edit(new File("README.md"));
 				//MarkDownViewer viewer = new MarkDownViewer(new File("README.md"));
-				Runtime.getRuntime().exec("cmd.exe /C start https://github.com/hiphop5782/hPen/blob/master/README.md");
+				Runtime.getRuntime().exec("cmd.exe /C start https://github.com/hiphop5782/hpen-src/blob/master/README.md");
 			}catch(Exception err){
 				err.printStackTrace();
 			}
