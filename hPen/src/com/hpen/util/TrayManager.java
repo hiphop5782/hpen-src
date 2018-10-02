@@ -8,6 +8,7 @@ import java.awt.SystemTray;
 import java.awt.TrayIcon;
 import java.io.File;
 
+import com.hakademy.utility.magnify.MagnificationManager;
 import com.hpen.draw.ui.CaptureFrame;
 import com.hpen.draw.ui.DrawingFrame;
 import com.hpen.livezoom.ui.ZoomFrame;
@@ -85,7 +86,8 @@ public class TrayManager{
 			PropertyFrame.start();
 		});
 		zoom.addActionListener(e->{
-			ZoomFrame.start();
+			//ZoomFrame.start();
+			MagnifyManager.work();
 		});
 		tutorial.addActionListener(e->{
 			try{
