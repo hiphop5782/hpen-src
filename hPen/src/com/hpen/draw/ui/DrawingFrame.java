@@ -3,7 +3,6 @@ package com.hpen.draw.ui;
 import java.awt.AWTException;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -83,8 +82,11 @@ public class DrawingFrame extends JFrame{
 	}
 	
 	private static DrawingFrame df = new DrawingFrame();
+	public static boolean isNowDisplaying() {
+		return df.isVisible();
+	}
 	public static void start(boolean screenState){
-		if(df.isVisible()) return;
+		if(isNowDisplaying()) return;
 		
 		df.screenState = screenState;
 		df.setKeyboardPrevent();
@@ -157,17 +159,16 @@ public class DrawingFrame extends JFrame{
 	private KeyEvt keyEvt = new KeyEvt();
 	
 	private void eventunbind(){
+		removeMouseWheelListener(wheelEvt);
 		removeMouseMotionListener(motionEvt);
 		removeMouseListener(mouseEvt);
-		removeMouseWheelListener(wheelEvt);
 		getContentPane().removeKeyListener(keyEvt);
 	}
 	private void eventbind(){
-		//이벤트 설정
-		//WindowUtility.setWindowOpacity(this, 60/100f);
+//		이벤트 설정
 		addMouseMotionListener(motionEvt);
 		addMouseListener(mouseEvt);
-		addMouseWheelListener(wheelEvt);
+		addMouseWheelListener(wheelEvt);		//자바
 		getContentPane().addKeyListener(keyEvt);
 	}
 	private void prepare(){
@@ -190,7 +191,7 @@ public class DrawingFrame extends JFrame{
 	}
 	
 	/**
-	 * key binding method
+	 * 키보드 바인딩
 	 */
 	private void keybind(){
 		ActionMap actionMap = ((JPanel)this.getContentPane()).getActionMap();
@@ -575,19 +576,23 @@ public class DrawingFrame extends JFrame{
 	public void update(Graphics g) {
 		paint(g);
 	}
-	
-//	private Image background;
+
+	public boolean isCurveMode() {
+		return isDragged && pressedKey.isEmpty() && !isTextMode();
+	}
 	@Override
 	public void paint(Graphics g) {
 		if(screenData.hasNowImage()) {
-//			if(background == null) 
-//				background = createImage(getWidth(), getHeight());
-//			else
-//				background.getGraphics().clearRect(0, 0, getWidth(), getHeight());
-			BufferedImage screen = screenData.getNowImageCopy();
-//			background.getGraphics().drawImage(screen, 0, 0, this);
-			drawTempShape(screen);
-			g.drawImage(screen, 0, 0, this);
+			if(isCurveMode()) {
+				BufferedImage screen = screenData.getNowImage();
+				drawTempCurve(screen);
+				g.drawImage(screen, 0, 0, this);
+			}
+			else {
+				BufferedImage screen = screenData.getNowImageCopy();
+				drawTempShape(screen);
+				g.drawImage(screen, 0, 0, this);
+			}
 		}
 	}
 	
@@ -621,10 +626,14 @@ public class DrawingFrame extends JFrame{
 		return shape;
 	}
 	
+	private void drawTempCurve(BufferedImage image) {
+		Shape shape = curve;
+		shape.draw2((Graphics2D)image.getGraphics());
+	}
+	
 	private void drawTempShape(BufferedImage image){
 		try {
 //			System.out.println("isDragged = "+isDragged+", "+screenData.isTempShapeDrawable());
-//			System.out.println("text mode = "+isTextMode());
 			Shape shape = getCurrentShape();
 			shape.draw2((Graphics2D)image.getGraphics());
 		}
@@ -873,6 +882,7 @@ public class DrawingFrame extends JFrame{
 		}
 		
 		private int oldX = -1, oldY = -1;
+//		private long lastTime = System.currentTimeMillis();
 		@Override
 		public void mouseDragged(MouseEvent e) {
 			oldX = screenData.getCursor().x;
@@ -882,7 +892,10 @@ public class DrawingFrame extends JFrame{
 			switch(mode) {
 			case DRAWING_MODE:
 				if(pressedKey.isEmpty()) {
-						curve.add(e.getX(), e.getY(), options.getPointThickness(), options.getPointColor());	
+//						long nowTime = System.currentTimeMillis();
+//						System.out.println("시차 : "+(nowTime - lastTime)+"ms");
+						curve.add(e.getX(), e.getY(), options.getPointThickness(), options.getPointColor());
+//						lastTime = nowTime;
 				}
 				break;
 			case CHOICE_MODE:
