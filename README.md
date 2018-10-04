@@ -1,6 +1,9 @@
 # hPen
 ### 강의용 필기 보조 어플리케이션입니다
 
+## 다운로드
+- [다운로드 페이지](https://github.com/hiphop5782/hpen-src/releases/latest)
+
 ## 설치 방법
 1. 설치파일 실행
 2. hPen.exe 실행
