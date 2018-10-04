@@ -2,7 +2,6 @@ package com.hpen.draw.ui;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.Cursor;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -29,6 +28,7 @@ import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.filechooser.FileFilter;
 
+import com.hakademy.utility.hook.KeyboardHook;
 import com.hpen.draw.ui.component.SaveImageFileChooser;
 import com.hpen.property.CaptureOption;
 import com.hpen.property.DrawingOption;
@@ -36,7 +36,6 @@ import com.hpen.property.PropertyLoader;
 import com.hpen.update.subutil.ScreenManager;
 import com.hpen.util.CursorManager;
 import com.hpen.util.ScreenData;
-import com.hpen.util.key.KeyboardPrevent;
 
 /**
  * 스크린 캡쳐 화면, 정확한 범위 지정을 지원하도록 한다 일단은 정지 화면으로 캡쳐하고 나중에 동영상 캡쳐 기능은 따로 구현
@@ -51,10 +50,12 @@ public class CaptureFrame extends JFrame {
 	private static final long serialVersionUID = 626178305071575904L;
 
 	private static CaptureFrame cf = new CaptureFrame();
+	private static KeyboardHook hook = KeyboardHook.getInstance();
 	public static void start() {
 		if(cf.isVisible()) return;
 		
-		KeyboardPrevent.blockWindowsKey();
+		hook.addPreventKey(KeyboardHook.WINDOWS_LEFT);
+		hook.addPreventKey(KeyboardHook.WINDOWS_RIGHT);
 		cf.setWindowTransparent();
 		cf.prepare();
 		cf.eventbind();
@@ -80,7 +81,8 @@ public class CaptureFrame extends JFrame {
 		PropertyLoader.save();
 		eventunbind();
 		clear();
-		KeyboardPrevent.unblockWindowsKey();
+		hook.removePreventKey(KeyboardHook.WINDOWS_LEFT);
+		hook.removePreventKey(KeyboardHook.WINDOWS_RIGHT);
 	}
 	
 	private MouseEvt mouseEvt = new MouseEvt();

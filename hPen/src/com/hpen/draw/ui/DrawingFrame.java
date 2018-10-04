@@ -23,6 +23,7 @@ import javax.swing.InputMap;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import com.hakademy.utility.hook.KeyboardHook;
 import com.hpen.draw.shapes.Curve;
 import com.hpen.draw.shapes.Icon;
 import com.hpen.draw.shapes.Shape;
@@ -36,7 +37,6 @@ import com.hpen.util.CursorManager;
 import com.hpen.util.ScreenData;
 import com.hpen.util.image.IconManager;
 import com.hpen.util.key.KeyManager;
-import com.hpen.util.key.KeyboardPrevent;
 
 /**
  * 캡쳐 스크린 필기 화면
@@ -85,6 +85,8 @@ public class DrawingFrame extends JFrame{
 	public static boolean isNowDisplaying() {
 		return df.isVisible();
 	}
+	
+	private KeyboardHook hook = KeyboardHook.getInstance();
 	public static void start(boolean screenState){
 		if(isNowDisplaying()) return;
 		
@@ -95,16 +97,19 @@ public class DrawingFrame extends JFrame{
 		df.setVisible(true);
 	}
 	private void setKeyboardPrevent() {
-		KeyboardPrevent.addKey(KeyboardPrevent.WINDOWS_LEFT);
-		KeyboardPrevent.addKey(KeyboardPrevent.WINDOWS_RIGHT);
-		KeyboardPrevent.addKey(KeyboardPrevent.MENU);
-		KeyboardPrevent.addKey(KeyboardPrevent.ALT_RIGHT, ()->{
+		hook.addPreventKey(KeyboardHook.WINDOWS_LEFT);
+		hook.addPreventKey(KeyboardHook.WINDOWS_RIGHT);
+		hook.addPreventKey(KeyboardHook.MENU);
+		hook.addPreventKey(KeyboardHook.ALT_RIGHT, (a, b, c)->{
 			options.changeKorean();
+			return null;
 		});
-		KeyboardPrevent.blockWindowsKey();
 	}
 	private void setKeyboardUnprevent() {
-		KeyboardPrevent.unblockWindowsKey();
+		hook.removePreventKey(KeyboardHook.WINDOWS_LEFT);
+		hook.removePreventKey(KeyboardHook.WINDOWS_RIGHT);
+		hook.removePreventKey(KeyboardHook.MENU);
+		hook.removePreventKey(KeyboardHook.ALT_RIGHT);
 	}
 
 	private ScreenData screenData;
