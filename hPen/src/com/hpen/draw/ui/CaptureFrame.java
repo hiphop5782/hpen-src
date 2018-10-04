@@ -50,6 +50,9 @@ public class CaptureFrame extends JFrame {
 	private static final long serialVersionUID = 626178305071575904L;
 
 	private static CaptureFrame cf = new CaptureFrame();
+	public static boolean isNowDisplaing() {
+		return cf.isVisible();
+	}
 	private static KeyboardHook hook = KeyboardHook.getInstance();
 	public static void start() {
 		if(cf.isVisible()) return;
