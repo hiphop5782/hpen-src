@@ -101,7 +101,13 @@ public class DrawingFrame extends JFrame{
 		hook.addPreventKey(KeyboardHook.WINDOWS_RIGHT);
 		hook.addPreventKey(KeyboardHook.MENU);
 		hook.addPreventKey(KeyboardHook.ALT_RIGHT, (a, b, c)->{
-			options.changeKorean();
+			if(a >= 0) {
+				switch(b.intValue()) {
+				case KeyboardHook.SYSKEY_RELEASE:
+				case KeyboardHook.KEY_RELEASE:
+					options.changeKorean();
+				}
+			}
 			return null;
 		});
 	}
