@@ -3,6 +3,7 @@ package com.hpen.draw.ui;
 import java.awt.AWTException;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -183,12 +184,14 @@ public class DrawingFrame extends JFrame{
 		getContentPane().addKeyListener(keyEvt);
 	}
 	private void prepare(){
-		setBounds(ScreenManager.getManager().getCurrentMonitorRect());
+		ScreenManager manager = ScreenManager.getManager();
+		Rectangle rect = manager.getCurrentMonitorRect();
+		setBounds(rect);
 		getContentPane().setCursor(CursorManager.createCircleCursor());
 		if(screenState == WHITEBOARD)
-			screenData.createNowImage(getWidth(), getHeight());
+			screenData.createNowImage(rect.width, rect.height);
 		else
-			screenData.createNowImage(getWidth(), getHeight(), ScreenManager.getManager().getCurrentMonitorImage());
+			screenData.createNowImage(rect.width, rect.height, manager.getCurrentMonitorImage());
 		curve = new Curve();
 		text = new Text();
 		screenPainter = new ScreenPainter(this);
