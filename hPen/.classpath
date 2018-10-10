@@ -18,5 +18,6 @@
 	<classpathentry kind="lib" path="lib/jna-4.5.2.jar"/>
 	<classpathentry kind="lib" path="lib/jna-platform-4.5.2.jar"/>
 	<classpathentry kind="lib" path="lib/hUtility.jar"/>
+	<classpathentry kind="lib" path="lib/commonmark-0.11.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
