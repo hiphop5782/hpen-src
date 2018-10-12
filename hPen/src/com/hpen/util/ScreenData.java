@@ -210,6 +210,7 @@ public class ScreenData{
 	}
 	
 	public boolean isTempShapeDrawable() {
+		System.out.println("start = "+start+", end = "+end);
 		return	start.x + start.y >= 0 && end.x + end.y >= 0;
 	}
 	
