@@ -267,6 +267,7 @@ public class DrawingFrame extends JFrame{
 				case TEXT_MODE:
 					text.finish();
 					saveTextShape();
+					screenData.setEnd(-1, -1);
 					break;
 				case ICON_MODE:
 					selectedIcon = null;
@@ -709,12 +710,12 @@ public class DrawingFrame extends JFrame{
 				switch(code) {
 				case KeyEvent.VK_CONTROL:
 					return;
-				case KeyEvent.VK_SHIFT:
-					if(isDefaultMode()) {
-						mode = CHOICE_MODE;
-						setCursor();
-					}
-					break;
+//				case KeyEvent.VK_SHIFT:
+//					if(isDefaultMode()) {
+//						mode = CHOICE_MODE;
+//						setCursor();
+//					}
+//					break;
 				case KeyEvent.VK_ENTER:
 					if(isTextMode()) {
 						text.append("\n");
@@ -808,6 +809,7 @@ public class DrawingFrame extends JFrame{
 		@Override
 		public void mouseReleased(MouseEvent e) {
 			isDragged = false;
+			
 //			System.out.println("mode = "+mode);
 			switch(mode) {
 			case CHOICE_MODE:
@@ -826,14 +828,18 @@ public class DrawingFrame extends JFrame{
 				screenData.clearEnd();
 				break;
 			case TEXT_MODE:
-				screenData.setStart(e.getX(), e.getY());
-				int end_x = DrawingFrame.this.getX()+DrawingFrame.this.getWidth();
-				int end_y = DrawingFrame.this.getY()+DrawingFrame.this.getHeight();
-				screenData.setEnd(end_x, end_y);
 				if(text != null) {
 					text.finish();
 					saveTextShape();
 				}
+				
+				screenData.setStart(e.getX(), e.getY());
+//				int end_x = DrawingFrame.this.getX()+DrawingFrame.this.getWidth();
+//				int end_y = DrawingFrame.this.getY()+DrawingFrame.this.getHeight();
+//				screenData.setEnd(end_x, end_y);
+				screenData.setEnd(e.getX(), e.getY());
+				
+				
 				text = new Text(screenData.getStart(), screenData.getEnd(), options.getPointThickness(), options.getPointColorCopy(), "", options.getFontCopy());
 //				saveTextShape();
 				break;
