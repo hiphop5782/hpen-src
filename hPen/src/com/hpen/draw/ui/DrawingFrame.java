@@ -21,10 +21,10 @@ import java.util.Set;
 import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
 import javax.swing.InputMap;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import com.hakademy.utility.hook.KeyboardHook;
+import com.hakademy.utility.screen.ScreenManager;
 import com.hpen.draw.shapes.Curve;
 import com.hpen.draw.shapes.Icon;
 import com.hpen.draw.shapes.Shape;
@@ -33,7 +33,6 @@ import com.hpen.draw.shapes.Text;
 import com.hpen.draw.ui.component.SaveImageFileChooser;
 import com.hpen.property.DrawingOption;
 import com.hpen.property.PropertyLoader;
-import com.hpen.update.subutil.ScreenManager;
 import com.hpen.util.CursorManager;
 import com.hpen.util.ScreenData;
 import com.hpen.util.image.IconManager;
@@ -44,7 +43,7 @@ import com.hpen.util.key.KeyManager;
  * @author Hwang
  *
  */
-public class DrawingFrame extends JFrame{
+public class DrawingFrame extends FullScreenFrame{
 	private static final long serialVersionUID = 1L;
 	private DrawingOption options = DrawingOption.getInstance();
 	/**
@@ -144,21 +143,6 @@ public class DrawingFrame extends JFrame{
 		screenData = new ScreenData();
 	}
 	
-	private void screen(){
-		setUndecorated(true);
-		setAlwaysOnTop(true);
-		setResizable(false);
-		
-		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-		setFocusTraversalKeysEnabled(false);
-		
-		addWindowListener(windowAdapter);
-		
-		//test code
-		//setBackground(Color.yellow);
-		//System.out.println("size = "+this.getBounds());
-	}
-	
 	private WindowAdapter windowAdapter = new WindowAdapter() {
 		public void windowClosing(WindowEvent e) {
 			exit();
@@ -192,8 +176,6 @@ public class DrawingFrame extends JFrame{
 			screenData.createNowImage(rect.width, rect.height);
 		else
 			screenData.createNowImage(rect.width, rect.height, manager.getCurrentMonitorImage());
-		curve = new Curve();
-		text = new Text();
 		screenPainter = new ScreenPainter(this);
 	}
 	private void clear(){
@@ -207,6 +189,8 @@ public class DrawingFrame extends JFrame{
 	/**
 	 * 키보드 바인딩
 	 */
+	int altnum = 0;
+	int colornum = 0;
 	private void keybind(){
 		ActionMap actionMap = ((JPanel)this.getContentPane()).getActionMap();
 		InputMap inputMap = ((JPanel)this.getContentPane()).getInputMap();
@@ -320,76 +304,14 @@ public class DrawingFrame extends JFrame{
 				screenData.redo();
 			}
 		});
-		actionMap.put("f1", new AbstractAction(){
-			private static final long serialVersionUID = -5963057482921099056L;
-			public void actionPerformed(ActionEvent e) {
-				options.setPointColor(1);
-				setCursor();
-			}
-		});
-		actionMap.put("f2", new AbstractAction(){
-			private static final long serialVersionUID = -6354565020879453633L;
-			public void actionPerformed(ActionEvent e) {
-				options.setPointColor(2);
-				setCursor();
-			}
-		});
-		actionMap.put("f3", new AbstractAction(){
-			private static final long serialVersionUID = 2044616271891732949L;
-			public void actionPerformed(ActionEvent e) {
-				options.setPointColor(3);
-				setCursor();
-			}
-		});
-		actionMap.put("f4", new AbstractAction(){
-			private static final long serialVersionUID = -808999856814236056L;
-			public void actionPerformed(ActionEvent e) {
-				options.setPointColor(4);
-				setCursor();
-			}
-		});
-		actionMap.put("f5", new AbstractAction(){
-			private static final long serialVersionUID = -2554852532055970687L;
-			public void actionPerformed(ActionEvent e) {
-				options.setPointColor(5);
-				setCursor();
-			}
-		});
-		actionMap.put("f6", new AbstractAction(){
-			private static final long serialVersionUID = 3104526927899384109L;
-			public void actionPerformed(ActionEvent e) {
-				options.setPointColor(6);
-				setCursor();
-			}
-		});
-		actionMap.put("f7", new AbstractAction(){
-			private static final long serialVersionUID = 3733474738823690329L;
-			public void actionPerformed(ActionEvent e) {
-				options.setPointColor(7);
-				setCursor();
-			}
-		});
-		actionMap.put("f8", new AbstractAction(){
-			private static final long serialVersionUID = 18424280218463845L;
-			public void actionPerformed(ActionEvent e) {
-				options.setPointColor(8);
-				setCursor();
-			}
-		});
-		actionMap.put("f9", new AbstractAction(){
-			private static final long serialVersionUID = 5579777624382249446L;
-			public void actionPerformed(ActionEvent e) {
-				options.setPointColor(9);
-				setCursor();
-			}
-		});
-		actionMap.put("f10", new AbstractAction(){
-			private static final long serialVersionUID = -330567895445130724L;
-			public void actionPerformed(ActionEvent e) {
-				options.setPointColor(0);
-				setCursor();
-			}
-		});
+		for(colornum = 1; colornum <= 10; colornum++) {
+			actionMap.put("f"+colornum, new AbstractAction(){
+				public void actionPerformed(ActionEvent e) {
+					options.setPointColor(colornum);
+					setCursor();
+				}
+			});
+		}
 		actionMap.put("t", new AbstractAction(){
 			private static final long serialVersionUID = -4139956715708260428L;
 			public void actionPerformed(ActionEvent e) {
@@ -408,167 +330,24 @@ public class DrawingFrame extends JFrame{
 			}
 		});
 		
-		actionMap.put("altnumpad1", new AbstractAction() {
-			private static final long serialVersionUID = 3479061984873932778L;
-			public void actionPerformed(ActionEvent e) {
-				if(!isTextMode()) {
-					screenData.addMemory(1);
+		for(altnum = 0; altnum < 10; altnum++) {
+			actionMap.put("altnumpad"+altnum, new AbstractAction() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					if(!isTextMode()) {
+						screenData.addMemory(altnum);
+					}
 				}
-			}
-		});
-		actionMap.put("altnumpad2", new AbstractAction() {
-			private static final long serialVersionUID = -2499095372735622066L;
-			public void actionPerformed(ActionEvent e) {
-				if(!isTextMode()) {
-					screenData.addMemory(2);
+			});
+			
+			actionMap.put("numpad"+altnum, new AbstractAction() {
+				public void actionPerformed(ActionEvent e) {
+					if(!isTextMode()) {
+						screenData.loadMemory(altnum);
+					}
 				}
-			}
-		});
-		actionMap.put("altnumpad3", new AbstractAction() {
-			private static final long serialVersionUID = 2902413534179769970L;
-			public void actionPerformed(ActionEvent e) {
-				if(!isTextMode()) {
-					screenData.addMemory(3);
-				}
-			}
-		});
-		actionMap.put("altnumpad4", new AbstractAction() {
-			private static final long serialVersionUID = 1170987687803052324L;
-			public void actionPerformed(ActionEvent e) {
-				if(!isTextMode()) {
-					screenData.addMemory(4);
-				}
-			}
-		});
-		actionMap.put("altnumpad5", new AbstractAction() {
-			private static final long serialVersionUID = 306024742638696554L;
-			public void actionPerformed(ActionEvent e) {
-				if(!isTextMode()) {
-					screenData.addMemory(5);
-				}
-			}
-		});
-		actionMap.put("altnumpad6", new AbstractAction() {
-			private static final long serialVersionUID = 5074372669373243115L;
-			public void actionPerformed(ActionEvent e) {
-				if(!isTextMode()) {
-					screenData.addMemory(6);
-				}
-			}
-		});
-		actionMap.put("altnumpad7", new AbstractAction() {
-			private static final long serialVersionUID = 1299657347924352280L;
-			public void actionPerformed(ActionEvent e) {
-				if(!isTextMode()) {
-					screenData.addMemory(7);
-				}
-			}
-		});
-		actionMap.put("altnumpad8", new AbstractAction() {
-			private static final long serialVersionUID = 5483348152570945153L;
-			public void actionPerformed(ActionEvent e) {
-				if(!isTextMode()) {
-					screenData.addMemory(8);
-				}
-			}
-		});
-		actionMap.put("altnumpad9", new AbstractAction() {
-			private static final long serialVersionUID = -5168470933371656122L;
-			public void actionPerformed(ActionEvent e) {
-				if(!isTextMode()) {
-					screenData.addMemory(9);
-				}
-			}
-		});
-		actionMap.put("altnumpad0", new AbstractAction() {
-			private static final long serialVersionUID = -4633422082729431619L;
-			public void actionPerformed(ActionEvent e) {
-				if(!isTextMode()) {
-					screenData.addMemory(0);
-				}
-			}
-		});
-		
-		actionMap.put("numpad1", new AbstractAction() {
-			private static final long serialVersionUID = -3525886410959274686L;
-			public void actionPerformed(ActionEvent e) {
-				if(!isTextMode()) {
-					screenData.loadMemory(1);
-				}
-			}
-		});
-		actionMap.put("numpad2", new AbstractAction() {
-			private static final long serialVersionUID = -7850737810886863255L;
-			public void actionPerformed(ActionEvent e) {
-				if(!isTextMode()) {
-					screenData.loadMemory(2);
-				}
-			}
-		});
-		actionMap.put("numpad3", new AbstractAction() {
-			private static final long serialVersionUID = 3581088302962190075L;
-			public void actionPerformed(ActionEvent e) {
-				if(!isTextMode()) {
-					screenData.loadMemory(3);
-				}
-			}
-		});
-		actionMap.put("numpad4", new AbstractAction() {
-			private static final long serialVersionUID = -2568223375027152132L;
-			public void actionPerformed(ActionEvent e) {
-				if(!isTextMode()) {
-					screenData.loadMemory(4);
-				}
-			}
-		});
-		actionMap.put("numpad5", new AbstractAction() {
-			private static final long serialVersionUID = -3308988441979304771L;
-			public void actionPerformed(ActionEvent e) {
-				if(!isTextMode()) {
-					screenData.loadMemory(5);
-				}
-			}
-		});
-		actionMap.put("numpad6", new AbstractAction() {
-			private static final long serialVersionUID = -8442005783187501235L;
-			public void actionPerformed(ActionEvent e) {
-				if(!isTextMode()) {
-					screenData.loadMemory(6);
-				}
-			}
-		});
-		actionMap.put("numpad7", new AbstractAction() {
-			private static final long serialVersionUID = -3616702851768667269L;
-			public void actionPerformed(ActionEvent e) {
-				if(!isTextMode()) {
-					screenData.loadMemory(7);
-				}
-			}
-		});
-		actionMap.put("numpad8", new AbstractAction() {
-			private static final long serialVersionUID = 7193552810481782092L;
-			public void actionPerformed(ActionEvent e) {
-				if(!isTextMode()) {
-					screenData.loadMemory(8);
-				}
-			}
-		});
-		actionMap.put("numpad9", new AbstractAction() {
-			private static final long serialVersionUID = 5633935070994629936L;
-			public void actionPerformed(ActionEvent e) {
-				if(!isTextMode()) {
-					screenData.loadMemory(9);
-				}
-			}
-		});
-		actionMap.put("numpad0", new AbstractAction() {
-			private static final long serialVersionUID = -5627408155886356290L;
-			public void actionPerformed(ActionEvent e) {
-				if(!isTextMode()) {
-					screenData.loadMemory(0);
-				}
-			}
-		});
+			});
+		}
 	}
 	
 	private void setCursor() {
@@ -662,10 +441,6 @@ public class DrawingFrame extends JFrame{
 		try {
 			Shape shape = getCurrentShape();
 			screenData.addShape(shape);
-			
-			if(shape instanceof Curve){
-				curve = new Curve();
-			}
 		}
 		catch(IllegalStateException e) {}
 	}

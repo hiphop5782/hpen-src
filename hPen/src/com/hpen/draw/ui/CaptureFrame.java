@@ -39,11 +39,11 @@ import com.hpen.util.ScreenData;
 
 /**
  * 스크린 캡쳐 화면, 정확한 범위 지정을 지원하도록 한다 일단은 정지 화면으로 캡쳐하고 나중에 동영상 캡쳐 기능은 따로 구현
- * 
+ * 현재 작업표시줄이 잘 나오지 않는 현상이 발생중
  * @author Hwang
  *
  */
-public class CaptureFrame extends JFrame {
+public class CaptureFrame extends FullScreenFrame {
 	/**
 		 * 
 		 */
@@ -117,14 +117,9 @@ public class CaptureFrame extends JFrame {
 		screen();
 	}
 	
-	private void screen(){
-		setUndecorated(true);
-		setAlwaysOnTop(true);
-		setResizable(false);
+	public void screen(){
+		super.screen();
 		getContentPane().setCursor(CursorManager.createEmptyCursor());
-		
-		setFocusTraversalKeysEnabled(false);
-		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {

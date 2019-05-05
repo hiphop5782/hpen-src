@@ -4,6 +4,7 @@ import javax.swing.UIManager;
 
 import com.hakademy.utility.hook.KeyboardHook;
 import com.hakademy.utility.hook.MouseHook;
+import com.hpen.property.DrawingOption;
 import com.hpen.util.ClassManager;
 import com.hpen.util.TrayManager;
 import com.hpen.util.file.RegisterManager;

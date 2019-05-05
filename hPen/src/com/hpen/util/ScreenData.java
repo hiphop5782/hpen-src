@@ -70,9 +70,12 @@ public class ScreenData{
 	private LinkedList<ImageAndPath> history = new LinkedList<>();
 	public void addHistory(ImageAndPath inp) {
 		history.addLast(inp);
+//		System.out.println("history add = "+history.size());
 	}
 	public ImageAndPath removeHistory() {
-		return history.pollLast();
+		ImageAndPath last = history.pollLast();
+//		System.out.println("history remove = "+history.size());
+		return last;
 	}
 	public void clearHistory() {
 		history.clear();
@@ -88,9 +91,12 @@ public class ScreenData{
 	private LinkedList<ImageAndPath> future = new LinkedList<>();
 	public void addFuture(ImageAndPath inp) {
 		future.addFirst(inp);
+//		System.out.println("future add = "+future.size());
 	}
 	public ImageAndPath removeFuture() {
-		return future.pollFirst();
+		ImageAndPath first = future.pollFirst();
+//		System.out.println("future remove = "+future.size());
+		return first;
 	}
 	public void clearFuture() {
 		future.clear();
@@ -210,7 +216,7 @@ public class ScreenData{
 	}
 	
 	public boolean isTempShapeDrawable() {
-		System.out.println("start = "+start+", end = "+end);
+//		System.out.println("start = "+start+", end = "+end);
 		return	start.x + start.y >= 0 && end.x + end.y >= 0;
 	}
 	
