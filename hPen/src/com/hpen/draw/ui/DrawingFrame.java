@@ -43,42 +43,30 @@ import com.hpen.util.key.KeyManager;
  * @author Hwang
  *
  */
-public class DrawingFrame extends FullScreenFrame{
+public class DrawingFrame extends CaptureScreenFrame{
 	private static final long serialVersionUID = 1L;
 	private DrawingOption options = DrawingOption.getInstance();
-	/**
-	 * 상태 판정 플래그
-	 */
-	private int mode = DRAWING_MODE;
-	public static final int DRAWING_MODE = 0;
-	public static final int TEXT_MODE = 1;
-	public static final int ICON_MODE = 2;
-	public static final int CHOICE_MODE = 3;
 
-
-	public static final boolean TRANSPARENT = true;
-	public static final boolean WHITEBOARD = false;
-	
 	public boolean screenState;
 	
 	public boolean isDefaultMode() {
 		return isDrawingMode();
 	}
 	public void restoreDefaultMode() {
-		mode = DRAWING_MODE;
+		mode = State.DRAWING_MODE;
 		setCursor();
 	}
 	public boolean isTextMode() {
-		return mode == TEXT_MODE;
+		return mode == State.TEXT_MODE;
 	}
 	public boolean isIconMode() {
-		return mode == ICON_MODE;
+		return mode == State.ICON_MODE;
 	}
 	public boolean isDrawingMode() {
-		return mode == DRAWING_MODE;
+		return mode == State.DRAWING_MODE;
 	}
 	public boolean isChoiceMode() {
-		return mode == CHOICE_MODE;
+		return mode == State.CHOICE_MODE;
 	}
 	
 	private static DrawingFrame df = new DrawingFrame();
@@ -86,7 +74,7 @@ public class DrawingFrame extends FullScreenFrame{
 		return df.isVisible();
 	}
 	
-	private KeyboardHook hook = KeyboardHook.getInstance();
+	
 	public static void start(boolean screenState){
 		if(isNowDisplaying()) return;
 		
@@ -96,27 +84,7 @@ public class DrawingFrame extends FullScreenFrame{
 		df.eventbind();
 		df.setVisible(true);
 	}
-	private void setKeyboardPrevent() {
-		hook.addPreventKey(KeyboardHook.WINDOWS_LEFT);
-		hook.addPreventKey(KeyboardHook.WINDOWS_RIGHT);
-		hook.addPreventKey(KeyboardHook.MENU);
-		hook.addPreventKey(KeyboardHook.ALT_RIGHT, (a, b, c)->{
-			if(a >= 0) {
-				switch(b.intValue()) {
-				case KeyboardHook.SYSKEY_RELEASE:
-				case KeyboardHook.KEY_RELEASE:
-					options.changeKorean();
-				}
-			}
-			return null;
-		});
-	}
-	private void setKeyboardUnprevent() {
-		hook.removePreventKey(KeyboardHook.WINDOWS_LEFT);
-		hook.removePreventKey(KeyboardHook.WINDOWS_RIGHT);
-		hook.removePreventKey(KeyboardHook.MENU);
-		hook.removePreventKey(KeyboardHook.ALT_RIGHT);
-	}
+	
 
 	private ScreenData screenData;
 	private ScreenPainter screenPainter;
@@ -168,11 +136,12 @@ public class DrawingFrame extends FullScreenFrame{
 		getContentPane().addKeyListener(keyEvt);
 	}
 	private void prepare(){
+		setMode(State.DRAWING_MODE);
 		ScreenManager manager = ScreenManager.getManager();
 		Rectangle rect = manager.getCurrentMonitorRect();
 		setBounds(rect);
 		getContentPane().setCursor(CursorManager.createCircleCursor());
-		if(screenState == WHITEBOARD)
+		if(screenState == State.WHITEBOARD)
 			screenData.createNowImage(rect.width, rect.height);
 		else
 			screenData.createNowImage(rect.width, rect.height, manager.getCurrentMonitorImage());
@@ -248,15 +217,15 @@ public class DrawingFrame extends FullScreenFrame{
 				}
 				
 				switch(mode) {
-				case TEXT_MODE:
+				case State.TEXT_MODE:
 					text.finish();
 					saveTextShape();
 					screenData.setEnd(-1, -1);
 					break;
-				case ICON_MODE:
+				case State.ICON_MODE:
 					selectedIcon = null;
 					break;
-				case CHOICE_MODE:
+				case State.CHOICE_MODE:
 					screenData.clearChoice();
 					break;
 				}
@@ -306,8 +275,9 @@ public class DrawingFrame extends FullScreenFrame{
 		});
 		for(colornum = 1; colornum <= 10; colornum++) {
 			actionMap.put("f"+colornum, new AbstractAction(){
+				int color = colornum;
 				public void actionPerformed(ActionEvent e) {
-					options.setPointColor(colornum);
+					options.setPointColor(color);
 					setCursor();
 				}
 			});
@@ -316,7 +286,7 @@ public class DrawingFrame extends FullScreenFrame{
 			private static final long serialVersionUID = -4139956715708260428L;
 			public void actionPerformed(ActionEvent e) {
 				if(isDefaultMode()){
-					mode = TEXT_MODE;
+					mode = State.TEXT_MODE;
 					setCursor();
 				}
 			}
@@ -332,18 +302,20 @@ public class DrawingFrame extends FullScreenFrame{
 		
 		for(altnum = 0; altnum < 10; altnum++) {
 			actionMap.put("altnumpad"+altnum, new AbstractAction() {
+				int num = altnum;
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					if(!isTextMode()) {
-						screenData.addMemory(altnum);
+						screenData.addMemory(num);
 					}
 				}
 			});
 			
 			actionMap.put("numpad"+altnum, new AbstractAction() {
+				int num = altnum;
 				public void actionPerformed(ActionEvent e) {
 					if(!isTextMode()) {
-						screenData.loadMemory(altnum);
+						screenData.loadMemory(num);
 					}
 				}
 			});
@@ -352,15 +324,15 @@ public class DrawingFrame extends FullScreenFrame{
 	
 	private void setCursor() {
 		switch(mode) {
-		case TEXT_MODE:
+		case State.TEXT_MODE:
 			this.getContentPane().setCursor(CursorManager.createTextCursor());			
 			break;
-		case DRAWING_MODE:
+		case State.DRAWING_MODE:
 			this.getContentPane().setCursor(CursorManager.createCircleCursor());			
 			break;
-		case ICON_MODE:
+		case State.ICON_MODE:
 			break;
-		case CHOICE_MODE:
+		case State.CHOICE_MODE:
 			this.getContentPane().setCursor(CursorManager.createGrabCursor());
 			break;
 		}
@@ -405,10 +377,10 @@ public class DrawingFrame extends FullScreenFrame{
 		Shape shape = ShapeFactory.createShape(pressedKey, screenData.getStart(), screenData.getEnd(), options.getPointThickness(), options.getPointColor());
 		if(shape == null){
 			switch(mode) {
-			case TEXT_MODE:
+			case State.TEXT_MODE:
 				shape = text; 
 				break;
-			case ICON_MODE:
+			case State.ICON_MODE:
 				shape = selectedIcon.copy(); 
 				break;
 			default:
@@ -555,24 +527,24 @@ public class DrawingFrame extends FullScreenFrame{
 				selectedIcon = IconManager.showIconDialog(DrawingFrame.this);
 				if(selectedIcon == null) return;
 				getContentPane().setCursor(CursorManager.createIconCursor(selectedIcon));
-				mode = ICON_MODE;
+				mode = State.ICON_MODE;
 				return;
 			}
 			
 			switch(mode) {
 			
-			case TEXT_MODE:
+			case State.TEXT_MODE:
 				break;
 				
-			case ICON_MODE:
+			case State.ICON_MODE:
 				
 				break;
 				
-			case CHOICE_MODE:
+			case State.CHOICE_MODE:
 				choiceShapeList = screenData.findShape(e.getX(), e.getY());
 				break;
 				
-			case DRAWING_MODE:
+			case State.DRAWING_MODE:
 			default:
 				screenData.setStart(e.getX(), e.getY());
 				screenData.setEnd(e.getX(), e.getY());
@@ -587,22 +559,22 @@ public class DrawingFrame extends FullScreenFrame{
 			
 //			System.out.println("mode = "+mode);
 			switch(mode) {
-			case CHOICE_MODE:
+			case State.CHOICE_MODE:
 				choiceShapeList.clear();
 				choiceShapeList = null;
 				break;
-			case ICON_MODE:
+			case State.ICON_MODE:
 				if(selectedIcon != null) {
 					selectedIcon.setSx(e.getX());
 					selectedIcon.setSy(e.getY());
 					selectedIcon.setSize(options.getIconSize());
 				}
-			case DRAWING_MODE:
+			case State.DRAWING_MODE:
 				saveShape();
 				screenData.clearStart();
 				screenData.clearEnd();
 				break;
-			case TEXT_MODE:
+			case State.TEXT_MODE:
 				if(text != null) {
 					text.finish();
 					saveTextShape();
@@ -613,7 +585,6 @@ public class DrawingFrame extends FullScreenFrame{
 //				int end_y = DrawingFrame.this.getY()+DrawingFrame.this.getHeight();
 //				screenData.setEnd(end_x, end_y);
 				screenData.setEnd(e.getX(), e.getY());
-				
 				
 				text = new Text(screenData.getStart(), screenData.getEnd(), options.getPointThickness(), options.getPointColorCopy(), "", options.getFontCopy());
 //				saveTextShape();
@@ -631,7 +602,7 @@ public class DrawingFrame extends FullScreenFrame{
 		@Override
 		public void mouseWheelMoved(MouseWheelEvent e) {
 			switch(mode) {
-			case TEXT_MODE:
+			case State.TEXT_MODE:
 				if(e.getWheelRotation() > 0) {
 					options.decreaseFontSize();
 				}else if(e.getWheelRotation() < 0) {
@@ -639,7 +610,7 @@ public class DrawingFrame extends FullScreenFrame{
 				}
 				getContentPane().setCursor(CursorManager.createTextCursor());
 				break;
-			case ICON_MODE:
+			case State.ICON_MODE:
 				if(e.getWheelRotation() > 0) {
 					options.decreaseIconSize();
 				}else if(e.getWheelRotation() < 0) {
@@ -647,9 +618,9 @@ public class DrawingFrame extends FullScreenFrame{
 				}
 				getContentPane().setCursor(CursorManager.createIconCursor(selectedIcon));
 				break;
-			case CHOICE_MODE:
+			case State.CHOICE_MODE:
 				break;
-			case DRAWING_MODE:
+			case State.DRAWING_MODE:
 				if(!isDragged) {
 					if(e.getWheelRotation() > 0){
 						options.decreasePointThickness();
@@ -667,7 +638,7 @@ public class DrawingFrame extends FullScreenFrame{
 		@Override
 		public void mouseMoved(MouseEvent e) {
 			switch(mode) {
-			case CHOICE_MODE:
+			case State.CHOICE_MODE:
 				List<Shape> list = screenData.findShape(e.getX(), e.getY());
 //				System.out.println(list.size());
 			}
@@ -685,7 +656,7 @@ public class DrawingFrame extends FullScreenFrame{
 			screenData.setCursor(e.getX(), e.getY());
 			screenData.setEnd(e.getX(), e.getY());
 			switch(mode) {
-			case DRAWING_MODE:
+			case State.DRAWING_MODE:
 				if(pressedKey.isEmpty()) {
 //						long nowTime = System.currentTimeMillis();
 //						System.out.println("시차 : "+(nowTime - lastTime)+"ms");
@@ -693,7 +664,7 @@ public class DrawingFrame extends FullScreenFrame{
 //						lastTime = nowTime;
 				}
 				break;
-			case CHOICE_MODE:
+			case State.CHOICE_MODE:
 				if(choiceShapeList != null) {
 					for(Shape s : choiceShapeList) {
 						s.move(e.getX() - oldX, e.getY() - oldY);
@@ -702,6 +673,30 @@ public class DrawingFrame extends FullScreenFrame{
 			}
 				
 		}
+	}
+
+	@Override
+	protected void setKeyboardPrevent() {
+		hook.addPreventKey(KeyboardHook.WINDOWS_LEFT);
+		hook.addPreventKey(KeyboardHook.WINDOWS_RIGHT);
+		hook.addPreventKey(KeyboardHook.MENU);
+		hook.addPreventKey(KeyboardHook.ALT_RIGHT, (a, b, c)->{
+			if(a >= 0) {
+				switch(b.intValue()) {
+				case KeyboardHook.SYSKEY_RELEASE:
+				case KeyboardHook.KEY_RELEASE:
+					options.changeKorean();
+				}
+			}
+			return null;
+		});
+	}
+	@Override
+	protected void setKeyboardUnprevent() {
+		hook.removePreventKey(KeyboardHook.WINDOWS_LEFT);
+		hook.removePreventKey(KeyboardHook.WINDOWS_RIGHT);
+		hook.removePreventKey(KeyboardHook.MENU);
+		hook.removePreventKey(KeyboardHook.ALT_RIGHT);
 	}
 
 }

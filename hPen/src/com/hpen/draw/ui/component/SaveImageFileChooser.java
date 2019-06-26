@@ -22,7 +22,7 @@ import sun.swing.*;
 
 public class SaveImageFileChooser extends JFileChooser{
 	private String[][] fileFilter = new String[][]{
-		{".jpg","JPG 颇老"},{".png", "PNG 颇老"},{".gif", "GIF 颇老"}
+		/*{".jpg","JPG 颇老"},*/{".png", "PNG 颇老"},{".gif", "GIF 颇老"}
 	};
 	public SaveImageFileChooser(File path){
 		super(path);
@@ -57,7 +57,7 @@ public class SaveImageFileChooser extends JFileChooser{
 		}
 	}
 	
-	private void saveScreen(BufferedImage capture, String type, File file){
+	public void saveScreen(BufferedImage capture, String type, File file){
 		try {
 			ImageIO.write(capture, type, file);
 		} catch (IOException e) {

@@ -25,17 +25,17 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
-import javax.swing.JFrame;
 import javax.swing.filechooser.FileFilter;
 
 import com.hakademy.utility.hook.KeyboardHook;
+import com.hakademy.utility.screen.ScreenManager;
 import com.hpen.draw.ui.component.SaveImageFileChooser;
 import com.hpen.property.CaptureOption;
 import com.hpen.property.DrawingOption;
 import com.hpen.property.PropertyLoader;
-import com.hpen.update.subutil.ScreenManager;
 import com.hpen.util.CursorManager;
 import com.hpen.util.ScreenData;
+import com.hpen.util.Sequence;
 
 /**
  * 스크린 캡쳐 화면, 정확한 범위 지정을 지원하도록 한다 일단은 정지 화면으로 캡쳐하고 나중에 동영상 캡쳐 기능은 따로 구현
@@ -43,7 +43,7 @@ import com.hpen.util.ScreenData;
  * @author Hwang
  *
  */
-public class CaptureFrame extends FullScreenFrame {
+public class CaptureFrame extends CaptureScreenFrame {
 	/**
 		 * 
 		 */
@@ -57,8 +57,7 @@ public class CaptureFrame extends FullScreenFrame {
 	public static void start() {
 		if(cf.isVisible()) return;
 		
-		hook.addPreventKey(KeyboardHook.WINDOWS_LEFT);
-		hook.addPreventKey(KeyboardHook.WINDOWS_RIGHT);
+		
 		cf.setWindowTransparent();
 		cf.prepare();
 		cf.eventbind();
@@ -84,8 +83,7 @@ public class CaptureFrame extends FullScreenFrame {
 		PropertyLoader.save();
 		eventunbind();
 		clear();
-		hook.removePreventKey(KeyboardHook.WINDOWS_LEFT);
-		hook.removePreventKey(KeyboardHook.WINDOWS_RIGHT);
+		
 	}
 	
 	private MouseEvt mouseEvt = new MouseEvt();
@@ -186,10 +184,12 @@ public class CaptureFrame extends FullScreenFrame {
 				// System.out.println("이미지 버퍼 저장 완료");
 			}else{
 				// 임시 파일에 저장 -> JFileChooser로 선택하여 저장
-				File temp = new File("image/temp/temp.jpg");
-				ImageIO.write(saveImage, "jpg", temp);
+				File dir = new File(CaptureOption.getInstance().getSaveFolder());
+				if(!dir.exists()) dir.mkdirs();
+				File target = new File(dir, "capture" + Sequence.generate()+".png");
 				
-				chooser.saveImage(saveImage, this.getClass());
+				ImageIO.write(saveImage, "png", target);
+				//chooser.saveImage(saveImage, this.getClass());
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -415,5 +415,17 @@ public class CaptureFrame extends FullScreenFrame {
 			}
 			return image;
 		}
+	}
+
+	@Override
+	protected void setKeyboardPrevent() {
+		hook.addPreventKey(KeyboardHook.WINDOWS_LEFT);
+		hook.addPreventKey(KeyboardHook.WINDOWS_RIGHT);
+	}
+
+	@Override
+	protected void setKeyboardUnprevent() {
+		hook.removePreventKey(KeyboardHook.WINDOWS_LEFT);
+		hook.removePreventKey(KeyboardHook.WINDOWS_RIGHT);
 	}
 }

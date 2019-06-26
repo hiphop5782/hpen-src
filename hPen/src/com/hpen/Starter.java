@@ -11,7 +11,7 @@ import com.hpen.util.file.RegisterManager;
 
 public class Starter {
 	public static void main(String[] args) {
-		try{
+		try{ 
 			ClassManager.initialize();
 //			VersionMaenager.checkNewestVersionOnGithub();
 			RegisterManager.makelnk(System.getProperty("user.dir"), "hpen.exe");

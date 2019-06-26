@@ -1,17 +1,16 @@
 package com.hpen.util;
 
 import java.awt.CheckboxMenuItem;
-import java.awt.Desktop;
 import java.awt.MenuItem;
 import java.awt.PopupMenu;
 import java.awt.SystemTray;
 import java.awt.TrayIcon;
-import java.io.File;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
-import com.hakademy.utility.magnify.MagnificationManager;
 import com.hpen.draw.ui.CaptureFrame;
 import com.hpen.draw.ui.DrawingFrame;
-import com.hpen.livezoom.ui.ZoomFrame;
+import com.hpen.draw.ui.State;
 import com.hpen.property.ProgramIcon;
 import com.hpen.property.ui.MarkDownViewer;
 import com.hpen.property.ui.PropertyFrame;
@@ -38,21 +37,21 @@ public class TrayManager{
 	public static void start(){
 		try{
 			TrayManager mt = new TrayManager();
+			if(!SystemTray.isSupported())
+				throw new Exception("트레이를 지원하지 않습니다");
+			mt.tray = new TrayIcon(ProgramIcon.getIcon());
+			mt.tray.setToolTip(Version.getInstance().toString());
+			SystemTray.getSystemTray().add(mt.tray);
+			
+			mt.add();
+			mt.event();
 		}catch(Exception e){
-			System.err.println(e.getMessage());
+			//System.err.println(e.getMessage());
+			e.printStackTrace();
 		}
 	}
 	
-	private  TrayManager() throws Exception{
-		if(!SystemTray.isSupported())
-			throw new Exception("트레이를 지원하지 않습니다");
-		tray = new TrayIcon(ProgramIcon.getIcon());
-		tray.setToolTip(Version.getInstance().toString());
-		SystemTray.getSystemTray().add(tray);
-		
-		add();
-		event();
-	}
+	private  TrayManager(){}
 	
 	private void add(){
 		tray.setPopupMenu(popup);
@@ -74,10 +73,10 @@ public class TrayManager{
 	
 	private void event(){
 		note.addActionListener(e->{
-			DrawingFrame.start(DrawingFrame.TRANSPARENT);
+			DrawingFrame.start(State.TRANSPARENT);
 		});
 		whiteboard.addActionListener(e->{
-			DrawingFrame.start(DrawingFrame.WHITEBOARD);
+			DrawingFrame.start(State.WHITEBOARD);
 		});
 		capture.addActionListener(e->{
 			CaptureFrame.start();

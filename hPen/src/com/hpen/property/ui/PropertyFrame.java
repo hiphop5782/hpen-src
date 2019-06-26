@@ -127,7 +127,7 @@ public class PropertyFrame extends JFrame{
 	
 	private void setLnf(){
 		try {
-			UIManager.setLookAndFeel("com.birosoft.liquid.LiquidLookAndFeel");
+			UIManager.setLookAndFeel("com.jtattoo.plaf.mcwin.McWinLookAndFeel");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

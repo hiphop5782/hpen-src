@@ -32,15 +32,9 @@ public class ScreenData{
 		createNowImage(width, height, null);
 	}
 	public void createNowImage(int width, int height, BufferedImage background) {
-		if(now == null) {
-			now =  new ImageAndPath(width, height);
-		}
-		else {
-			now.resize(width, height);
-			now.clear();
-		}
-		
+		now = new ImageAndPath(width, height);
 		now.setBackground(background);
+//		System.out.println(now.getImage().getWidth()+", "+now.getImage().getHeight());
 	}
 	
 	public BufferedImage getNowImage() {

@@ -5,7 +5,7 @@ import java.awt.image.BufferedImage;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import com.hpen.update.subutil.ScreenManager;
+import com.hakademy.utility.screen.ScreenManager;
 
 public class Exam21_½Ç½Ã°£Ä¸ÃÄ {
 	static BufferedImage im;

@@ -16,8 +16,9 @@ public class Exam08_모니터위치확인 {
 //			}catch(Exception e){}
 //		}
 		
-		for(Rectangle rect : ScreenManager.getManager().getAllMonitorsize()) {
-			System.out.println(rect);
-		}
+//		for(Rectangle rect : ScreenManager.getManager().getAllMonitorsize()) {
+//			System.out.println(rect);
+//		}
+		System.out.println(ScreenManager.getManager().getCurrentMonitorRect());
 	}
 }
