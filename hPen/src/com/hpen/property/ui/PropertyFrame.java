@@ -47,7 +47,7 @@ public class PropertyFrame extends JFrame{
 		event();
 		menu();
 		super.setTitle(Version.getInstance().toString()+" 환경 설정");
-		super.setSize(550, 500);
+		super.setSize(550, 550);
 		Dimension di = Toolkit.getDefaultToolkit().getScreenSize();
 		int x = (di.width - getWidth())/2;
 		int y = (di.height - getHeight())/2;
@@ -75,8 +75,6 @@ public class PropertyFrame extends JFrame{
 	private JPanel cPanel = new JPanel(new BorderLayout());
 	
 	private void display(){
-		setLnf();
-		
 		Container con = this.getContentPane();
 		con.setLayout(new BorderLayout());
 		con.add(sPanel, BorderLayout.SOUTH);
@@ -121,15 +119,6 @@ public class PropertyFrame extends JFrame{
 			cPanel.add(pair.get(s));
 			cPanel.revalidate();
 			cPanel.repaint();
-			setLnf();
-		}
-	}
-	
-	private void setLnf(){
-		try {
-			UIManager.setLookAndFeel("com.jtattoo.plaf.mcwin.McWinLookAndFeel");
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
 	}
 	

@@ -165,6 +165,8 @@ public class CaptureFrame extends CaptureScreenFrame {
 	private BufferedImage saveImage;
 
 	private void saveScreen() {
+		CaptureOption cOption = CaptureOption.getInstance();
+		
 		try {
 			Robot robot = new Robot();
 			if(screenData.getWidth() <= 0 || screenData.getHeight() <= 0) return;
@@ -176,20 +178,21 @@ public class CaptureFrame extends CaptureScreenFrame {
 			screen.height -= thickness;
 			saveImage = robot.createScreenCapture(screen);
 
-			if(CaptureOption.getInstance().isCopytoClipboard()){
+			if(cOption.isCopytoClipboard()){
 				// 버퍼 저장
 				ImageSelection selection = new ImageSelection(saveImage);
 				Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
 				clipboard.setContents(selection, null);
 				// System.out.println("이미지 버퍼 저장 완료");
 			}else{
-				// 임시 파일에 저장 -> JFileChooser로 선택하여 저장
-				File dir = new File(CaptureOption.getInstance().getSaveFolder());
+				File dir = new File(cOption.getSaveFolder());
 				if(!dir.exists()) dir.mkdirs();
-				File target = new File(dir, "capture" + Sequence.generate()+".png");
+				
+				String filename = cOption.getPrefix() + cOption.getSequenceString(6) + ".png";
+				File target = new File(dir, filename);
 				
 				ImageIO.write(saveImage, "png", target);
-				//chooser.saveImage(saveImage, this.getClass());
+				cOption.plusSequence();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

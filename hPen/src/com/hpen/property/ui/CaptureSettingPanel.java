@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.awt.event.ItemEvent;
 import java.io.File;
 import java.lang.reflect.Field;
@@ -25,17 +27,19 @@ import javax.swing.ListCellRenderer;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.border.Border;
+import javax.swing.event.ChangeListener;
 
 import com.hpen.property.CaptureOption;
+import com.hpen.property.DrawingOption;
 
 public class CaptureSettingPanel extends JPanel{
-	private JLabel[] lb = new JLabel[11];
 	private String[] lbText = new String[]{
 			"캡쳐 설정", "실시간 캡쳐","이미지 저장",
 			"그리기 설정", "캡쳐 사각형 두께","캡쳐 사각형 색상",
 			"확대 설정", "확대 보기 배율","확대 보기 크기",
-			"저장 설정", "저장 폴더"
+			"저장 설정", "저장 폴더", "파일 접두사", "시작 번호"
 	};
+	private JLabel[] lb = new JLabel[lbText.length];
 	private Font font = new Font("굴림", Font.PLAIN, 15);
 		
 	private String[] colorString = new String[]{
@@ -77,6 +81,7 @@ public class CaptureSettingPanel extends JPanel{
 		spinner.setValue(options.getCaptureBorderThickness());
 		zoomSpinner.setValue(options.getZoomrate());
 		zoomSpinner2.setValue(options.getZoomsize());
+		sequence.setModel(new SpinnerNumberModel(options.getSequence()+1, 1, 999999, 1));
 	}
 	
 	private void display(){
@@ -96,15 +101,17 @@ public class CaptureSettingPanel extends JPanel{
 		Border linear = BorderFactory.createLineBorder(Color.BLACK, 3, true);
 		Border empty = BorderFactory.createEmptyBorder(0, 10, 0, 0);
 		Border comp = BorderFactory.createCompoundBorder(linear, empty);
-		for(int i=0; i<=lb.length; i++){
-			if(i % 3 == 0){
+		for(int i=0; i<lb.length; i++){
+			switch(lb[i].getText()) {
+			case "캡쳐 설정":		case "그리기 설정":
+			case "확대 설정":		case "저장 설정":
 				lb[i].setBorder(comp);
 				lb[i].setHorizontalAlignment(JLabel.LEFT);
 				lb[i].setBackground(Color.black);
 				lb[i].setForeground(Color.white);
 			}
 		}
-		this.setBorder(linear);
+//		this.setBorder(linear);
 		
 		//radio
 		for(int i=0; i<radio.length; i++){
@@ -192,7 +199,22 @@ public class CaptureSettingPanel extends JPanel{
 		lb[10].setBounds(x, y+=40, 120, 25);
 		saveFolderField.setBounds(x+130, y, 230, 25);
 		saveFolderBtn.setBounds(x+370, y, 30, 25);
+		
+		lb[11].setBounds(x, y+=35, 120, 25);
+		prefix.setBounds(x+130, y, 200, 25);
+		prefix.setBorder(compound);
+		prefix.setFont(font);
+		this.add(prefix);
+		
+		lb[12].setBounds(x, y+=35, 120, 25);
+		sequence.setBounds(x+130, y, 80, 25);
+		sequence.setBorder(compound);
+		sequence.setFont(font);
+		this.add(sequence);
 	}
+	
+	private JTextField prefix = new JTextField(CaptureOption.getInstance().getPrefix());
+	private JSpinner sequence = new JSpinner();
 	
 	private JFileChooser fileChooser = new JFileChooser(CaptureOption.getInstance().getSaveFolder());
 	private void event(){
@@ -233,6 +255,17 @@ public class CaptureSettingPanel extends JPanel{
 				CaptureOption.getInstance().setCaptureCopytoClipboard(radio[1][0].isSelected());
 			});
 		}
+		
+		prefix.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent e) {
+				CaptureOption.getInstance().setPrefix(prefix.getText().trim());
+			}
+		});
+		
+		sequence.addChangeListener(e->{
+			CaptureOption.getInstance().setSequence((Integer)sequence.getValue());
+		});
 	}
 	
 	class ComboboxColorRenderer extends JPanel implements ListCellRenderer{

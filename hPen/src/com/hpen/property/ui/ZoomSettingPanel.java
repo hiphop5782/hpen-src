@@ -50,7 +50,7 @@ public class ZoomSettingPanel extends JPanel{
 		label[5].setBorder(comp);		label[5].setSize(400, 30);
 		label[5].setBackground(Color.black);
 		label[5].setForeground(Color.white);
-		this.setBorder(linear);
+//		this.setBorder(linear);
 		
 		Border compound = BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.black), BorderFactory.createEmptyBorder(3, 3, 3, 3));
 		for(int i=0; i<spinner.length; i++){

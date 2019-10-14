@@ -1,15 +1,11 @@
 package com.hpen.property;
 
 import java.awt.Color;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.lang.reflect.Field;
+import java.text.DecimalFormat;
+import java.text.Format;
 import java.util.Properties;
 
 import com.hpen.util.ColorManager;
-
-import jdk.nashorn.internal.runtime.options.Options;
 
 /**
  * 사진 캡쳐의 환경 설정 클래스
@@ -24,6 +20,8 @@ public class CaptureOption {
 	public static final String zoomRate = "hpen.capture.zoom.rate";
 	public static final String saveClipboard = "hpen.capture.save.clipboard";
 	public static final String saveLocation = "hpen.capture.save.location";
+	public static final String prefix = "hpen.capture.save.prefix";
+	public static final String sequence = "hpen.capture.save.sequence";
 	
 	//singleton setting
 	private static CaptureOption instance = new CaptureOption();
@@ -112,6 +110,40 @@ public class CaptureOption {
 	}
 	public void setSaveFolder(String saveFolder) {
 		options.setProperty(saveLocation, saveFolder);
+	}
+	
+	public void setPrefix(String prefix) {
+		options.setProperty(CaptureOption.prefix, prefix);
+	}
+	
+	public String getPrefix() {
+		return options.getProperty(prefix, "capture");
+	}
+	
+	public void setSequence(int seq) {
+		options.setProperty(sequence, String.valueOf(seq));
+	}
+	
+	public int getSequence() {
+		try {
+			return Integer.parseInt(options.getProperty(sequence, "1"));
+		}
+		catch(Exception e) {
+			return 1;
+		}
+	}
+	public String getNextSequence() {
+		return String.valueOf(getSequence()+1);
+	}
+	public void plusSequence() {
+		setSequence(getSequence()+1);
+	}
+	
+	public String getSequenceString(int size) {
+		StringBuffer buffer = new StringBuffer();
+		for(int i=0; i < size; i++) buffer.append("0");
+		Format f = new DecimalFormat(buffer.toString());
+		return f.format(getSequence());
 	}
 	
 }
