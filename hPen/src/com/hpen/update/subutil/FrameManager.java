@@ -12,6 +12,8 @@ import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.UIManager;
 
+import com.hakademy.utility.screen.ScreenManager;
+
 public class FrameManager {
 	
 	static {

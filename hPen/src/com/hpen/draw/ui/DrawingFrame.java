@@ -21,10 +21,10 @@ import java.util.Set;
 import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
 import javax.swing.InputMap;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import com.hakademy.utility.hook.KeyboardHook;
+import com.hakademy.utility.screen.ScreenManager;
 import com.hpen.draw.shapes.Curve;
 import com.hpen.draw.shapes.Icon;
 import com.hpen.draw.shapes.Shape;
@@ -33,7 +33,6 @@ import com.hpen.draw.shapes.Text;
 import com.hpen.draw.ui.component.SaveImageFileChooser;
 import com.hpen.property.DrawingOption;
 import com.hpen.property.PropertyLoader;
-import com.hpen.update.subutil.ScreenManager;
 import com.hpen.util.CursorManager;
 import com.hpen.util.ScreenData;
 import com.hpen.util.image.IconManager;
@@ -44,42 +43,30 @@ import com.hpen.util.key.KeyManager;
  * @author Hwang
  *
  */
-public class DrawingFrame extends JFrame{
+public class DrawingFrame extends CaptureScreenFrame{
 	private static final long serialVersionUID = 1L;
 	private DrawingOption options = DrawingOption.getInstance();
-	/**
-	 * 상태 판정 플래그
-	 */
-	private int mode = DRAWING_MODE;
-	public static final int DRAWING_MODE = 0;
-	public static final int TEXT_MODE = 1;
-	public static final int ICON_MODE = 2;
-	public static final int CHOICE_MODE = 3;
 
-
-	public static final boolean TRANSPARENT = true;
-	public static final boolean WHITEBOARD = false;
-	
 	public boolean screenState;
 	
 	public boolean isDefaultMode() {
 		return isDrawingMode();
 	}
 	public void restoreDefaultMode() {
-		mode = DRAWING_MODE;
+		mode = State.DRAWING_MODE;
 		setCursor();
 	}
 	public boolean isTextMode() {
-		return mode == TEXT_MODE;
+		return mode == State.TEXT_MODE;
 	}
 	public boolean isIconMode() {
-		return mode == ICON_MODE;
+		return mode == State.ICON_MODE;
 	}
 	public boolean isDrawingMode() {
-		return mode == DRAWING_MODE;
+		return mode == State.DRAWING_MODE;
 	}
 	public boolean isChoiceMode() {
-		return mode == CHOICE_MODE;
+		return mode == State.CHOICE_MODE;
 	}
 	
 	private static DrawingFrame df = new DrawingFrame();
@@ -87,7 +74,7 @@ public class DrawingFrame extends JFrame{
 		return df.isVisible();
 	}
 	
-	private KeyboardHook hook = KeyboardHook.getInstance();
+	
 	public static void start(boolean screenState){
 		if(isNowDisplaying()) return;
 		
@@ -97,27 +84,7 @@ public class DrawingFrame extends JFrame{
 		df.eventbind();
 		df.setVisible(true);
 	}
-	private void setKeyboardPrevent() {
-		hook.addPreventKey(KeyboardHook.WINDOWS_LEFT);
-		hook.addPreventKey(KeyboardHook.WINDOWS_RIGHT);
-		hook.addPreventKey(KeyboardHook.MENU);
-		hook.addPreventKey(KeyboardHook.ALT_RIGHT, (a, b, c)->{
-			if(a >= 0) {
-				switch(b.intValue()) {
-				case KeyboardHook.SYSKEY_RELEASE:
-				case KeyboardHook.KEY_RELEASE:
-					options.changeKorean();
-				}
-			}
-			return null;
-		});
-	}
-	private void setKeyboardUnprevent() {
-		hook.removePreventKey(KeyboardHook.WINDOWS_LEFT);
-		hook.removePreventKey(KeyboardHook.WINDOWS_RIGHT);
-		hook.removePreventKey(KeyboardHook.MENU);
-		hook.removePreventKey(KeyboardHook.ALT_RIGHT);
-	}
+	
 
 	private ScreenData screenData;
 	private ScreenPainter screenPainter;
@@ -142,21 +109,6 @@ public class DrawingFrame extends JFrame{
 		screen();
 		keybind();
 		screenData = new ScreenData();
-	}
-	
-	private void screen(){
-		setUndecorated(true);
-		setAlwaysOnTop(true);
-		setResizable(false);
-		
-		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-		setFocusTraversalKeysEnabled(false);
-		
-		addWindowListener(windowAdapter);
-		
-		//test code
-		//setBackground(Color.yellow);
-		//System.out.println("size = "+this.getBounds());
 	}
 	
 	private WindowAdapter windowAdapter = new WindowAdapter() {
@@ -184,16 +136,15 @@ public class DrawingFrame extends JFrame{
 		getContentPane().addKeyListener(keyEvt);
 	}
 	private void prepare(){
+		setMode(State.DRAWING_MODE);
 		ScreenManager manager = ScreenManager.getManager();
 		Rectangle rect = manager.getCurrentMonitorRect();
 		setBounds(rect);
 		getContentPane().setCursor(CursorManager.createCircleCursor());
-		if(screenState == WHITEBOARD)
+		if(screenState == State.WHITEBOARD)
 			screenData.createNowImage(rect.width, rect.height);
 		else
 			screenData.createNowImage(rect.width, rect.height, manager.getCurrentMonitorImage());
-		curve = new Curve();
-		text = new Text();
 		screenPainter = new ScreenPainter(this);
 	}
 	private void clear(){
@@ -207,6 +158,8 @@ public class DrawingFrame extends JFrame{
 	/**
 	 * 키보드 바인딩
 	 */
+	int altnum = 0;
+	int colornum = 0;
 	private void keybind(){
 		ActionMap actionMap = ((JPanel)this.getContentPane()).getActionMap();
 		InputMap inputMap = ((JPanel)this.getContentPane()).getInputMap();
@@ -264,14 +217,15 @@ public class DrawingFrame extends JFrame{
 				}
 				
 				switch(mode) {
-				case TEXT_MODE:
+				case State.TEXT_MODE:
 					text.finish();
 					saveTextShape();
+					screenData.setEnd(-1, -1);
 					break;
-				case ICON_MODE:
+				case State.ICON_MODE:
 					selectedIcon = null;
 					break;
-				case CHOICE_MODE:
+				case State.CHOICE_MODE:
 					screenData.clearChoice();
 					break;
 				}
@@ -319,81 +273,20 @@ public class DrawingFrame extends JFrame{
 				screenData.redo();
 			}
 		});
-		actionMap.put("f1", new AbstractAction(){
-			private static final long serialVersionUID = -5963057482921099056L;
-			public void actionPerformed(ActionEvent e) {
-				options.setPointColor(1);
-				setCursor();
-			}
-		});
-		actionMap.put("f2", new AbstractAction(){
-			private static final long serialVersionUID = -6354565020879453633L;
-			public void actionPerformed(ActionEvent e) {
-				options.setPointColor(2);
-				setCursor();
-			}
-		});
-		actionMap.put("f3", new AbstractAction(){
-			private static final long serialVersionUID = 2044616271891732949L;
-			public void actionPerformed(ActionEvent e) {
-				options.setPointColor(3);
-				setCursor();
-			}
-		});
-		actionMap.put("f4", new AbstractAction(){
-			private static final long serialVersionUID = -808999856814236056L;
-			public void actionPerformed(ActionEvent e) {
-				options.setPointColor(4);
-				setCursor();
-			}
-		});
-		actionMap.put("f5", new AbstractAction(){
-			private static final long serialVersionUID = -2554852532055970687L;
-			public void actionPerformed(ActionEvent e) {
-				options.setPointColor(5);
-				setCursor();
-			}
-		});
-		actionMap.put("f6", new AbstractAction(){
-			private static final long serialVersionUID = 3104526927899384109L;
-			public void actionPerformed(ActionEvent e) {
-				options.setPointColor(6);
-				setCursor();
-			}
-		});
-		actionMap.put("f7", new AbstractAction(){
-			private static final long serialVersionUID = 3733474738823690329L;
-			public void actionPerformed(ActionEvent e) {
-				options.setPointColor(7);
-				setCursor();
-			}
-		});
-		actionMap.put("f8", new AbstractAction(){
-			private static final long serialVersionUID = 18424280218463845L;
-			public void actionPerformed(ActionEvent e) {
-				options.setPointColor(8);
-				setCursor();
-			}
-		});
-		actionMap.put("f9", new AbstractAction(){
-			private static final long serialVersionUID = 5579777624382249446L;
-			public void actionPerformed(ActionEvent e) {
-				options.setPointColor(9);
-				setCursor();
-			}
-		});
-		actionMap.put("f10", new AbstractAction(){
-			private static final long serialVersionUID = -330567895445130724L;
-			public void actionPerformed(ActionEvent e) {
-				options.setPointColor(0);
-				setCursor();
-			}
-		});
+		for(colornum = 1; colornum <= 10; colornum++) {
+			actionMap.put("f"+colornum, new AbstractAction(){
+				int color = colornum;
+				public void actionPerformed(ActionEvent e) {
+					options.setPointColor(color);
+					setCursor();
+				}
+			});
+		}
 		actionMap.put("t", new AbstractAction(){
 			private static final long serialVersionUID = -4139956715708260428L;
 			public void actionPerformed(ActionEvent e) {
 				if(isDefaultMode()){
-					mode = TEXT_MODE;
+					mode = State.TEXT_MODE;
 					setCursor();
 				}
 			}
@@ -407,180 +300,39 @@ public class DrawingFrame extends JFrame{
 			}
 		});
 		
-		actionMap.put("altnumpad1", new AbstractAction() {
-			private static final long serialVersionUID = 3479061984873932778L;
-			public void actionPerformed(ActionEvent e) {
-				if(!isTextMode()) {
-					screenData.addMemory(1);
+		for(altnum = 0; altnum < 10; altnum++) {
+			actionMap.put("altnumpad"+altnum, new AbstractAction() {
+				int num = altnum;
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					if(!isTextMode()) {
+						screenData.addMemory(num);
+					}
 				}
-			}
-		});
-		actionMap.put("altnumpad2", new AbstractAction() {
-			private static final long serialVersionUID = -2499095372735622066L;
-			public void actionPerformed(ActionEvent e) {
-				if(!isTextMode()) {
-					screenData.addMemory(2);
+			});
+			
+			actionMap.put("numpad"+altnum, new AbstractAction() {
+				int num = altnum;
+				public void actionPerformed(ActionEvent e) {
+					if(!isTextMode()) {
+						screenData.loadMemory(num);
+					}
 				}
-			}
-		});
-		actionMap.put("altnumpad3", new AbstractAction() {
-			private static final long serialVersionUID = 2902413534179769970L;
-			public void actionPerformed(ActionEvent e) {
-				if(!isTextMode()) {
-					screenData.addMemory(3);
-				}
-			}
-		});
-		actionMap.put("altnumpad4", new AbstractAction() {
-			private static final long serialVersionUID = 1170987687803052324L;
-			public void actionPerformed(ActionEvent e) {
-				if(!isTextMode()) {
-					screenData.addMemory(4);
-				}
-			}
-		});
-		actionMap.put("altnumpad5", new AbstractAction() {
-			private static final long serialVersionUID = 306024742638696554L;
-			public void actionPerformed(ActionEvent e) {
-				if(!isTextMode()) {
-					screenData.addMemory(5);
-				}
-			}
-		});
-		actionMap.put("altnumpad6", new AbstractAction() {
-			private static final long serialVersionUID = 5074372669373243115L;
-			public void actionPerformed(ActionEvent e) {
-				if(!isTextMode()) {
-					screenData.addMemory(6);
-				}
-			}
-		});
-		actionMap.put("altnumpad7", new AbstractAction() {
-			private static final long serialVersionUID = 1299657347924352280L;
-			public void actionPerformed(ActionEvent e) {
-				if(!isTextMode()) {
-					screenData.addMemory(7);
-				}
-			}
-		});
-		actionMap.put("altnumpad8", new AbstractAction() {
-			private static final long serialVersionUID = 5483348152570945153L;
-			public void actionPerformed(ActionEvent e) {
-				if(!isTextMode()) {
-					screenData.addMemory(8);
-				}
-			}
-		});
-		actionMap.put("altnumpad9", new AbstractAction() {
-			private static final long serialVersionUID = -5168470933371656122L;
-			public void actionPerformed(ActionEvent e) {
-				if(!isTextMode()) {
-					screenData.addMemory(9);
-				}
-			}
-		});
-		actionMap.put("altnumpad0", new AbstractAction() {
-			private static final long serialVersionUID = -4633422082729431619L;
-			public void actionPerformed(ActionEvent e) {
-				if(!isTextMode()) {
-					screenData.addMemory(0);
-				}
-			}
-		});
-		
-		actionMap.put("numpad1", new AbstractAction() {
-			private static final long serialVersionUID = -3525886410959274686L;
-			public void actionPerformed(ActionEvent e) {
-				if(!isTextMode()) {
-					screenData.loadMemory(1);
-				}
-			}
-		});
-		actionMap.put("numpad2", new AbstractAction() {
-			private static final long serialVersionUID = -7850737810886863255L;
-			public void actionPerformed(ActionEvent e) {
-				if(!isTextMode()) {
-					screenData.loadMemory(2);
-				}
-			}
-		});
-		actionMap.put("numpad3", new AbstractAction() {
-			private static final long serialVersionUID = 3581088302962190075L;
-			public void actionPerformed(ActionEvent e) {
-				if(!isTextMode()) {
-					screenData.loadMemory(3);
-				}
-			}
-		});
-		actionMap.put("numpad4", new AbstractAction() {
-			private static final long serialVersionUID = -2568223375027152132L;
-			public void actionPerformed(ActionEvent e) {
-				if(!isTextMode()) {
-					screenData.loadMemory(4);
-				}
-			}
-		});
-		actionMap.put("numpad5", new AbstractAction() {
-			private static final long serialVersionUID = -3308988441979304771L;
-			public void actionPerformed(ActionEvent e) {
-				if(!isTextMode()) {
-					screenData.loadMemory(5);
-				}
-			}
-		});
-		actionMap.put("numpad6", new AbstractAction() {
-			private static final long serialVersionUID = -8442005783187501235L;
-			public void actionPerformed(ActionEvent e) {
-				if(!isTextMode()) {
-					screenData.loadMemory(6);
-				}
-			}
-		});
-		actionMap.put("numpad7", new AbstractAction() {
-			private static final long serialVersionUID = -3616702851768667269L;
-			public void actionPerformed(ActionEvent e) {
-				if(!isTextMode()) {
-					screenData.loadMemory(7);
-				}
-			}
-		});
-		actionMap.put("numpad8", new AbstractAction() {
-			private static final long serialVersionUID = 7193552810481782092L;
-			public void actionPerformed(ActionEvent e) {
-				if(!isTextMode()) {
-					screenData.loadMemory(8);
-				}
-			}
-		});
-		actionMap.put("numpad9", new AbstractAction() {
-			private static final long serialVersionUID = 5633935070994629936L;
-			public void actionPerformed(ActionEvent e) {
-				if(!isTextMode()) {
-					screenData.loadMemory(9);
-				}
-			}
-		});
-		actionMap.put("numpad0", new AbstractAction() {
-			private static final long serialVersionUID = -5627408155886356290L;
-			public void actionPerformed(ActionEvent e) {
-				if(!isTextMode()) {
-					screenData.loadMemory(0);
-				}
-			}
-		});
+			});
+		}
 	}
 	
 	private void setCursor() {
 		switch(mode) {
-		case TEXT_MODE:
+		case State.TEXT_MODE:
 			this.getContentPane().setCursor(CursorManager.createTextCursor());			
 			break;
-		case DRAWING_MODE:
+		case State.DRAWING_MODE:
 			this.getContentPane().setCursor(CursorManager.createCircleCursor());			
 			break;
-		case ICON_MODE:
+		case State.ICON_MODE:
 			break;
-		case CHOICE_MODE:
+		case State.CHOICE_MODE:
 			this.getContentPane().setCursor(CursorManager.createGrabCursor());
 			break;
 		}
@@ -625,10 +377,10 @@ public class DrawingFrame extends JFrame{
 		Shape shape = ShapeFactory.createShape(pressedKey, screenData.getStart(), screenData.getEnd(), options.getPointThickness(), options.getPointColor());
 		if(shape == null){
 			switch(mode) {
-			case TEXT_MODE:
+			case State.TEXT_MODE:
 				shape = text; 
 				break;
-			case ICON_MODE:
+			case State.ICON_MODE:
 				shape = selectedIcon.copy(); 
 				break;
 			default:
@@ -661,10 +413,6 @@ public class DrawingFrame extends JFrame{
 		try {
 			Shape shape = getCurrentShape();
 			screenData.addShape(shape);
-			
-			if(shape instanceof Curve){
-				curve = new Curve();
-			}
 		}
 		catch(IllegalStateException e) {}
 	}
@@ -709,12 +457,12 @@ public class DrawingFrame extends JFrame{
 				switch(code) {
 				case KeyEvent.VK_CONTROL:
 					return;
-				case KeyEvent.VK_SHIFT:
-					if(isDefaultMode()) {
-						mode = CHOICE_MODE;
-						setCursor();
-					}
-					break;
+//				case KeyEvent.VK_SHIFT:
+//					if(isDefaultMode()) {
+//						mode = CHOICE_MODE;
+//						setCursor();
+//					}
+//					break;
 				case KeyEvent.VK_ENTER:
 					if(isTextMode()) {
 						text.append("\n");
@@ -779,24 +527,24 @@ public class DrawingFrame extends JFrame{
 				selectedIcon = IconManager.showIconDialog(DrawingFrame.this);
 				if(selectedIcon == null) return;
 				getContentPane().setCursor(CursorManager.createIconCursor(selectedIcon));
-				mode = ICON_MODE;
+				mode = State.ICON_MODE;
 				return;
 			}
 			
 			switch(mode) {
 			
-			case TEXT_MODE:
+			case State.TEXT_MODE:
 				break;
 				
-			case ICON_MODE:
+			case State.ICON_MODE:
 				
 				break;
 				
-			case CHOICE_MODE:
+			case State.CHOICE_MODE:
 				choiceShapeList = screenData.findShape(e.getX(), e.getY());
 				break;
 				
-			case DRAWING_MODE:
+			case State.DRAWING_MODE:
 			default:
 				screenData.setStart(e.getX(), e.getY());
 				screenData.setEnd(e.getX(), e.getY());
@@ -808,32 +556,36 @@ public class DrawingFrame extends JFrame{
 		@Override
 		public void mouseReleased(MouseEvent e) {
 			isDragged = false;
+			
 //			System.out.println("mode = "+mode);
 			switch(mode) {
-			case CHOICE_MODE:
+			case State.CHOICE_MODE:
 				choiceShapeList.clear();
 				choiceShapeList = null;
 				break;
-			case ICON_MODE:
+			case State.ICON_MODE:
 				if(selectedIcon != null) {
 					selectedIcon.setSx(e.getX());
 					selectedIcon.setSy(e.getY());
 					selectedIcon.setSize(options.getIconSize());
 				}
-			case DRAWING_MODE:
+			case State.DRAWING_MODE:
 				saveShape();
 				screenData.clearStart();
 				screenData.clearEnd();
 				break;
-			case TEXT_MODE:
-				screenData.setStart(e.getX(), e.getY());
-				int end_x = DrawingFrame.this.getX()+DrawingFrame.this.getWidth();
-				int end_y = DrawingFrame.this.getY()+DrawingFrame.this.getHeight();
-				screenData.setEnd(end_x, end_y);
+			case State.TEXT_MODE:
 				if(text != null) {
 					text.finish();
 					saveTextShape();
 				}
+				
+				screenData.setStart(e.getX(), e.getY());
+//				int end_x = DrawingFrame.this.getX()+DrawingFrame.this.getWidth();
+//				int end_y = DrawingFrame.this.getY()+DrawingFrame.this.getHeight();
+//				screenData.setEnd(end_x, end_y);
+				screenData.setEnd(e.getX(), e.getY());
+				
 				text = new Text(screenData.getStart(), screenData.getEnd(), options.getPointThickness(), options.getPointColorCopy(), "", options.getFontCopy());
 //				saveTextShape();
 				break;
@@ -850,7 +602,7 @@ public class DrawingFrame extends JFrame{
 		@Override
 		public void mouseWheelMoved(MouseWheelEvent e) {
 			switch(mode) {
-			case TEXT_MODE:
+			case State.TEXT_MODE:
 				if(e.getWheelRotation() > 0) {
 					options.decreaseFontSize();
 				}else if(e.getWheelRotation() < 0) {
@@ -858,7 +610,7 @@ public class DrawingFrame extends JFrame{
 				}
 				getContentPane().setCursor(CursorManager.createTextCursor());
 				break;
-			case ICON_MODE:
+			case State.ICON_MODE:
 				if(e.getWheelRotation() > 0) {
 					options.decreaseIconSize();
 				}else if(e.getWheelRotation() < 0) {
@@ -866,9 +618,9 @@ public class DrawingFrame extends JFrame{
 				}
 				getContentPane().setCursor(CursorManager.createIconCursor(selectedIcon));
 				break;
-			case CHOICE_MODE:
+			case State.CHOICE_MODE:
 				break;
-			case DRAWING_MODE:
+			case State.DRAWING_MODE:
 				if(!isDragged) {
 					if(e.getWheelRotation() > 0){
 						options.decreasePointThickness();
@@ -886,7 +638,7 @@ public class DrawingFrame extends JFrame{
 		@Override
 		public void mouseMoved(MouseEvent e) {
 			switch(mode) {
-			case CHOICE_MODE:
+			case State.CHOICE_MODE:
 				List<Shape> list = screenData.findShape(e.getX(), e.getY());
 //				System.out.println(list.size());
 			}
@@ -904,7 +656,7 @@ public class DrawingFrame extends JFrame{
 			screenData.setCursor(e.getX(), e.getY());
 			screenData.setEnd(e.getX(), e.getY());
 			switch(mode) {
-			case DRAWING_MODE:
+			case State.DRAWING_MODE:
 				if(pressedKey.isEmpty()) {
 //						long nowTime = System.currentTimeMillis();
 //						System.out.println("시차 : "+(nowTime - lastTime)+"ms");
@@ -912,7 +664,7 @@ public class DrawingFrame extends JFrame{
 //						lastTime = nowTime;
 				}
 				break;
-			case CHOICE_MODE:
+			case State.CHOICE_MODE:
 				if(choiceShapeList != null) {
 					for(Shape s : choiceShapeList) {
 						s.move(e.getX() - oldX, e.getY() - oldY);
@@ -921,6 +673,30 @@ public class DrawingFrame extends JFrame{
 			}
 				
 		}
+	}
+
+	@Override
+	protected void setKeyboardPrevent() {
+		hook.addPreventKey(KeyboardHook.WINDOWS_LEFT);
+		hook.addPreventKey(KeyboardHook.WINDOWS_RIGHT);
+		hook.addPreventKey(KeyboardHook.MENU);
+		hook.addPreventKey(KeyboardHook.ALT_RIGHT, (a, b, c)->{
+			if(a >= 0) {
+				switch(b.intValue()) {
+				case KeyboardHook.SYSKEY_RELEASE:
+				case KeyboardHook.KEY_RELEASE:
+					options.changeKorean();
+				}
+			}
+			return null;
+		});
+	}
+	@Override
+	protected void setKeyboardUnprevent() {
+		hook.removePreventKey(KeyboardHook.WINDOWS_LEFT);
+		hook.removePreventKey(KeyboardHook.WINDOWS_RIGHT);
+		hook.removePreventKey(KeyboardHook.MENU);
+		hook.removePreventKey(KeyboardHook.ALT_RIGHT);
 	}
 
 }

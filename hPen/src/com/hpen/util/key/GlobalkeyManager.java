@@ -1,10 +1,8 @@
 package com.hpen.util.key;
 
-import java.io.IOException;
-
-import com.hakademy.utility.magnify.MagnificationManager;
 import com.hpen.draw.ui.CaptureFrame;
 import com.hpen.draw.ui.DrawingFrame;
+import com.hpen.draw.ui.State;
 import com.hpen.livezoom.ui.ZoomFrame;
 import com.hpen.util.MagnifyManager;
 import com.tulskiy.keymaster.common.Provider;
@@ -17,10 +15,10 @@ public class GlobalkeyManager {
 			CaptureFrame.start();
 		});
 		provider.register(KeyManager.alt2, e->{
-			DrawingFrame.start(DrawingFrame.TRANSPARENT);
+			DrawingFrame.start(State.TRANSPARENT);
 		});
 		provider.register(KeyManager.alt3, e->{
-			DrawingFrame.start(DrawingFrame.WHITEBOARD);
+			DrawingFrame.start(State.WHITEBOARD);
 		});
 		provider.register(KeyManager.alt4, e->{
 			if(DrawingFrame.isNowDisplaying()) return;

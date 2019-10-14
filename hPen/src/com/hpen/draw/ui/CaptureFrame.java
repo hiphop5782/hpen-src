@@ -25,25 +25,25 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
-import javax.swing.JFrame;
 import javax.swing.filechooser.FileFilter;
 
 import com.hakademy.utility.hook.KeyboardHook;
+import com.hakademy.utility.screen.ScreenManager;
 import com.hpen.draw.ui.component.SaveImageFileChooser;
 import com.hpen.property.CaptureOption;
 import com.hpen.property.DrawingOption;
 import com.hpen.property.PropertyLoader;
-import com.hpen.update.subutil.ScreenManager;
 import com.hpen.util.CursorManager;
 import com.hpen.util.ScreenData;
+import com.hpen.util.Sequence;
 
 /**
  * 스크린 캡쳐 화면, 정확한 범위 지정을 지원하도록 한다 일단은 정지 화면으로 캡쳐하고 나중에 동영상 캡쳐 기능은 따로 구현
- * 
+ * 현재 작업표시줄이 잘 나오지 않는 현상이 발생중
  * @author Hwang
  *
  */
-public class CaptureFrame extends JFrame {
+public class CaptureFrame extends CaptureScreenFrame {
 	/**
 		 * 
 		 */
@@ -57,8 +57,7 @@ public class CaptureFrame extends JFrame {
 	public static void start() {
 		if(cf.isVisible()) return;
 		
-		hook.addPreventKey(KeyboardHook.WINDOWS_LEFT);
-		hook.addPreventKey(KeyboardHook.WINDOWS_RIGHT);
+		
 		cf.setWindowTransparent();
 		cf.prepare();
 		cf.eventbind();
@@ -84,8 +83,7 @@ public class CaptureFrame extends JFrame {
 		PropertyLoader.save();
 		eventunbind();
 		clear();
-		hook.removePreventKey(KeyboardHook.WINDOWS_LEFT);
-		hook.removePreventKey(KeyboardHook.WINDOWS_RIGHT);
+		
 	}
 	
 	private MouseEvt mouseEvt = new MouseEvt();
@@ -117,14 +115,9 @@ public class CaptureFrame extends JFrame {
 		screen();
 	}
 	
-	private void screen(){
-		setUndecorated(true);
-		setAlwaysOnTop(true);
-		setResizable(false);
+	public void screen(){
+		super.screen();
 		getContentPane().setCursor(CursorManager.createEmptyCursor());
-		
-		setFocusTraversalKeysEnabled(false);
-		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
@@ -172,6 +165,8 @@ public class CaptureFrame extends JFrame {
 	private BufferedImage saveImage;
 
 	private void saveScreen() {
+		CaptureOption cOption = CaptureOption.getInstance();
+		
 		try {
 			Robot robot = new Robot();
 			if(screenData.getWidth() <= 0 || screenData.getHeight() <= 0) return;
@@ -183,18 +178,21 @@ public class CaptureFrame extends JFrame {
 			screen.height -= thickness;
 			saveImage = robot.createScreenCapture(screen);
 
-			if(CaptureOption.getInstance().isCopytoClipboard()){
+			if(cOption.isCopytoClipboard()){
 				// 버퍼 저장
 				ImageSelection selection = new ImageSelection(saveImage);
 				Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
 				clipboard.setContents(selection, null);
 				// System.out.println("이미지 버퍼 저장 완료");
 			}else{
-				// 임시 파일에 저장 -> JFileChooser로 선택하여 저장
-				File temp = new File("image/temp/temp.jpg");
-				ImageIO.write(saveImage, "jpg", temp);
+				File dir = new File(cOption.getSaveFolder());
+				if(!dir.exists()) dir.mkdirs();
 				
-				chooser.saveImage(saveImage, this.getClass());
+				String filename = cOption.getPrefix() + cOption.getSequenceString(6) + ".png";
+				File target = new File(dir, filename);
+				
+				ImageIO.write(saveImage, "png", target);
+				cOption.plusSequence();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -420,5 +418,17 @@ public class CaptureFrame extends JFrame {
 			}
 			return image;
 		}
+	}
+
+	@Override
+	protected void setKeyboardPrevent() {
+		hook.addPreventKey(KeyboardHook.WINDOWS_LEFT);
+		hook.addPreventKey(KeyboardHook.WINDOWS_RIGHT);
+	}
+
+	@Override
+	protected void setKeyboardUnprevent() {
+		hook.removePreventKey(KeyboardHook.WINDOWS_LEFT);
+		hook.removePreventKey(KeyboardHook.WINDOWS_RIGHT);
 	}
 }

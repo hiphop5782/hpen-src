@@ -1,8 +1,9 @@
 package com.hpen.test;
 
+import java.awt.event.KeyEvent;
+
 import javax.swing.KeyStroke;
 
-import com.sun.glass.events.KeyEvent;
 import com.tulskiy.keymaster.common.Provider;
 
 public class Exam29_JKeyMaster {
