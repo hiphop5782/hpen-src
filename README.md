@@ -1,4 +1,4 @@
-![version-info](https://img.shields.io/badge/release-v3.0.7-blue)
+[![version-info](https://img.shields.io/badge/release-v3.0.7-blue)](https://github.com/hiphop5782/hpen-src/releases/latest)
 
 # hPen
 ### 강의용 필기 보조 어플리케이션입니다
