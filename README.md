@@ -1,6 +1,6 @@
 [![version-info](https://img.shields.io/badge/release-v3.0.7-blue)](https://github.com/hiphop5782/hpen-src/releases/latest)
-![weekly-commit](https://img.shields.io/github/commit-activity/w/hpen-src/survive)
-![last-commit](https://img.shields.io/github/last-commit/hpen-src/survive)
+![weekly-commit](https://img.shields.io/github/commit-activity/w/hiphop5782/hpen-src?style=plastic)
+![last-commit](https://img.shields.io/github/last-commit/hiphop5782/hpen-src?style=plastic)
 ![downloads](https://img.shields.io/github/downloads/hiphop5782/hpen-src/total?label=downloads&style=plastic)
 
 # hPen
