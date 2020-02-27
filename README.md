@@ -1,5 +1,6 @@
 [![version-info](https://img.shields.io/badge/release-v3.0.7-blue)](https://github.com/hiphop5782/hpen-src/releases/latest)
-![weekly-commit](https://img.shields.io/github/commit-activity/hpen-src/hiphop5782/survive)
+![weekly-commit](https://img.shields.io/github/commit-activity/w/hpen-src/survive)
+![last-commit](https://img.shields.io/github/last-commit/hpen-src/survive)
 
 # hPen
 ### 강의용 필기 보조 어플리케이션입니다
