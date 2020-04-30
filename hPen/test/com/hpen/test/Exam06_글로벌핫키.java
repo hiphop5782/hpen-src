@@ -7,7 +7,7 @@ import javax.swing.JFrame;
 //import com.melloware.jintellitype.HotkeyListener;
 //import com.melloware.jintellitype.JIntellitype;
 //
-public class Exam06_±Û·Î¹úÇÖÅ° {
+public class Exam06_ê¸€ë¡œë²Œí•«í‚¤ {
 //	public static void main(String[] args) {
 //		JIntellitype.setLibraryLocation(new File("dll/jintellitype.dll"));
 //		JIntellitype ins = JIntellitype.getInstance();
@@ -20,7 +20,7 @@ public class Exam06_±Û·Î¹úÇÖÅ° {
 //		System.out.println(JIntellitype.getLibraryLocation());
 //		System.out.println(JIntellitype.checkInstanceAlreadyRunning("hpen"));
 //		
-//		//.registerHotkey(½Äº°¹øÈ£, °ª);
+//		//.registerHotkey(ï¿½Äºï¿½ï¿½ï¿½È£, ï¿½ï¿½);
 //		ins.registerHotKey(1, JIntellitype.MOD_ALT, '1');	
 //		ins.registerHotKey(2, JIntellitype.MOD_ALT, '2');	
 //		ins.registerHotKey(3, JIntellitype.MOD_ALT, '3');	

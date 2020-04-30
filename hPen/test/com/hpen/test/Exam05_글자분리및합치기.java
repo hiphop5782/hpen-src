@@ -1,49 +1,49 @@
 package com.hpen.test;
 
-public class Exam05_±ÛÀÚºĞ¸®¹×ÇÕÄ¡±â {
+public class Exam05_ê¸€ìë¶„ë¦¬ë°í•©ì¹˜ê¸° {
 //	private static final ArrayList<Character> a1 = new ArrayList<>();
 //	static{
-//		a1.add('¤¡');/*¤¡*/		a1.add('¤¢');/*¤¢*/
-//		a1.add('¤¤');/*¤¤*/		a1.add('¤§');/*¤§*/
-//		a1.add('¤¨');/*¤¨*/		a1.add('¤©');/*¤©*/
-//		a1.add('¤±');/*¤±*/		a1.add('¤²');/*¤²*/
-//		a1.add('¤³');/*¤³*/		a1.add('¤µ');/*¤µ*/
-//		a1.add('¤¶');/*¤¶*/		a1.add('¤·');/*¤·*/
-//		a1.add('¤¸');/*¤¸*/		a1.add('¤¹');/*¤¹*/
-//		a1.add('¤º');/*¤º*/		a1.add('¤»');/*¤»*/
-//		a1.add('¤¼');/*¤¼*/		a1.add('¤½');/*¤½*/
-//		a1.add('¤¾');/*¤¾*/
+//		a1.add('ï¿½ï¿½');/*ï¿½ï¿½*/		a1.add('ï¿½ï¿½');/*ï¿½ï¿½*/
+//		a1.add('ï¿½ï¿½');/*ï¿½ï¿½*/		a1.add('ï¿½ï¿½');/*ï¿½ï¿½*/
+//		a1.add('ï¿½ï¿½');/*ï¿½ï¿½*/		a1.add('ï¿½ï¿½');/*ï¿½ï¿½*/
+//		a1.add('ï¿½ï¿½');/*ï¿½ï¿½*/		a1.add('ï¿½ï¿½');/*ï¿½ï¿½*/
+//		a1.add('ï¿½ï¿½');/*ï¿½ï¿½*/		a1.add('ï¿½ï¿½');/*ï¿½ï¿½*/
+//		a1.add('ï¿½ï¿½');/*ï¿½ï¿½*/		a1.add('ï¿½ï¿½');/*ï¿½ï¿½*/
+//		a1.add('ï¿½ï¿½');/*ï¿½ï¿½*/		a1.add('ï¿½ï¿½');/*ï¿½ï¿½*/
+//		a1.add('ï¿½ï¿½');/*ï¿½ï¿½*/		a1.add('ï¿½ï¿½');/*ï¿½ï¿½*/
+//		a1.add('ï¿½ï¿½');/*ï¿½ï¿½*/		a1.add('ï¿½ï¿½');/*ï¿½ï¿½*/
+//		a1.add('ï¿½ï¿½');/*ï¿½ï¿½*/
 //	}
 //	private static final ArrayList<Character> a2 = new ArrayList<>();
 //	static{
-//		a2.add('¤¿');/*¤¿*/		a2.add('¤À');/*¤À*/
-//		a2.add('¤Á');/*¤Á*/		a2.add('¤Â');/*¤Â*/
-//		a2.add('¤Ã');/*¤Ã*/		a2.add('¤Ä');/*¤Ä*/
-//		a2.add('¤Å');/*¤Å*/		a2.add('¤Æ');/*¤Æ*/
-//		a2.add('¤Ç');/*¤Ç*/		a2.add('¤È');/*¤È*/
-//		a2.add('¤É');/*¤É*/		a2.add('¤Ê');/*¤Ê*/
-//		a2.add('¤Ë');/*¤Ë*/		a2.add('¤Ì');/*¤Ì*/
-//		a2.add('¤Í');/*¤Í*/		a2.add('¤Î');/*¤Î*/
-//		a2.add('¤Ï');/*¤Ï*/		a2.add('¤Ğ');/*¤Ğ*/
-//		a2.add('¤Ñ');/*¤Ñ*/		a2.add('¤Ò');/*¤Ò*/
-//		a2.add('¤Ó');/*¤Ó*/
+//		a2.add('ï¿½ï¿½');/*ï¿½ï¿½*/		a2.add('ï¿½ï¿½');/*ï¿½ï¿½*/
+//		a2.add('ï¿½ï¿½');/*ï¿½ï¿½*/		a2.add('ï¿½ï¿½');/*ï¿½ï¿½*/
+//		a2.add('ï¿½ï¿½');/*ï¿½ï¿½*/		a2.add('ï¿½ï¿½');/*ï¿½ï¿½*/
+//		a2.add('ï¿½ï¿½');/*ï¿½ï¿½*/		a2.add('ï¿½ï¿½');/*ï¿½ï¿½*/
+//		a2.add('ï¿½ï¿½');/*ï¿½ï¿½*/		a2.add('ï¿½ï¿½');/*ï¿½ï¿½*/
+//		a2.add('ï¿½ï¿½');/*ï¿½ï¿½*/		a2.add('ï¿½ï¿½');/*ï¿½ï¿½*/
+//		a2.add('ï¿½ï¿½');/*ï¿½ï¿½*/		a2.add('ï¿½ï¿½');/*ï¿½ï¿½*/
+//		a2.add('ï¿½ï¿½');/*ï¿½ï¿½*/		a2.add('ï¿½ï¿½');/*ï¿½ï¿½*/
+//		a2.add('ï¿½ï¿½');/*ï¿½ï¿½*/		a2.add('ï¿½ï¿½');/*ï¿½ï¿½*/
+//		a2.add('ï¿½ï¿½');/*ï¿½ï¿½*/		a2.add('ï¿½ï¿½');/*ï¿½ï¿½*/
+//		a2.add('ï¿½ï¿½');/*ï¿½ï¿½*/
 //	}
 //	private static final ArrayList<Character> a3 = new ArrayList<>();
 //	static{
-//		a3.add((char)0x0000);/*¾øÀ½*/	a3.add('¤¡');/*¤¡*/
-//		a3.add('¤¢');/*¤¢*/		a3.add('¤£');/*¤£*/
-//		a3.add('¤¤');/*¤¤*/		a3.add('¤¥');/*¤¥*/
-//		a3.add('¤¦');/*¤¦*/		a3.add('¤§');/*¤§*/
-//		a3.add('¤©');/*¤©*/		a3.add('¤ª');/*¤ª*/
-//		a3.add('¤«');/*¤«*/		a3.add('¤¬');/*¤¬*/
-//		a3.add('¤­');/*¤­*/		a3.add('¤®');/*¤®*/
-//		a3.add('¤¯');/*¤¯*/		a3.add('¤°');/*¤°*/
-//		a3.add('¤±');/*¤±*/		a3.add('¤²');/*¤²*/
-//		a3.add('¤´');/*¤´*/		a3.add('¤µ');/*¤µ*/
-//		a3.add('¤¶');/*¤¶*/		a3.add('¤·');/*¤·*/
-//		a3.add('¤¸');/*¤¸*/		a3.add('¤º');/*¤º*/
-//		a3.add('¤»');/*¤»*/		a3.add('¤¼');/*¤¼*/
-//		a3.add('¤½');/*¤½*/		a3.add('¤¾');/*¤¾*/
+//		a3.add((char)0x0000);/*ï¿½ï¿½ï¿½ï¿½*/	a3.add('ï¿½ï¿½');/*ï¿½ï¿½*/
+//		a3.add('ï¿½ï¿½');/*ï¿½ï¿½*/		a3.add('ï¿½ï¿½');/*ï¿½ï¿½*/
+//		a3.add('ï¿½ï¿½');/*ï¿½ï¿½*/		a3.add('ï¿½ï¿½');/*ï¿½ï¿½*/
+//		a3.add('ï¿½ï¿½');/*ï¿½ï¿½*/		a3.add('ï¿½ï¿½');/*ï¿½ï¿½*/
+//		a3.add('ï¿½ï¿½');/*ï¿½ï¿½*/		a3.add('ï¿½ï¿½');/*ï¿½ï¿½*/
+//		a3.add('ï¿½ï¿½');/*ï¿½ï¿½*/		a3.add('ï¿½ï¿½');/*ï¿½ï¿½*/
+//		a3.add('ï¿½ï¿½');/*ï¿½ï¿½*/		a3.add('ï¿½ï¿½');/*ï¿½ï¿½*/
+//		a3.add('ï¿½ï¿½');/*ï¿½ï¿½*/		a3.add('ï¿½ï¿½');/*ï¿½ï¿½*/
+//		a3.add('ï¿½ï¿½');/*ï¿½ï¿½*/		a3.add('ï¿½ï¿½');/*ï¿½ï¿½*/
+//		a3.add('ï¿½ï¿½');/*ï¿½ï¿½*/		a3.add('ï¿½ï¿½');/*ï¿½ï¿½*/
+//		a3.add('ï¿½ï¿½');/*ï¿½ï¿½*/		a3.add('ï¿½ï¿½');/*ï¿½ï¿½*/
+//		a3.add('ï¿½ï¿½');/*ï¿½ï¿½*/		a3.add('ï¿½ï¿½');/*ï¿½ï¿½*/
+//		a3.add('ï¿½ï¿½');/*ï¿½ï¿½*/		a3.add('ï¿½ï¿½');/*ï¿½ï¿½*/
+//		a3.add('ï¿½ï¿½');/*ï¿½ï¿½*/		a3.add('ï¿½ï¿½');/*ï¿½ï¿½*/
 //	}
 //	public static char merge(int[] s) throws IllegalArgumentException{
 //		if (s.length != 3) throw new IllegalArgumentException();
@@ -64,42 +64,42 @@ public class Exam05_±ÛÀÚºĞ¸®¹×ÇÕÄ¡±â {
 //	}
 //	
 //	public static void main(String[] args) throws Exception {
-////		int[] r = new int[]{'¤²','¤Î','¤ª'};
+////		int[] r = new int[]{'ï¿½ï¿½','ï¿½ï¿½','ï¿½ï¿½'};
 ////		System.out.println(merge(r));
 ////		
-////		int[] r2 = seperate('”î');
+////		int[] r2 = seperate('ï¿½ï¿½');
 ////		System.out.println(a1.get(r2[0]));
 ////		System.out.println(a2.get(r2[1]));
 ////		System.out.println(a3.get(r2[2]));
 //		
-////		21*28(588) ±ÛÀÚ¸¶´Ù ÃÊ¼ºÀÌ ¹Ù²ñ
-////		28±ÛÀÚ¸¶´Ù Áß¼ºÀÌ ¹Ù²ñ
-////		Á¾¼ºÀº ÃÑ 28°³(27+null)
+////		21*28(588) ï¿½ï¿½ï¿½Ú¸ï¿½ï¿½ï¿½ ï¿½Ê¼ï¿½ï¿½ï¿½ ï¿½Ù²ï¿½
+////		28ï¿½ï¿½ï¿½Ú¸ï¿½ï¿½ï¿½ ï¿½ß¼ï¿½ï¿½ï¿½ ï¿½Ù²ï¿½
+////		ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ 28ï¿½ï¿½(27+null)
 //		
-////		°¡(44032) ~ ÆR(55203)
-////		for(char a = '°¡'; a <= 'ÆR'; a++){
+////		ï¿½ï¿½(44032) ~ ï¿½R(55203)
+////		for(char a = 'ï¿½ï¿½'; a <= 'ï¿½R'; a++){
 ////			System.out.println(a+", "+(int)a);
 ////		}
 //		
-////		¤¡(12593) ~ ¤¾(12622)
-////		for(char a = '¤¡'; a <= '¤¾'; a++){
+////		ï¿½ï¿½(12593) ~ ï¿½ï¿½(12622)
+////		for(char a = 'ï¿½ï¿½'; a <= 'ï¿½ï¿½'; a++){
 ////			System.out.println(a+", "+(int)a);
 ////		}
-////		¤¿(12623) ~ ¤Ó(12643)
-////		for(char a = '¤¿'; a <= '¤Ó'; a++){
+////		ï¿½ï¿½(12623) ~ ï¿½ï¿½(12643)
+////		for(char a = 'ï¿½ï¿½'; a <= 'ï¿½ï¿½'; a++){
 ////			System.out.println(a+", "+(int)a);
 ////		}
 //		
 ////		int ch = 'È²';
 ////		ch -= 44032;
 ////		int s = ch / 588 + 12604;
-////		System.out.println("s = "+s +", "+(int)'¤¾');
+////		System.out.println("s = "+s +", "+(int)'ï¿½ï¿½');
 ////		int m = ch / 28 % 21 + 12623;
-////		System.out.println("m = "+m+", "+(int)'¤È');
+////		System.out.println("m = "+m+", "+(int)'ï¿½ï¿½');
 ////		int e = ch % 28 + 12594;
-////		System.out.println("e = "+e+", "+(int)'¤·');
+////		System.out.println("e = "+e+", "+(int)'ï¿½ï¿½');
 //		
-//		//String sample = "ÀÌ·±µÈÀå";
+//		//String sample = "ï¿½Ì·ï¿½ï¿½ï¿½ï¿½ï¿½";
 //		//String text = KoreanCharacter.seperateString(sample);
 //		
 //		//String sample = "rudckfcjdckdansckdtkf thlcjfckdtkf, rjackfcjd ckdansckdtkf dhlcjfckdtkf";
@@ -108,8 +108,8 @@ public class Exam05_±ÛÀÚºĞ¸®¹×ÇÕÄ¡±â {
 //		System.out.println(text);
 //		
 //		
-////		Matcher¸¦ ÀÌ¿ëÇÏ¿© °Ë»öÇÑ µÚ replace·Î Ä¡È¯
-//		Matcher m = Pattern.compile("[¤¡-¤¾]([¤¿-¤Ó]{1,2})?").matcher(text);
+////		Matcherï¿½ï¿½ ï¿½Ì¿ï¿½ï¿½Ï¿ï¿½ ï¿½Ë»ï¿½ï¿½ï¿½ ï¿½ï¿½ replaceï¿½ï¿½ Ä¡È¯
+//		Matcher m = Pattern.compile("[ï¿½ï¿½-ï¿½ï¿½]([ï¿½ï¿½-ï¿½ï¿½]{1,2})?").matcher(text);
 //		
 //		while(m.find()){
 //			String s = m.group();
@@ -118,7 +118,7 @@ public class Exam05_±ÛÀÚºĞ¸®¹×ÇÕÄ¡±â {
 //				char b = s.charAt(1);
 //				if(KoreanCharacter.isJaum(a) && KoreanCharacter.isMoum(b)){
 //					char c = merge(a, b);
-//					System.out.println("À§Ä¡ : "+text.indexOf(s) + "\t" + s + " ¡æ " + c);
+//					System.out.println("ï¿½ï¿½Ä¡ : "+text.indexOf(s) + "\t" + s + " ï¿½ï¿½ " + c);
 //					text = text.replace(s, String.valueOf(c));
 //				}
 //			}else if(s.length() == 3){
@@ -128,13 +128,13 @@ public class Exam05_±ÛÀÚºĞ¸®¹×ÇÕÄ¡±â {
 //				if(KoreanCharacter.isDoubleMoum(b, c)){
 //					char n = KoreanCharacter.mergeDoubleMoum(b, c);
 //					char d = merge(a, n);
-//					System.out.println("À§Ä¡ : "+text.indexOf(s) + "\t" + s + " ¡æ " + d);
+//					System.out.println("ï¿½ï¿½Ä¡ : "+text.indexOf(s) + "\t" + s + " ï¿½ï¿½ " + d);
 //					text = text.replace(s, String.valueOf(d));
 //				}
 //			}
 //		}
 //		System.out.println(text);
-//		m = Pattern.compile("[°¡-ÆR][¤¡-¤¾]{1,2}").matcher(text);
+//		m = Pattern.compile("[ï¿½ï¿½-ï¿½R][ï¿½ï¿½-ï¿½ï¿½]{1,2}").matcher(text);
 //		while(m.find()){
 //			String s = m.group();
 //			if(s.length() == 3){

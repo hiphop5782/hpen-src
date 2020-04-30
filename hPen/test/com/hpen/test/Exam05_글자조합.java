@@ -5,13 +5,13 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.JFrame;
 
-public class Exam05_±ÛÀÚÁ¶ÇÕ {
+public class Exam05_ê¸€ìì¡°í•© {
 	public static void main(String[] args) throws Exception{
-		//¼ıÀÚ - 9
-		//¾ËÆÄºª - 2
-		//Æ¯¼ö¹®ÀÚ - 20¹ø´ë
-		//ÄÁÆ®·Ñ¾ËÆ®½¬ÇÁÆ® - 0
-		//¹é½ºÆäÀÌ½º, ÅÇ, ¿£ÅÍ - 15
+		//ï¿½ï¿½ï¿½ï¿½ - 9
+		//ï¿½ï¿½ï¿½Äºï¿½ - 2
+		//Æ¯ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ - 20ï¿½ï¿½ï¿½ï¿½
+		//ï¿½ï¿½Æ®ï¿½Ñ¾ï¿½Æ®ï¿½ï¿½ï¿½ï¿½Æ® - 0
+		//ï¿½é½ºï¿½ï¿½ï¿½Ì½ï¿½, ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ - 15
 		
 		
 //		JFrame frame = new JFrame();
@@ -29,14 +29,13 @@ public class Exam05_±ÛÀÚÁ¶ÇÕ {
 //			}
 //		});
 		
-		int a = '¤¡';
-		int b = '¤¿';
-		int c = '°¡';
+		int a = 'ã„±';
+		int b = 'ã…';
+		int c = 'ã…‡';
 		System.out.println(a);
 		System.out.println(b);
 		System.out.println(c);
 		
-		//[{(ÃÊ¼º)¡¿588}+{(Áß¼º)¡¿28}+(Á¾¼º)]+44032
 		int uni = a * 588 + b * 28 + 0 + 44032;
 		System.out.println(uni);
 	}

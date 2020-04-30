@@ -3,7 +3,7 @@ package com.hpen.test;
 import java.awt.Desktop;
 import java.io.File;
 
-public class Exam11_Æ©Åä¸®¾ó½ÇÇà {
+public class Exam11_íŠœí† ë¦¬ì–¼ì‹¤í–‰ {
 	public static void main(String[] args) throws Exception{
 		Desktop desktop = Desktop.getDesktop();
 		desktop.edit(new File("tutorial.txt"));

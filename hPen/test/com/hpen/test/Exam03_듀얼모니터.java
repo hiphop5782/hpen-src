@@ -14,21 +14,19 @@ import java.io.File;
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
-public class Exam03_µà¾ó¸ğ´ÏÅÍ {
+public class Exam03_ë“€ì–¼ëª¨ë‹ˆí„° {
 	public static void main(String[] args) {
-//		//main ¸ğ´ÏÅÍ¸¸ ÀÎ½Ä
 //		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
 //		System.out.println(screen);
 //		
-//		//ÀüÃ¼ ¸ğ´ÏÅÍ ÀÎ½Ä
 //		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 //		GraphicsDevice[] devices = ge.getScreenDevices();
-//		System.out.println("ÇöÀç ¸ğ´ÏÅÍ °³¼ö : "+devices.length);
+//		System.out.println("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ : "+devices.length);
 //		
 //		for(int i = 0; i<devices.length; i++){
 //			GraphicsDevice dev = devices[i];
 //			GraphicsConfiguration[] configs = dev.getConfigurations();
-//			for(GraphicsConfiguration config : configs){//¾È½áµµ ¹«¹æ. ±âº»Á¤º¸´Â ´Ù 0¹ø¹æ¿¡ À§Ä¡
+//			for(GraphicsConfiguration config : configs){//ï¿½È½áµµ ï¿½ï¿½ï¿½ï¿½. ï¿½âº»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ 0ï¿½ï¿½ï¿½æ¿¡ ï¿½ï¿½Ä¡
 //				System.out.println(config.getBounds());
 //				JFrame f = new JFrame(config);
 //				f.setUndecorated(true);

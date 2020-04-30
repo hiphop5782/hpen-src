@@ -2,7 +2,7 @@ package com.hpen.test;
 
 import java.awt.Point;
 
-public class Exam01_°¢µµ°è»ê {
+public class Exam01_ê°ë„ê³„ì‚° {
 	public static void main(String[] args) {
 		Point start = new Point(50, 50);
 		Point end = new Point(200, 200);

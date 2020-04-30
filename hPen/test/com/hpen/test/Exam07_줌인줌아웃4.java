@@ -152,7 +152,7 @@ class Magnifier extends JFrame{
 	  }
 }
 
-public class Exam07_ÁÜÀÎÁÜ¾Æ¿ô4 {
+public class Exam07_ì¤Œì¸ì¤Œì•„ì›ƒ4 {
 	/** * Procedure entry point  
 	   * 
 	   * @ Param arg  

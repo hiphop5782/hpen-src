@@ -4,7 +4,7 @@ import java.awt.Rectangle;
 
 import com.hakademy.utility.screen.ScreenManager;
 
-public class Exam08_¸ğ´ÏÅÍÀ§Ä¡È®ÀÎ {
+public class Exam08_ëª¨ë‹ˆí„°ìœ„ì¹˜í™•ì¸ {
 	public static void main(String[] args) {
 //		while(true){
 //			GraphicsDevice device = MouseInfo.getPointerInfo().getDevice();

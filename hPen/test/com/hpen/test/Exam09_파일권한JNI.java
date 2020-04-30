@@ -12,7 +12,7 @@ import java.nio.file.attribute.UserPrincipalLookupService;
 import java.util.Collections;
 import java.util.EnumSet;
 
-public class Exam09_ÆÄÀÏ±ÇÇÑJNI {
+public class Exam09_íŒŒì¼ê¶Œí•œJNI {
 	public static void main(String[] args) throws Exception{
 		Path file = Paths.get("c:/touch.txt");
 	    AclFileAttributeView aclAttr = Files.getFileAttributeView(file, AclFileAttributeView.class);

@@ -3,7 +3,7 @@ package com.hpen.test;
 import java.util.Iterator;
 import java.util.Properties;
 
-public class Exam10_»ç¿ëÀÚÀÌ¸§¾ò±â {
+public class Exam10_ì‚¬ìš©ìì´ë¦„ì–»ê¸° {
 	public static void main(String[] args) {
 		Properties p = System.getProperties();
 		Iterator<?> it = p.keySet().iterator();

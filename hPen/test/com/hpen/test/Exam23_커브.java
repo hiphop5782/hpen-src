@@ -12,7 +12,7 @@ import java.awt.geom.QuadCurve2D;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-public class Exam23_Ä¿ºê {
+public class Exam23_ì»¤ë¸Œ {
 	static int sx = 100, sy = 100, mx = 200, my = 200, ex = 300, ey = 100;
 	public static void main(String[] args) {
 		JFrame frame = new JFrame();

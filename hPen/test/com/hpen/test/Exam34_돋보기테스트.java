@@ -4,7 +4,7 @@ import java.awt.AWTException;
 import java.awt.Robot;
 import java.awt.event.KeyEvent;
 
-public class Exam34_µ¸º¸±âÅ×½ºÆ® {
+public class Exam34_ë‹ë³´ê¸°í…ŒìŠ¤íŠ¸ {
 	public static void main(String[] args) throws AWTException, InterruptedException {
 		Robot r = new Robot();
 		int count = 0;

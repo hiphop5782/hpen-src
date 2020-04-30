@@ -12,7 +12,7 @@ package com.hpen.test;
 //import org.jnativehook.mouse.NativeMouseEvent;
 //import org.jnativehook.mouse.NativeMouseMotionListener;
 //
-public class Exam26_¸¶¿ì½º°¡µÎ±â {
+public class Exam26_ë§ˆìš°ìŠ¤ê°€ë‘ê¸° {
 //	
 //	static class MouseLocker implements NativeMouseMotionListener{
 //		Robot r;
@@ -41,7 +41,7 @@ public class Exam26_¸¶¿ì½º°¡µÎ±â {
 //	};
 //	
 //	public static void main(String[] args) throws Exception{
-//		//jnativehook-2.1.0À» ÀÌ¿ëÇÑ ¸¶¿ì½º¿Í Å°º¸µå ÈÄÅ· Å×½ºÆ®
+//		//jnativehook-2.1.0ï¿½ï¿½ ï¿½Ì¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ì½ºï¿½ï¿½ Å°ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Å· ï¿½×½ï¿½Æ®
 //		
 //		NativeKeyListener kListener = new NativeKeyAdapter() {
 //			@Override

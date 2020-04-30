@@ -21,39 +21,42 @@ public class ShapeFactory {
 		
 		Shape shape = null;
 		
-		//���� Ű
+		//한개만 누른 경우
 		if(pressedKey.size() == 1){
 			
-			//�簢��(Q)
+			//사각형(Q)
 			if(pressedKey.contains(RECT))
 				shape = new Rect(start, end, thick, color);
 			
-			//��(W)
+			//원(W)
 			else if(pressedKey.contains(CIRCLE))
 				shape = new Circle(start, end, thick, color);
 			
-			//��(E)
+			//직선(E)
 			else if(pressedKey.contains(LINE))
 				shape = new Line(start, end, thick, color);
 			
-			//�(V)
+			//커브(V)
 			else if(pressedKey.contains(CURVED)) 
 				shape = new CurvedLine(start, end, thick, color);
 				
-			//������ ȭ��ǥ(R)
+			//역방향 화살표(R)
 			else if(pressedKey.contains(REVERSE_ARROW))
 				shape = new ReverseArrow(start, end, thick, color);
 			
-			//ȭ��ǥ(F)
+			//정방향 화살표(F)
 			else if(pressedKey.contains(ARROW))
 				shape = new Arrow(start, end, thick, color);
 			
+			//양방향 화살표(G)
 			else if(pressedKey.contains(BOTH_ARROW)) 
 				shape = new BothArrow(start, end, thick, color);
 			
+			//엑스(X)
 			else if(pressedKey.contains(X)) 
 				shape = new X(start, end, thick, color);
 			
+			//번개모양(D)
 			else if(pressedKey.contains(THUNDER))
 				shape = new Thunder(start, end, thick, color);
 		}

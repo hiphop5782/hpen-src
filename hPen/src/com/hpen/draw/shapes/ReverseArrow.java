@@ -14,15 +14,6 @@ public class ReverseArrow extends Arrow{
 	protected void setArrowPoint(Point s, Point e, int thick){
 		this.setArrowPoint(s.x, s.y, e.x, e.y, thick);
 	}
-	/**
-	 * @param sx
-	 * @param sy
-	 * @param ex
-	 * @param ey
-	 * @param thick
-	 * 화살표 지점 계산<br>
-	 * 화살표 크기는 두께의 2배
-	 */
 	protected void setArrowPoint(int sx, int sy, int ex, int ey, int thick){
 		int radius = thick * 3;
 		int gap = 20;

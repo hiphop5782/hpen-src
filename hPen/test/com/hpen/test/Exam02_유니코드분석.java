@@ -1,23 +1,23 @@
 package com.hpen.test;
 
-public class Exam02_À¯´ÏÄÚµåºĞ¼® {
+public class Exam02_ìœ ë‹ˆì½”ë“œë¶„ì„ {
 	public static void main(String[] args) {
-		int s = '¤¡';
-		int m = '¤¿';
-		int e = '¤·';
+		int s = 'ã„±';
+		int m = 'ã…';
+		int e = 'ã…‡';
 		System.out.println(s +", "+m +", "+e);
-		int v = '°­';
+		int v = 'ê°•';
 		System.out.println(v);
 		System.out.println(v - 0xAC00);
 		v -= 0xAC00;
-		int vs = (((v - (v % 28)) / 28) / 21) + '¤¡';
+		int vs = (((v - (v % 28)) / 28) / 21) + 'ê°€';
 		System.out.println(vs);
-		int vm = (((v - (v % 28)) / 28) % 21) + '¤¿';
+		int vm = (((v - (v % 28)) / 28) % 21) + 'ê°€';
 		System.out.println(vm);
-		int ve = (v % 28) + '¤¡' +1;
+		int ve = (v % 28) + 'ê°€' +1;
 		System.out.println(ve);
 		
-		int vv = 0xAC00 + 28 * 21 * (vs - '¤¡') + 28 * (vm - '¤¿') + (ve - '¤¡' -1);
+		int vv = 0xAC00 + 28 * 21 * (vs - 'ê°€') + 28 * (vm - 'ê°€') + (ve - 'ê°€' -1);
 		System.out.println(vv);
 		
 	}

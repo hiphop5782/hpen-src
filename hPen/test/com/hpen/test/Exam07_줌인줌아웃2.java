@@ -82,7 +82,7 @@ class PanAndZoom implements ChangeListener {
 
 }
 
-public class Exam07_ÁÜÀÎÁÜ¾Æ¿ô2 {
+public class Exam07_ì¤Œì¸ì¤Œì•„ì›ƒ2 {
 	public static void main(String[] args) {
 		PanAndZoom app = new PanAndZoom();
 		JFrame f = new JFrame();

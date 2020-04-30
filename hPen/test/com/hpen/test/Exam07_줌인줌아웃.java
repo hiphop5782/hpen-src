@@ -250,7 +250,7 @@ class ZoomAndPanCanvas extends Canvas {
 	}
 }
 
-public class Exam07_ÁÜÀÎÁÜ¾Æ¿ô {
+public class Exam07_ì¤Œì¸ì¤Œì•„ì›ƒ {
 	public static void main(String[] args) {
 		JFrame frame = new JFrame("Zoom and Pan Canvas");
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

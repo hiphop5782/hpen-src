@@ -10,7 +10,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
-public class Exam33_µå·¡±×¼º´ÉÇâ»ó {
+public class Exam33_ë“œë˜ê·¸ì„±ëŠ¥í–¥ìƒ {
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			
@@ -30,7 +30,7 @@ public class Exam33_µå·¡±×¼º´ÉÇâ»ó {
 					public void mouseMoved(MouseEvent e) {
 						mousePosition.setText("X: " + e.getX() + " Y: " + e.getY());
 						long currentTime = System.currentTimeMillis();
-						System.out.println("Â÷ÀÌ : "+(currentTime - lastTime));
+						System.out.println("ï¿½ï¿½ï¿½ï¿½ : "+(currentTime - lastTime));
 						lastTime = currentTime;
 					}
 				});

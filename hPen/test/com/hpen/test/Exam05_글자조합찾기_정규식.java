@@ -1,20 +1,20 @@
 package com.hpen.test;
 
-public class Exam05_±ÛÀÚÁ¶ÇÕÃ£±â_Á¤±Ô½Ä {
+public class Exam05_ê¸€ìì¡°í•©ì°¾ê¸°_ì •ê·œì‹ {
 //	public static void main(String[] args){
 //		String str = "dkssudgktpdy qksrkqtmqslek. zzzzz";
 //		str = KoreanCharacter.parseKorean(str);
 //		System.out.println(str);
 //		
-//		System.out.println("=====[ 1¹ø Á¤±Ô½Ä : 1,3±ÛÀÚ ] =====");
-//		String regex1 = "[¤¡-¤¾]([¤¿-¤Ó]([¤¡-¤¾]{1,2})?)?";
+//		System.out.println("=====[ 1ï¿½ï¿½ ï¿½ï¿½ï¿½Ô½ï¿½ : 1,3ï¿½ï¿½ï¿½ï¿½ ] =====");
+//		String regex1 = "[ï¿½ï¿½-ï¿½ï¿½]([ï¿½ï¿½-ï¿½ï¿½]([ï¿½ï¿½-ï¿½ï¿½]{1,2})?)?";
 //		Matcher m1 = Pattern.compile(regex1).matcher(str);
 //		while(m1.find()){
 //			System.out.println(m1.group());
 //		}
 //		
-//		System.out.println("=====[ 2¹ø Á¤±Ô½Ä : 2±ÛÀÚ ] =====");
-//		String regex2 = "[¤¡-¤¾][¤¿-¤Ó]?";
+//		System.out.println("=====[ 2ï¿½ï¿½ ï¿½ï¿½ï¿½Ô½ï¿½ : 2ï¿½ï¿½ï¿½ï¿½ ] =====");
+//		String regex2 = "[ï¿½ï¿½-ï¿½ï¿½][ï¿½ï¿½-ï¿½ï¿½]?";
 //		Matcher m2 = Pattern.compile(regex2).matcher(str);
 //		StringBuffer buffer = new StringBuffer();
 //		while(m2.find()){

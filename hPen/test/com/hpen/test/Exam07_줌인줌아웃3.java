@@ -175,7 +175,7 @@ class ZoomBoxWindow {
 
 }
 
-public class Exam07_ÁÜÀÎÁÜ¾Æ¿ô3 {
+public class Exam07_ì¤Œì¸ì¤Œì•„ì›ƒ3 {
 	public static void main(String[] args) {
 		new ZoomBoxWindow();
 	}

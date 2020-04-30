@@ -13,7 +13,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
-public class Exam15_ÀÌ¹ÌÁöÄ¿¼­ {
+public class Exam15_ì´ë¯¸ì§€ì»¤ì„œ {
 	public static void main(String[] args) throws IOException{
 		JFrame frame = new JFrame();
 		frame.setSize(500, 500);

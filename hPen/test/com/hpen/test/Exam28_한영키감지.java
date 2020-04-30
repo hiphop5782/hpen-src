@@ -8,7 +8,7 @@ import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-public class Exam28_ÇÑ¿µÅ°°¨Áö {
+public class Exam28_í•œì˜í‚¤ê°ì§€ {
 	public static void main(String[] args) {
 		JFrame frame = new JFrame();
 		frame.setBounds(100, 100, 500, 500);

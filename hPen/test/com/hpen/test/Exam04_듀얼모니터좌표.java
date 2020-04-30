@@ -7,7 +7,7 @@ import java.io.File;
 
 import javax.imageio.ImageIO;
 
-public class Exam04_µà¾ó¸ð´ÏÅÍÁÂÇ¥ {
+public class Exam04_ë“€ì–¼ëª¨ë‹ˆí„°ì¢Œí‘œ {
 	public static void main(String[] args) throws Exception{
 //		while(true){
 //			PointerInfo info = MouseInfo.getPointerInfo();

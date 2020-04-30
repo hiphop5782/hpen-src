@@ -39,13 +39,13 @@ class TestPanel extends JPanel {
 		crash = checkCrash(start, end, test, radius);
 	}
 
-	// µÎÁ¡À» ÀÕ´Â Á÷¼±°ú ¿øÀÌ Ãæµ¹ÀÎÁö °Ë»ç
-	// ¿øÀÇ ¹æÁ¤½Ä°ú Á÷¼±ÀÇ ¹æÁ¤½ÄÀ» ¿¬°á
-	// (x-a)©÷ + (y-b)©÷ = r©÷
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Õ´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½æµ¹ï¿½ï¿½ï¿½ï¿½ ï¿½Ë»ï¿½
+	// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ä°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+	// (x-a)ï¿½ï¿½ + (y-b)ï¿½ï¿½ = rï¿½ï¿½
 	// y = cx + d
-	// -> (x-a)©÷ + (cx + d - b)©÷ = r©÷
-	// -> (x-a)©÷ + (cx + v)©÷ = r©÷
-	// (Âü°í)
+	// -> (x-a)ï¿½ï¿½ + (cx + d - b)ï¿½ï¿½ = rï¿½ï¿½
+	// -> (x-a)ï¿½ï¿½ + (cx + v)ï¿½ï¿½ = rï¿½ï¿½
+	// (ï¿½ï¿½ï¿½ï¿½)
 	// http://flash365.dreamx.com/game/view.php?id=flash_study&page=11&sn1=&divpage=1&sn=off&ss=on&sc=on&&select_arrange=hit&desc=desc&no=11988
 	public boolean checkCrash(Point p1, Point p2, Point test, int r) {
 		if (r < 0) {
@@ -66,14 +66,14 @@ class TestPanel extends JPanel {
 				if (D >= 0) {
 					if ((test.x - c * e + Math.sqrt(D)) / (c * c + 1) >= Math.min(p1.x, p2.x)
 							&& (test.x - c * e - Math.sqrt(D)) / (c * c + 1) <= Math.max(p1.x, p2.x)) {
-						// ´êÀÎ°Å´Ù
+						// ï¿½ï¿½ï¿½Î°Å´ï¿½
 						return true;
 					} else {
-						// ¾È´êÀÎ°Å´Ù
+						// ï¿½È´ï¿½ï¿½Î°Å´ï¿½
 						return false;
 					}
 				} else {
-					// ¾È´êÀÎ°Å´Ù
+					// ï¿½È´ï¿½ï¿½Î°Å´ï¿½
 					return false;
 				}
 			}
@@ -82,21 +82,21 @@ class TestPanel extends JPanel {
 			System.out.println("D = "+D);
 			if (D >= 0) {
 				if (test.y + Math.sqrt(D) > Math.min(p1.y, p2.y) && test.y - Math.sqrt(D) < Math.max(p1.y, p2.y)) {
-					// ´êÀÎ°Å
+					// ï¿½ï¿½ï¿½Î°ï¿½
 					return true;
 				} else {
-					// ¾È´êÀÎ°Å
+					// ï¿½È´ï¿½ï¿½Î°ï¿½
 					return false;
 				}
 			} else {
-				// ¾È´êÀÎ°Å
+				// ï¿½È´ï¿½ï¿½Î°ï¿½
 				return false;
 			}
 		}
 	}
 }
 
-public class Exam24_Ãæµ¹ {
+public class Exam24_ì¶©ëŒ{
 	public static void main(String[] args) {
 		JFrame frame = new JFrame();
 		frame.setBounds(0, 0, 500, 500);

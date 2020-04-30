@@ -7,7 +7,7 @@ import javax.swing.JPanel;
 
 import com.hakademy.utility.screen.ScreenManager;
 
-public class Exam21_�ǽð�ĸ�� {
+public class Exam21_실시간캡쳐 {
 	static BufferedImage im;
 	public static void main(String[] args) throws Exception{
 		JFrame fr = new JFrame();

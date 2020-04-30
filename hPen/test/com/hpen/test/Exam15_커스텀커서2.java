@@ -8,7 +8,7 @@ import javax.swing.JFrame;
 
 import com.hpen.util.CursorManager;
 
-public class Exam15_Ä¿½ºÅÒÄ¿¼­2 {
+public class Exam15_ì»¤ìŠ¤í…€ì»¤ì„œ2 {
 	public static void main(String[] args) throws Exception{
 		JFrame frame = new JFrame();
 		frame.setSize(500, 500);

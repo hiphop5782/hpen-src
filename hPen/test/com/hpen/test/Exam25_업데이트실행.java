@@ -2,7 +2,7 @@ package com.hpen.test;
 
 import com.hpen.update.UpdateProgram;
 
-public class Exam25_¾÷µ¥ÀÌÆ®½ÇÇà {
+public class Exam25_ì—…ë°ì´íŠ¸ì‹¤í–‰ {
 	public static void main(String[] args) throws Exception {
 //		UpdateProgram.main(new String[] {"2.4.2", System.getProperty("user.dir")});
 //		UpdateProgram.main(new String[] {"2.4.2"});

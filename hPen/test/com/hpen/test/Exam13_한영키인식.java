@@ -9,7 +9,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 
-public class Exam13_ÇÑ¿µÅ°ÀÎ½Ä {
+public class Exam13_í•œì˜í‚¤ì¸ì‹ {
 	public static void main(String[] args) {
 		JFrame frame = new JFrame();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -19,7 +19,7 @@ public class Exam13_ÇÑ¿µÅ°ÀÎ½Ä {
 		panel.getInputMap().put(key, "switch charset");
 		panel.getActionMap().put("switch charset", new AbstractAction() {
 			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showMessageDialog(null, "ÇÑ¿µÀüÈ¯");
+				JOptionPane.showMessageDialog(null, "ï¿½Ñ¿ï¿½ï¿½ï¿½È¯");
 			}
 		});
 		System.out.println(panel.getInputMap().keys());

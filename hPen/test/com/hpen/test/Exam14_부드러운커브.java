@@ -6,7 +6,7 @@ import java.awt.geom.QuadCurve2D;
 
 import javax.swing.JFrame;
 
-public class Exam14_ºÎµå·¯¿îÄ¿ºê {
+public class Exam14_ë¶€ë“œëŸ¬ìš´ì»¤ë¸Œ {
 	public static void main(String[] args) {
 		JFrame frame = new JFrame(){
 			@Override

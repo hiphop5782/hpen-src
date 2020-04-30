@@ -34,7 +34,7 @@ class Mal_Sub extends JFrame implements ActionListener, KeyListener, FocusListen
 		con = this.getContentPane();
 		jp = new JPanel(new GridLayout(3, 2));
 
-		lb_korean = new JLabel("          ÇÑ±Û  ÀÔ·Â  :  ");
+		lb_korean = new JLabel("          ï¿½Ñ±ï¿½  ï¿½Ô·ï¿½  :  ");
 		lb_english = new JLabel("          Input  English  :  ");
 		lb_number = new JLabel("          Input  Number  :  ");
 
@@ -42,7 +42,7 @@ class Mal_Sub extends JFrame implements ActionListener, KeyListener, FocusListen
 		tf_english = new JTextField(20);
 		tf_number = new JTextField(20);
 
-		// ´Ù½Ã ¿µ¹®À¸·Î...
+		// ï¿½Ù½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½...
 		// Character.Subset[] subset = null;
 		// inCtx.setCharacterSubsets( subset );
 
@@ -78,11 +78,11 @@ class Mal_Sub extends JFrame implements ActionListener, KeyListener, FocusListen
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == tf_korean) { // ÇÑ±Û ÀÔ·Â¶õ¿¡ ÇÑ±ÛÀ» ÀÔ·ÂÇÑ ÈÄ¿¡ ¿£ÅÍ¸¦ Ä¡¸é.. Æ÷Ä¿½º¸¦
-											// ³Ñ±ä´Ù(¸¶Ä¡ ÅÇÅ°Ã³·³)
+		if (e.getSource() == tf_korean) { // ï¿½Ñ±ï¿½ ï¿½Ô·Â¶ï¿½ï¿½ï¿½ ï¿½Ñ±ï¿½ï¿½ï¿½ ï¿½Ô·ï¿½ï¿½ï¿½ ï¿½Ä¿ï¿½ ï¿½ï¿½ï¿½Í¸ï¿½ Ä¡ï¿½ï¿½.. ï¿½ï¿½Ä¿ï¿½ï¿½ï¿½ï¿½
+											// ï¿½Ñ±ï¿½ï¿½(ï¿½ï¿½Ä¡ ï¿½ï¿½Å°Ã³ï¿½ï¿½)
 			tf_english.requestFocus();
-		} else if (e.getSource() == tf_english) {// ¿µ¾î¶õ¿¡ ¿µ¾îÀ» ÀÔ·ÂÇÑ ÈÄ¿¡ ¿£ÅÍ¸¦ Ä¡¸é..
-													// Æ÷Ä¿½º¸¦ ³Ñ±ä´Ù(¸¶Ä¡ ÅÇÅ°Ã³·³)
+		} else if (e.getSource() == tf_english) {// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ô·ï¿½ï¿½ï¿½ ï¿½Ä¿ï¿½ ï¿½ï¿½ï¿½Í¸ï¿½ Ä¡ï¿½ï¿½..
+													// ï¿½ï¿½Ä¿ï¿½ï¿½ï¿½ï¿½ ï¿½Ñ±ï¿½ï¿½(ï¿½ï¿½Ä¡ ï¿½ï¿½Å°Ã³ï¿½ï¿½)
 			tf_number.requestFocus();
 		}
 	}
@@ -107,7 +107,7 @@ class Mal_Sub extends JFrame implements ActionListener, KeyListener, FocusListen
 	public void focusGained(FocusEvent e) {
 		if (e.getSource() == tf_korean) {
 			try {
-				InputContext inCtx2 = tf_korean.getInputContext(); // comp´Â text
+				InputContext inCtx2 = tf_korean.getInputContext(); // compï¿½ï¿½ text
 																	// component
 				Character.Subset[] subset2 = { Character.UnicodeBlock.HANGUL_SYLLABLES };
 				inCtx2.setCharacterSubsets(subset2);
@@ -115,7 +115,7 @@ class Mal_Sub extends JFrame implements ActionListener, KeyListener, FocusListen
 			}
 		} else if (e.getSource() == tf_english) {
 			try {
-				InputContext inCtx = tf_korean.getInputContext(); // comp´Â text
+				InputContext inCtx = tf_korean.getInputContext(); // compï¿½ï¿½ text
 																	// component
 				Character.Subset[] subset = null;
 				inCtx.setCharacterSubsets(subset);
@@ -123,7 +123,7 @@ class Mal_Sub extends JFrame implements ActionListener, KeyListener, FocusListen
 			}
 		} else if (e.getSource() == tf_number) {
 			try {
-				InputContext inCtx = tf_korean.getInputContext(); // comp´Â text
+				InputContext inCtx = tf_korean.getInputContext(); // compï¿½ï¿½ text
 																	// component
 				Character.Subset[] subset = { Character.UnicodeBlock.NUMBER_FORMS };
 				inCtx.setCharacterSubsets(subset);
@@ -137,7 +137,7 @@ class Mal_Sub extends JFrame implements ActionListener, KeyListener, FocusListen
 	}
 }
 
-public class Exam12_ÇÑ¿µÅ°ÀÚµ¿ÀÎ½ÄÇÊµå {
+public class Exam12_í•œì˜í‚¤ìë™ì¸ì‹í•„ë“œ {
 	public static void main(String[] args) {
 		JFrame.setDefaultLookAndFeelDecorated(true);
 

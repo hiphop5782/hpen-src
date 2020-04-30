@@ -6,7 +6,7 @@ import java.nio.file.Paths;
 import java.nio.file.attribute.FileOwnerAttributeView;
 import java.nio.file.attribute.UserPrincipal;
 
-public class Exam09_ÆÄÀÏ±ÇÇÑ {
+public class Exam09_íŒŒì¼ê¶Œí•œ {
 	public static void main(String[] args) throws Exception{
 		
 //		Files.setPosixFilePermissions(Paths.get("C:\\Windows\\test.txt"), 
