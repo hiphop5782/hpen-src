@@ -5,16 +5,17 @@ import java.awt.event.KeyEvent;
 import javax.swing.KeyStroke;
 
 public class KeyManager {
-	//KeyStroke 모음
+	//KeyStroke manager
 	
-	//컨트롤 키
+	//special key
 	public static final KeyStroke esc = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0);
 	public static final KeyStroke enter = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0);
 	public static final KeyStroke backspace = KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, 0);
 	public static final KeyStroke ctrl = KeyStroke.getKeyStroke(KeyEvent.VK_CONTROL, 0);
 	public static final KeyStroke tab = KeyStroke.getKeyStroke(KeyEvent.VK_TAB, 0);
+	public static final KeyStroke korean = KeyStroke.getKeyStroke(KeyEvent.VK_KANA, 0);
 	
-	//F1 ~ F12
+	//function key
 	public static final KeyStroke f1 = KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0);
 	public static final KeyStroke f2 = KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0);
 	public static final KeyStroke f3 = KeyStroke.getKeyStroke(KeyEvent.VK_F3, 0);
@@ -43,7 +44,7 @@ public class KeyManager {
 	public static final KeyStroke c = KeyStroke.getKeyStroke(KeyEvent.VK_C, 0);
 	public static final KeyStroke v = KeyStroke.getKeyStroke(KeyEvent.VK_V, 0);
 	
-	//숫자
+	//number key
 	public static final KeyStroke num1 = KeyStroke.getKeyStroke(KeyEvent.VK_1, 0);
 	public static final KeyStroke num2 = KeyStroke.getKeyStroke(KeyEvent.VK_2, 0);
 	public static final KeyStroke num3 = KeyStroke.getKeyStroke(KeyEvent.VK_3, 0);
@@ -55,7 +56,7 @@ public class KeyManager {
 	public static final KeyStroke num9 = KeyStroke.getKeyStroke(KeyEvent.VK_9, 0);
 	public static final KeyStroke num0 = KeyStroke.getKeyStroke(KeyEvent.VK_0, 0);
 	
-	//멀티 키
+	//ctrl+key
 	public static final KeyStroke ctrl_z = KeyStroke.getKeyStroke(KeyEvent.VK_Z, KeyEvent.CTRL_DOWN_MASK);
 	public static final KeyStroke ctrl_s = KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK);
 	public static final KeyStroke ctrl_y = KeyStroke.getKeyStroke(KeyEvent.VK_Y, KeyEvent.CTRL_DOWN_MASK);
@@ -64,7 +65,7 @@ public class KeyManager {
 	public static final KeyStroke ctrl_r = KeyStroke.getKeyStroke(KeyEvent.VK_R, KeyEvent.CTRL_DOWN_MASK);
 	public static final KeyStroke shift_space = KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, KeyEvent.SHIFT_DOWN_MASK);
 	
-	//알트 조합키
+	//alt+key
 	public static final KeyStroke alt1 = KeyStroke.getKeyStroke(KeyEvent.VK_1, KeyEvent.ALT_DOWN_MASK);
 	public static final KeyStroke alt2 = KeyStroke.getKeyStroke(KeyEvent.VK_2, KeyEvent.ALT_DOWN_MASK);
 	public static final KeyStroke alt3 = KeyStroke.getKeyStroke(KeyEvent.VK_3, KeyEvent.ALT_DOWN_MASK);
@@ -72,6 +73,7 @@ public class KeyManager {
 	public static final KeyStroke alt5 = KeyStroke.getKeyStroke(KeyEvent.VK_5, KeyEvent.ALT_DOWN_MASK);
 	public static final KeyStroke alt6 = KeyStroke.getKeyStroke(KeyEvent.VK_6, KeyEvent.ALT_DOWN_MASK);
 	
+	//number pad
 	public static final KeyStroke numpad1 = KeyStroke.getKeyStroke(KeyEvent.VK_NUMPAD1, 0);
 	public static final KeyStroke numpad2 = KeyStroke.getKeyStroke(KeyEvent.VK_NUMPAD2, 0);
 	public static final KeyStroke numpad3 = KeyStroke.getKeyStroke(KeyEvent.VK_NUMPAD3, 0);
