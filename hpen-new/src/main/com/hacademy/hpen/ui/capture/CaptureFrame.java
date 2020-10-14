@@ -125,18 +125,15 @@ public class CaptureFrame extends JFrame{
 	
 	public void start() {
 		Rectangle rect = screenManager.getCurrentMonitorRect();
-		BufferedImage image = screenManager.getCurrentMonitorImage();
-		start(rect, image);
+		start(rect);
 	}
 	public void start(int screen) {
 		Rectangle rect = screenManager.getMonitorRect(screen);
-		BufferedImage image = screenManager.getMonitorImage(screen);
 		setScreenNumber(screen);
-		start(rect, image);
+		start(rect);
 	}
-	public void start(Rectangle rect, Image image) {
+	public void start(Rectangle rect) {
 		setBounds(rect);
-		setBackgroundImage(image);
 		painter.start();
 		setVisible(true);
 	}
@@ -172,13 +169,15 @@ public class CaptureFrame extends JFrame{
 	public void paint(Graphics g) {
 		//더블 버퍼링을 위한 백그라운드 준비
 		if(background == null) {
-			Image image = isCurrentScreenCaptureMode() ? 
-					screenManager.getCurrentMonitorImage() : screenManager.getMonitorImage(getScreenNumber());
-			this.setBackgroundImage(image);
+			Image image = createImage(getWidth(), getHeight());
+			setBackgroundImage(image);
 		}
 		else {
-			
+			backgroundPen.clearRect(0, 0, getWidth(), getHeight());
 		}
+		
+		//배경 그리기
+		drawBackground();
 		
 		//십자선 그리기
 		drawMouseLocation();
@@ -188,11 +187,23 @@ public class CaptureFrame extends JFrame{
 	}
 	
 	/**
+	 * 배경 그리기
+	 */
+	private void drawBackground() {
+		if(background == null) return;
+		
+		Image image = isCurrentScreenCaptureMode() ? 
+				screenManager.getCurrentMonitorImage() : screenManager.getMonitorImage(getScreenNumber());
+		backgroundPen.drawImage(image, 0, 0, getWidth(), getHeight(), this);
+	}
+	
+	/**
 	 * 마우스 위치 그리기
 	 * - 십자선으로 표시
 	 */
 	private void drawMouseLocation() {
-		backgroundPen.setColor(Color.black);
+		if(backgroundPen.getColor() != Color.black)
+			backgroundPen.setColor(Color.black);
 		Rectangle rect = isCurrentScreenCaptureMode() ? 
 				screenManager.getCurrentMonitorRect() : screenManager.getMonitorRect(getScreenNumber());
 		backgroundPen.drawLine(mouseMotionListener.getX(), 0, mouseMotionListener.getX(), rect.height);
