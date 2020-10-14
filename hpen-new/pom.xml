@@ -19,7 +19,16 @@
 	    <scope>provided</scope>
 	</dependency>
   
-  	<!-- logging module -->
+  	<!-- 
+  		logging module
+  		- slf4j
+  		- logback 
+ 	-->
+  	<dependency>
+	    <groupId>org.slf4j</groupId>
+	    <artifactId>slf4j-api</artifactId>
+	    <version>1.7.30</version>
+	</dependency>
   	<dependency>
 	    <groupId>ch.qos.logback</groupId>
 	    <artifactId>logback-classic</artifactId>
@@ -38,7 +47,7 @@
   </dependencies>
   
   <build>
-    <sourceDirectory>src</sourceDirectory>
+    <sourceDirectory>src/main</sourceDirectory>
     <plugins>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
