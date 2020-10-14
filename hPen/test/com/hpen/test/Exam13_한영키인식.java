@@ -19,7 +19,7 @@ public class Exam13_한영키인식 {
 		panel.getInputMap().put(key, "switch charset");
 		panel.getActionMap().put("switch charset", new AbstractAction() {
 			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showMessageDialog(null, "�ѿ���ȯ");
+				JOptionPane.showMessageDialog(null, "한영");
 			}
 		});
 		System.out.println(panel.getInputMap().keys());

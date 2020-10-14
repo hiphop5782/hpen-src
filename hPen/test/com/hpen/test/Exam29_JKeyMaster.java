@@ -12,5 +12,6 @@ public class Exam29_JKeyMaster {
 		provider.register(KeyStroke.getKeyStroke(KeyEvent.VK_1, 0), e->{
 			System.out.println(e);
 		});
+		
 	}
 }
