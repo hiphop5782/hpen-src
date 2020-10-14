@@ -1,9 +1,0 @@
-#screen capture property
-
-hpen.capture.border.thickness=3
-hpen.capture.border.color=000000
-hpen.capture.livecapture=false
-hpen.capture.zoom.size=200
-hpen.capture.zoom.rate=5
-hpen.capture.save.clipboard=true
-hpen.capture.save.location=image/capture
