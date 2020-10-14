@@ -11,6 +11,7 @@ import java.lang.reflect.InvocationTargetException;
 import javax.imageio.ImageIO;
 
 import org.junit.Before;
+import org.junit.Test;
 
 import com.hacademy.hpen.util.loader.InMemoryObjectLoader;
 import com.hacademy.hpen.util.screen.ScreenManager;
