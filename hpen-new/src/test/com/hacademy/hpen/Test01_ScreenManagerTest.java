@@ -17,7 +17,7 @@ import com.hacademy.hpen.util.screen.ScreenManager;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class Test01_ScreenManager {
+public class Test01_ScreenManagerTest {
 
 	ScreenManager manager;
 	
