@@ -13,20 +13,18 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import com.hacademy.hpen.util.loader.annotation.Component;
+
 /**
- * 화면을 제어하는 기능을 가진 Manager<br>
- * 싱글톤 방식으로 구현
- * @author User
+ * 화면을 제어하는 기능을 가진 Manager
+ * @author hiphop5782
  */
+@Component
 public class ScreenManager {
-
-	private static ScreenManager manager = new ScreenManager();
-	public static ScreenManager getManager() {
-		return manager;
-	}
-
 	private Robot r;
-	private ScreenManager() {
+	public ScreenManager() {}
+	
+	public void init() {
 		try {
 			r = new Robot();
 		}
@@ -34,7 +32,6 @@ public class ScreenManager {
 			System.err.println("create robot error");
 		}
 	}
-	
 
 	public BufferedImage getCurrentMonitorImage() {
 		return r.createScreenCapture(getCurrentMonitorRect());

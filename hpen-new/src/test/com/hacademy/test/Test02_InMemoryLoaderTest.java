@@ -1,4 +1,4 @@
-package com.hacademy.hpen;
+package com.hacademy.test;
 
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
@@ -10,8 +10,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.hacademy.hpen.util.loader.InMemoryObjectLoader;
-import com.hacademy.hpen.util.loader.testobj.TestObjectA;
-import com.hacademy.hpen.util.loader.testobj.TestObjectB;
+import com.hacademy.test.util.loader.testobj.TestObjectA;
+import com.hacademy.test.util.loader.testobj.TestObjectB;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -22,7 +22,7 @@ public class Test02_InMemoryLoaderTest {
 	
 	@Before
 	public void before() throws IllegalArgumentException, IllegalAccessException, InstantiationException, InvocationTargetException, NoSuchMethodException, SecurityException, IOException {
-		loader = new InMemoryObjectLoader("com.hacademy.hpen");
+		loader = new InMemoryObjectLoader("com.hacademy.test.util.loader.testobj");
 	}
 	
 	@Test

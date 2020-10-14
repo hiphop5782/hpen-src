@@ -1,4 +1,4 @@
-package com.hacademy.hpen.util.loader.testobj;
+package com.hacademy.test.util.loader.testobj;
 
 import com.hacademy.hpen.util.loader.annotation.Autowired;
 import com.hacademy.hpen.util.loader.annotation.Component;

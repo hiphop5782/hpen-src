@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -20,7 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 /**
  * detect annotation and inject
  * - Component
- * - Inject
+ * - Autowired
  * @author hwang
  *
  */
@@ -35,6 +36,7 @@ public class InMemoryObjectLoader {
 		this.components = new HashMap<>();
 		this.detect();
 		this.inject();
+		this.init();
 	}
 	
 	/**
@@ -128,7 +130,6 @@ public class InMemoryObjectLoader {
 				if(ann.annotationType().equals(Component.class)) {
 					log.debug("[Component Load] {}", className);
 					components.put(classObject, classObject.getDeclaredConstructor().newInstance());
-//					System.out.println("[Detect] : "+className);
 				}
 			}
 		}
@@ -150,6 +151,16 @@ public class InMemoryObjectLoader {
 					f.setAccessible(true);
 					Object o = components.get(c);
 					f.set(o, components.get(f.getType()));
+				}
+			}
+		}
+	}
+	
+	public void init() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+		for(Class<?> c : components.keySet()) {
+			for(Method m : c.getMethods()) {
+				if(m.getName().equals("init")) {
+					m.invoke(components.get(c), new Object[] {});
 				}
 			}
 		}

@@ -3,8 +3,8 @@ package com.hpen.draw.ui;
 import javax.swing.JFrame;
 
 /**
- * µå·¡±× µÇÁö ¾Ê´Â ÀüÃ¼ È­¸é Ã¢À» ±¸ÇöÇÏ´Â Å¬·¡½º
- * Ã¢ÀÇ À§Ä¡´Â ¸¶¿ì½º Ä¿¼­°¡ À§Ä¡ÇÑ °÷À¸·Î ¼³Á¤
+ * ë“œë˜ê·¸ ë˜ì§€ ì•ŠëŠ” ì „ì²´ í™”ë©´ ì°½ì„ êµ¬í˜„í•˜ëŠ” í´ë˜ìŠ¤
+ * ì°½ì˜ ìœ„ì¹˜ëŠ” ë§ˆìš°ìŠ¤ ì»¤ì„œê°€ ìœ„ì¹˜í•œ ê³³ìœ¼ë¡œ ì„¤ì •
  * @author hwang
  */
 public abstract class FullScreenFrame extends JFrame{

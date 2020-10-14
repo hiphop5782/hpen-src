@@ -1,4 +1,4 @@
-package com.hacademy.hpen;
+package com.hacademy.test;
 
 import static org.junit.Assert.assertNotNull;
 
@@ -6,12 +6,13 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 
 import javax.imageio.ImageIO;
 
 import org.junit.Before;
-import org.junit.Test;
 
+import com.hacademy.hpen.util.loader.InMemoryObjectLoader;
 import com.hacademy.hpen.util.screen.ScreenManager;
 
 import lombok.extern.slf4j.Slf4j;
@@ -19,11 +20,13 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class Test01_ScreenManagerTest {
 
+	InMemoryObjectLoader loader;
 	ScreenManager manager;
 	
 	@Before
-	public void before() {
-		manager = ScreenManager.getManager();
+	public void before() throws IllegalArgumentException, IllegalAccessException, InstantiationException, InvocationTargetException, NoSuchMethodException, SecurityException, IOException {
+		loader = new InMemoryObjectLoader("com.hacademy.hpen");
+		manager = loader.getBean(ScreenManager.class);
 	}
 	
 //	@Test

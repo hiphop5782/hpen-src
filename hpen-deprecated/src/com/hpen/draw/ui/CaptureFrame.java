@@ -38,8 +38,8 @@ import com.hpen.util.ScreenData;
 import com.hpen.util.Sequence;
 
 /**
- * ½ºÅ©¸° Ä¸ÃÄ È­¸é, Á¤È®ÇÑ ¹üÀ§ ÁöÁ¤À» Áö¿øÇÏµµ·Ï ÇÑ´Ù ÀÏ´ÜÀº Á¤Áö È­¸éÀ¸·Î Ä¸ÃÄÇÏ°í ³ªÁß¿¡ µ¿¿µ»ó Ä¸ÃÄ ±â´ÉÀº µû·Î ±¸Çö
- * ÇöÀç ÀÛ¾÷Ç¥½ÃÁÙÀÌ Àß ³ª¿ÀÁö ¾Ê´Â Çö»óÀÌ ¹ß»ıÁß
+ * ìŠ¤í¬ë¦° ìº¡ì³ í™”ë©´, ì •í™•í•œ ë²”ìœ„ ì§€ì •ì„ ì§€ì›í•˜ë„ë¡ í•œë‹¤ ì¼ë‹¨ì€ ì •ì§€ í™”ë©´ìœ¼ë¡œ ìº¡ì³í•˜ê³  ë‚˜ì¤‘ì— ë™ì˜ìƒ ìº¡ì³ ê¸°ëŠ¥ì€ ë”°ë¡œ êµ¬í˜„
+ * í˜„ì¬ ì‘ì—…í‘œì‹œì¤„ì´ ì˜ ë‚˜ì˜¤ì§€ ì•ŠëŠ” í˜„ìƒì´ ë°œìƒì¤‘
  * @author Hwang
  *
  */
@@ -160,7 +160,7 @@ public class CaptureFrame extends CaptureScreenFrame {
 	}
 
 	/**
-	 * Ä¸ÃÄ ¿µ¿ªÀÇ ÀÌ¹ÌÁö¸¦ ¹öÆÛ¿¡ ÀúÀåÇÏ´Â ¸Ş¼Òµå
+	 * ìº¡ì³ ì˜ì—­ì˜ ì´ë¯¸ì§€ë¥¼ ë²„í¼ì— ì €ì¥í•˜ëŠ” ë©”ì†Œë“œ
 	 */
 	private BufferedImage saveImage;
 
@@ -179,11 +179,11 @@ public class CaptureFrame extends CaptureScreenFrame {
 			saveImage = robot.createScreenCapture(screen);
 
 			if(cOption.isCopytoClipboard()){
-				// ¹öÆÛ ÀúÀå
+				// ë²„í¼ ì €ì¥
 				ImageSelection selection = new ImageSelection(saveImage);
 				Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
 				clipboard.setContents(selection, null);
-				// System.out.println("ÀÌ¹ÌÁö ¹öÆÛ ÀúÀå ¿Ï·á");
+				// System.out.println("ì´ë¯¸ì§€ ë²„í¼ ì €ì¥ ì™„ë£Œ");
 			}else{
 				File dir = new File(cOption.getSaveFolder());
 				if(!dir.exists()) dir.mkdirs();
@@ -204,7 +204,7 @@ public class CaptureFrame extends CaptureScreenFrame {
 	private SaveImageFileChooser chooser = new SaveImageFileChooser(DrawingOption.getInstance().getSaveFolder());
 	
 	/**
-	 * ÆÄÀÏ chooserÀÇ È®ÀåÀÚ ÇÊÅÍ¸µ ³»¿ªÀ» ÀúÀåÇÏ´Â Å¬·¡½º
+	 * íŒŒì¼ chooserì˜ í™•ì¥ì í•„í„°ë§ ë‚´ì—­ì„ ì €ì¥í•˜ëŠ” í´ë˜ìŠ¤
 	 * @author Hwang
 	 *
 	 */
@@ -304,7 +304,7 @@ public class CaptureFrame extends CaptureScreenFrame {
 	}
 
 	/**
-	 * ½ÊÀÚ°¡·Î ¸¶¿ì½º ÁÂÇ¥¸¦ Ç¥½ÃÇØ¾ß ÇÑ´Ù.
+	 * ì‹­ìê°€ë¡œ ë§ˆìš°ìŠ¤ ì¢Œí‘œë¥¼ í‘œì‹œí•´ì•¼ í•œë‹¤.
 	 */
 	private void drawMousePoint() {
 		if (!isDragged) {
@@ -315,13 +315,13 @@ public class CaptureFrame extends CaptureScreenFrame {
 				backScreen.drawLine(p.x, 0, p.x, r.height);
 				backScreen.drawLine(0, p.y, r.width, p.y);
 			} catch (Exception e) {
-				System.out.println("Ä¿¼­ ±×¸®±â ¿À·ù : " + e.getMessage());
+				System.out.println("ì»¤ì„œ ê·¸ë¦¬ê¸° ì˜¤ë¥˜ : " + e.getMessage());
 			}
 		}
 	}
 
 	private BufferedImage liveZoomImage;
-	private int zoomRate = CaptureOption.getInstance().getZoomrate();// 5¹èÁÜ
+	private int zoomRate = CaptureOption.getInstance().getZoomrate();// 5ë°°ì¤Œ
 
 	private void captureLivezoomImage() {
 		try {
@@ -346,9 +346,9 @@ public class CaptureFrame extends CaptureScreenFrame {
 	private void drawLivezoom() {
 		if (liveZoomImage == null)
 			return;
-		if (!onFirstarea()) {// ÁÂ»ó´Ü
+		if (!onFirstarea()) {// ì¢Œìƒë‹¨
 			backScreen.drawImage(liveZoomImage, area[0].x, area[0].y, area[0].width, area[0].height, this);
-		}else{// ¿ìÇÏ´Ü
+		}else{// ìš°í•˜ë‹¨
 			if(!onLastarea()){
 				backScreen.drawImage(liveZoomImage, area[1].x, area[1].y, area[1].width, area[1].height, this);
 			}
