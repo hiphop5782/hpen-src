@@ -1,7 +1,9 @@
 package com.hacademy.hpen.ui.capture;
 
+import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -173,7 +175,7 @@ public class CaptureFrame extends JFrame{
 			setBackgroundImage(image);
 		}
 		else {
-			backgroundPen.clearRect(0, 0, getWidth(), getHeight());
+			//backgroundPen.clearRect(0, 0, getWidth(), getHeight());
 		}
 		
 		//배경 그리기
@@ -192,9 +194,14 @@ public class CaptureFrame extends JFrame{
 	private void drawBackground() {
 		if(background == null) return;
 		
-		Image image = isCurrentScreenCaptureMode() ? 
-				screenManager.getCurrentMonitorImage() : screenManager.getMonitorImage(getScreenNumber());
-		backgroundPen.drawImage(image, 0, 0, getWidth(), getHeight(), this);
+		Graphics2D g2d = (Graphics2D)backgroundPen;
+		g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.CLEAR));
+		g2d.clearRect(0, 0, getWidth(), getHeight());
+		g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
+		
+//		Image image = isCurrentScreenCaptureMode() ? 
+//				screenManager.getCurrentMonitorImage() : screenManager.getMonitorImage(getScreenNumber());
+//		backgroundPen.drawImage(image, 0, 0, getWidth(), getHeight(), this);
 	}
 	
 	/**
