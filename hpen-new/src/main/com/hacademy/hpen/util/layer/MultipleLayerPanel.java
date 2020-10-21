@@ -1,6 +1,10 @@
 package com.hacademy.hpen.util.layer;
 
+import java.awt.BasicStroke;
+import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.util.Comparator;
 import java.util.Map;
@@ -29,9 +33,12 @@ public class MultipleLayerPanel extends JPanel{
 	
 
 	private static final long serialVersionUID = 1L;
+
+	public static final String BACKGROUND_LAYER = "background";
+	public static final String MOUSE_LAYER = "mouse";
 	
 	private Comparator<State> c = (s1, s2)->s2.order-s1.order;
-	private Map<State, BufferedImage> layers = new TreeMap<>(c);
+	private Map<State, Image> layers = new TreeMap<>(c);
 	
 	public MultipleLayerPanel() {}
 	
@@ -40,12 +47,12 @@ public class MultipleLayerPanel extends JPanel{
 		paint(g);
 	}
 	
-	private BufferedImage background;
+	private Image background;
 	
 	@Override
 	public void paint(Graphics g) {
 		if(background == null) {
-			background = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
+			background = createImage(getWidth(), getHeight());
 		}
 		else {
 			background.getGraphics().clearRect(0, 0, getWidth(), getHeight());
@@ -53,7 +60,7 @@ public class MultipleLayerPanel extends JPanel{
 		
 		for(State state : layers.keySet()) {
 			if(state.drawable) {
-				BufferedImage im = layers.get(state);
+				Image im = layers.get(state);
 				background.getGraphics().drawImage(im, 0, 0, getWidth(), getHeight(), this);
 			}
 		}
@@ -62,18 +69,56 @@ public class MultipleLayerPanel extends JPanel{
 	}
 	
 	public boolean addLayer(String name) {
-		BufferedImage image = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
+		Image image = createImage(getWidth(), getHeight());
 		return addLayer(name, image);
 	}
 	
-	public boolean addLayer(String name, BufferedImage image) {
+	public boolean addLayer(String name, Image image) {
 		boolean contains = layers.containsKey(State.builder().name(name).build());
 		layers.put(State.builder().name(name).drawable(true).build(), image);
+		repaint();
 		return contains;
 	}
 	
-	public BufferedImage getLayerImage(String name) {
+	public Image getLayerImage(String name) {
 		return layers.get(State.builder().name(name).build());
+	}
+	
+	public void setLayer(String name, BufferedImage image) {
+		clearLayer();
+		addLayer(name, image);
+	}
+	
+	public void clearLayer() {
+		layers.clear();
+		repaint();
+	}
+
+	public boolean hasLayer(String name) {
+		return layers.containsKey(State.builder().name(name).build());
+	}
+	
+	//마우스 전용 기능
+	public void refreshMouseLayer(int xpos, int ypos) {
+		if(hasLayer(MOUSE_LAYER)) {
+			addLayer(MOUSE_LAYER);
+		}
+		
+		Image img = getLayerImage(MOUSE_LAYER);
+		Graphics2D g2d = (Graphics2D)img.getGraphics();
+//		g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.CLEAR));
+//		g2d.fillRect(0, 0, getWidth(), getHeight());
+//		g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
+		if(g2d.getColor() != Color.black) 
+			g2d.setColor(Color.black);
+		g2d.setStroke(new BasicStroke(0.1f));
+		g2d.drawLine(xpos, 0, xpos, getHeight());
+		g2d.drawLine(0, ypos, getHeight(), ypos);
+		repaint();
+	}
+
+	public int getLayerCount() {
+		return layers.size();
 	}
 	
 }
