@@ -11,6 +11,7 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 public class Test04_TransparentFrame {
 	static class CustomFrame extends JFrame{
@@ -41,17 +42,15 @@ public class Test04_TransparentFrame {
 		}
 		@Override
 		public void paint(Graphics g) {
-			if(bg == null) {
-				bg = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
-			}
+			bg = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
 			Graphics2D g2d = (Graphics2D)bg.getGraphics();
 			g2d.clearRect(0, 0, getWidth(), getHeight());
 			g2d.setComposite(AlphaComposite.Clear);
 			g2d.fillRect(0, 0, getWidth(), getHeight());
 			g.drawImage(bg, 0, 0, getWidth(), getHeight(), this);
 			g.setColor(Color.black);
-			g.drawLine(x, 0, x, getWidth());	
-			g.drawLine(0, y, getHeight(), y);
+			g.drawLine(x, 0, x, getHeight());	
+			g.drawLine(0, y, getWidth(), y);
 		}
 	}
 	
