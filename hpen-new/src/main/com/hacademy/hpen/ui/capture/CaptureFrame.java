@@ -1,5 +1,7 @@
 package com.hacademy.hpen.ui.capture;
 
+import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -7,12 +9,10 @@ import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.awt.image.BufferedImage;
 
 import javax.swing.JFrame;
 
 import com.hacademy.hpen.util.cursor.CursorManager;
-import com.hacademy.hpen.util.layer.MultipleLayerPanel;
 import com.hacademy.hpen.util.loader.annotation.Autowired;
 import com.hacademy.hpen.util.loader.annotation.Component;
 import com.hacademy.hpen.util.screen.ScreenManager;
@@ -39,31 +39,21 @@ public class CaptureFrame extends JFrame{
 	private ScreenManager screenManager;
 	
 	@Autowired
-	private MultipleLayerPanel layerPanel;
-	
-	@Autowired
 	private ScheduledThread painter;
+	
+	private ScheduledListener listener = ()->{
+		repaint();
+	};
 	
 	@Autowired
 	private CaptureFrameMouseMotionListener mouseMotionListener;
 	
-	private ScheduledListener listener = ()->{
-		int xpos = mouseMotionListener.getX();
-		int ypos = mouseMotionListener.getY();
-		layerPanel.refreshMouseLayer(xpos, ypos);
-	};
-	
 	public void init() {
-		panelSetting();
 		frameSetting();
 		cursorSetting();
 		exitSetting();
 		keyEventSetting();
 		mouseEventSetting();
-	}
-	
-	private void panelSetting() {
-		setContentPane(layerPanel);
 	}
 	
 	/**
@@ -73,6 +63,7 @@ public class CaptureFrame extends JFrame{
 		setUndecorated(true);//타이틀바 삭제
 		setAlwaysOnTop(true);//항상 위
 		setResizable(false);//크기 조절 불가
+		setBackground(new Color(0,0,0,122));
 //		setExtendedState(MAXIMIZED_BOTH);//최대 크기
 		setFocusTraversalKeysEnabled(false);//탭키 잠금
 	}
@@ -137,15 +128,10 @@ public class CaptureFrame extends JFrame{
 	public void start() {
 //		Rectangle rect = screenManager.getCurrentMonitorRect();
 		Rectangle rect = new Rectangle(0, 0, 300, 300);
-		BufferedImage image = screenManager.getCurrentMonitorImage();
-		layerPanel.setLayer(MultipleLayerPanel.BACKGROUND_LAYER, image);
-		System.out.println(layerPanel.getLayerCount());
 		start(rect);
 	}
 	public void start(int screen) {
 		Rectangle rect = screenManager.getMonitorRect(screen);
-		BufferedImage image = screenManager.getMonitorImage(screen);
-		layerPanel.setLayer(MultipleLayerPanel.BACKGROUND_LAYER, image);
 		setScreenNumber(screen);
 		start(rect);
 	}
@@ -168,6 +154,20 @@ public class CaptureFrame extends JFrame{
 	public void finish() {
 		painter.kill();
 		setVisible(false);
+	}
+	
+	/**
+	 * 페인트 기능
+	 */
+	@Override
+	public void update(Graphics g) {
+		paint(g);
+	}
+	
+	@Override
+	public void paint(Graphics g) {
+		g.setColor(new Color(0, 0, 0, 122));
+		g.fillRect(0, 0, getWidth(), getHeight());
 	}
 	
 }

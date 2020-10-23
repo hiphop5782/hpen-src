@@ -1,10 +1,7 @@
 package com.hacademy.hpen.util.layer;
 
-import java.awt.AlphaComposite;
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.util.Comparator;
@@ -53,7 +50,8 @@ public class MultipleLayerPanel extends JPanel{
 	@Override
 	public void paint(Graphics g) {
 		if(background == null) {
-			background = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_4BYTE_ABGR);
+			BufferedImage image = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_4BYTE_ABGR);
+			background = convertToTransparent(image);
 		}
 		else {
 			background.getGraphics().clearRect(0, 0, getWidth(), getHeight());
@@ -70,13 +68,13 @@ public class MultipleLayerPanel extends JPanel{
 	}
 	
 	public boolean addLayer(String name) {
-		Image image = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_4BYTE_ABGR);
+		Image image = createImage(getWidth(), getHeight());
 		return addLayer(name, image);
 	}
 	
 	public boolean addLayer(String name, Image image) {
 		boolean contains = layers.containsKey(State.builder().name(name).build());
-		layers.put(State.builder().order(layers.size()).name(name).drawable(true).build(), image);
+		layers.put(State.builder().name(name).drawable(true).build(), image);
 		repaint();
 		return contains;
 	}
@@ -105,21 +103,36 @@ public class MultipleLayerPanel extends JPanel{
 			addLayer(MOUSE_LAYER);
 		}
 		
-		Image img = getLayerImage(MOUSE_LAYER);
-		Graphics2D g2d = (Graphics2D)img.getGraphics();
-		g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.CLEAR));
-		g2d.fillRect(0, 0, getWidth(), getHeight());
-		g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
-		if(g2d.getColor() != Color.black) 
-			g2d.setColor(Color.black);
-		g2d.setStroke(new BasicStroke(0.1f));
-		g2d.drawLine(xpos, 0, xpos, getHeight());
-		g2d.drawLine(0, ypos, getHeight(), ypos);
-		repaint();
+//		Image img = getLayerImage(MOUSE_LAYER);
+//		Graphics2D g2d = (Graphics2D)img.getGraphics();
+//		g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.CLEAR, 0f));
+//		g2d.fillRect(0, 0, getWidth(), getHeight());
+//		g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
+//		if(g2d.getColor() != Color.black) 
+//			g2d.setColor(Color.black);
+//		g2d.setStroke(new BasicStroke(0.1f));
+//		g2d.drawLine(xpos, 0, xpos, getHeight());
+//		g2d.drawLine(0, ypos, getHeight(), ypos);
+//		repaint();
 	}
 
 	public int getLayerCount() {
 		return layers.size();
+	}
+	
+	public BufferedImage convertToTransparent(BufferedImage image) {
+		for(int i=0; i<image.getHeight(); i++) {
+			for(int j=0; j<image.getWidth(); j++) {
+				Color c = new Color(image.getRGB(j, i));
+				int r = c.getRed();
+				int g = c.getGreen();
+				int b = c.getBlue();
+				if((r == 255 && b == 255 && g == 255)) {
+					image.setRGB(j, i, 0xFF000000);
+				}
+			}
+		}
+		return image;
 	}
 	
 }
