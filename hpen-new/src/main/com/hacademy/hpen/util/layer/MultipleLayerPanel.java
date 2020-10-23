@@ -1,5 +1,6 @@
 package com.hacademy.hpen.util.layer;
 
+import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -52,7 +53,7 @@ public class MultipleLayerPanel extends JPanel{
 	@Override
 	public void paint(Graphics g) {
 		if(background == null) {
-			background = createImage(getWidth(), getHeight());
+			background = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_4BYTE_ABGR);
 		}
 		else {
 			background.getGraphics().clearRect(0, 0, getWidth(), getHeight());
@@ -69,13 +70,13 @@ public class MultipleLayerPanel extends JPanel{
 	}
 	
 	public boolean addLayer(String name) {
-		Image image = createImage(getWidth(), getHeight());
+		Image image = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_4BYTE_ABGR);
 		return addLayer(name, image);
 	}
 	
 	public boolean addLayer(String name, Image image) {
 		boolean contains = layers.containsKey(State.builder().name(name).build());
-		layers.put(State.builder().name(name).drawable(true).build(), image);
+		layers.put(State.builder().order(layers.size()).name(name).drawable(true).build(), image);
 		repaint();
 		return contains;
 	}
@@ -106,9 +107,9 @@ public class MultipleLayerPanel extends JPanel{
 		
 		Image img = getLayerImage(MOUSE_LAYER);
 		Graphics2D g2d = (Graphics2D)img.getGraphics();
-//		g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.CLEAR));
-//		g2d.fillRect(0, 0, getWidth(), getHeight());
-//		g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
+		g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.CLEAR));
+		g2d.fillRect(0, 0, getWidth(), getHeight());
+		g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
 		if(g2d.getColor() != Color.black) 
 			g2d.setColor(Color.black);
 		g2d.setStroke(new BasicStroke(0.1f));
