@@ -8,27 +8,32 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 
 public class Test04_TransparentFrame {
 	static class CustomFrame extends JFrame{
-		int x = 0, y = 0;
+		int x = 0, y = 0, dx = 0, dy = 0;
 		boolean flag = false;
-		BufferedImage bg;
+		Color transparent = new Color(0, 0, 0, 50);
 		CustomFrame(){
 			setResizable(false);
 			setUndecorated(true);
 			setExtendedState(MAXIMIZED_BOTH);
-			setBackground(new Color(0,0,0,122));
+			setBackground(transparent);
 			setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 			addMouseMotionListener(new MouseAdapter() {
 				@Override
 				public void mouseMoved(MouseEvent e) {
 					x = e.getX();
 					y = e.getY();
+					dx = dy = 0;
+				}
+				@Override
+				public void mouseDragged(MouseEvent e) {
+					dx = e.getX();
+					dy = e.getY();
+					System.out.println("x = " + x + ", y = " + y + ", dx = "+dx+", dy = " + dy);
 				}
 			});
 			addKeyListener(new KeyAdapter() {
@@ -42,15 +47,23 @@ public class Test04_TransparentFrame {
 		}
 		@Override
 		public void paint(Graphics g) {
-			bg = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
-			Graphics2D g2d = (Graphics2D)bg.getGraphics();
-			g2d.clearRect(0, 0, getWidth(), getHeight());
-			g2d.setComposite(AlphaComposite.Clear);
+//			Graphics2D g2d = (Graphics2D)g.create();
+			Graphics2D g2d = (Graphics2D)g;
+			g2d.setComposite(AlphaComposite.Src);
+			g2d.setColor(transparent);
 			g2d.fillRect(0, 0, getWidth(), getHeight());
-			g.drawImage(bg, 0, 0, getWidth(), getHeight(), this);
-			g.setColor(Color.black);
-			g.drawLine(x, 0, x, getHeight());	
-			g.drawLine(0, y, getWidth(), y);
+			
+			if(x < dx && y < dy) {
+				g2d.setColor(Color.blue);
+				g2d.drawRect(x, y, Math.abs(dx-x), Math.abs(dy-y));
+			}
+			else {
+				g2d.setColor(Color.black);
+				g2d.drawLine(x, 0, x, getHeight());
+				g2d.drawLine(0, y, getWidth(), y);
+			}
+			
+			g2d.dispose();
 		}
 	}
 	
@@ -58,7 +71,7 @@ public class Test04_TransparentFrame {
 		CustomFrame frame = new CustomFrame();
 		while(true) {
 			frame.repaint();
-			Thread.sleep(100);
+			Thread.sleep(1000/30);
 		}
 	}
 }
