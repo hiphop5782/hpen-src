@@ -129,6 +129,10 @@ public class ScreenManager {
 		return getMonitorImageData(screen, ImageType.PNG);
 	}
 	
+	public BufferedImage getImage(Rectangle rect) {
+		return r.createScreenCapture(rect);
+	}
+	
 }
 
 
