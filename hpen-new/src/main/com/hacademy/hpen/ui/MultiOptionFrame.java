@@ -7,12 +7,11 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.JFrame;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +30,7 @@ import lombok.extern.slf4j.Slf4j;
  * 	</p>
  */
 @Slf4j
-public class MultiOptionFrame extends JFrame{
+public abstract class MultiOptionFrame extends JFrame{
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -45,8 +44,10 @@ public class MultiOptionFrame extends JFrame{
 	public static final int FULLSCREEN_MODE = 0x2;
 	public static final int PAUSE_MODE = 0x4;
 	public static final int TRANSPARENT_MODE = 0x8;
-	public static final int CAPTURE_MODE = FULLSCREEN_MODE | TRANSPARENT_MODE;
-	public static final int NOTE_MODE = FULLSCREEN_MODE | TRANSPARENT_MODE;
+	public static final int KEYPREVENT_MODE = 0x10;
+	public static final int KEYPASS_MODE = 0x20;
+	public static final int CAPTURE_MODE = FULLSCREEN_MODE | TRANSPARENT_MODE | KEYPREVENT_MODE;
+	public static final int NOTE_MODE = FULLSCREEN_MODE | TRANSPARENT_MODE | KEYPREVENT_MODE;
 	
 	/**
 	 * TRANSPARENT_MODE에서 사용할 색상
@@ -59,10 +60,11 @@ public class MultiOptionFrame extends JFrame{
 	 * - 초기값은 전체화면에 정지화면 모드
 	 */
 	@Getter
-	private int frameMode = CAPTURE_MODE;
+	private int frameMode;
 	public void setFrameMode(int frameMode) {
 		if(checkBoth(frameMode, FULLSCREEN_MODE, SELECTION_MODE) 
-				&& checkBoth(frameMode, PAUSE_MODE, TRANSPARENT_MODE)) {
+				&& checkBoth(frameMode, PAUSE_MODE, TRANSPARENT_MODE)
+				&& checkBoth(frameMode, KEYPREVENT_MODE, KEYPASS_MODE)) {
 			this.frameMode = frameMode;
 			return;
 		}
@@ -90,14 +92,23 @@ public class MultiOptionFrame extends JFrame{
 	/**
 	 * 생성		
 	 */
-	public MultiOptionFrame() {
-		this(CAPTURE_MODE);
-	}
 	public MultiOptionFrame(int frameMode) {
 		setFrameMode(frameMode);
 		frameSetting();
 		eventSetting();
 	}
+	
+	/**
+	 * 	Display Rectangle 설정
+	 */
+	@Getter
+	private Rectangle screenRect;
+	protected void setScreenRect(Rectangle screenRect) {
+		this.screenRect = screenRect;
+		setBounds(screenRect);
+	}
+	
+	
 	/**
 	 * 프레임 설정
 	 * - FULLSCREEN_MODE : 전체화면 설정 및 드래그 금지
@@ -108,8 +119,7 @@ public class MultiOptionFrame extends JFrame{
 	protected void frameSetting() {
 		setUndecorated(true);
 		setResizable(false);
-		setExtendedState(MAXIMIZED_BOTH);
-		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+		setFocusTraversalKeysEnabled(false);//탭키 잠금
 		
 		if(is(TRANSPARENT_MODE)) {//투명 배경 설정
 			setBackground(transparentColor);
@@ -123,16 +133,22 @@ public class MultiOptionFrame extends JFrame{
 	 * 이벤트 설정
 	 */
 	protected void eventSetting() {
+		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				exitProcess();
+			}
+		});
 		addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				switch(e.getKeyCode()) {
 				case KeyEvent.VK_ESCAPE:
-					setVisible(false);
+					exitProcess();
 				}
 			}
 		});
-		
 	}
 	
 	/**
@@ -155,7 +171,7 @@ public class MultiOptionFrame extends JFrame{
 		if(g.getComposite() != AlphaComposite.Src)
 			g.setComposite(AlphaComposite.Src);
 		g.setColor(transparentColor);
-		g.fillRect(0, 0, getWidth(), getHeight());
+		g.fillRect(0, 0, screenRect.width, screenRect.height);
 	}
 	
 	/**
@@ -164,6 +180,11 @@ public class MultiOptionFrame extends JFrame{
 	protected void pausePaint(Graphics2D g) {
 		
 	}
+	
+	/**
+	 * 종료 작업
+	 */
+	public abstract void exitProcess();
 }
 
 

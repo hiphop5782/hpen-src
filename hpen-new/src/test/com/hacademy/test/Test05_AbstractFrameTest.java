@@ -1,24 +1,34 @@
 package com.hacademy.test;
 
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+
 import javax.swing.JFrame;
 
-import com.hacademy.hpen.ui.MouseGuideFrame;
-import com.hacademy.hpen.ui.MultiOptionFrame;
+import org.junit.Before;
+import org.junit.Test;
 
+import com.hacademy.hpen.ui.capture.CaptureFullScreenFrame;
+import com.hacademy.hpen.util.loader.InMemoryObjectLoader;
+
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class Test05_AbstractFrameTest {
-	public static void main(String[] args) throws InterruptedException {
-		MouseGuideFrame f = new MouseGuideFrame();
-		f.setBounds(100, 100, 500, 500);
-		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		f.setVisible(true);
-//		System.out.println(f.is(MultiOptionFrame.FULLSCREEN_MODE));
-//		System.out.println(f.is(MultiOptionFrame.SELECTION_MODE));
-//		System.out.println(f.is(MultiOptionFrame.PAUSE_MODE));
-//		System.out.println(f.is(MultiOptionFrame.TRANSPARENT_MODE));
-//		System.out.println(f.is(MultiOptionFrame.TRANSPARENT_MODE | MultiOptionFrame.FULLSCREEN_MODE));
-		while(true) {
-			f.repaint();
-			Thread.sleep(1000/30);
-		}
+	InMemoryObjectLoader loader;
+	CaptureFullScreenFrame frame;
+	
+	@Before
+	public void before() throws IllegalArgumentException, IllegalAccessException, InstantiationException, InvocationTargetException, NoSuchMethodException, SecurityException, IOException {
+		loader = new InMemoryObjectLoader("com.hacademy.hpen");
+		log.debug("components = {}", loader.componentSize());
+		frame = loader.getBean(CaptureFullScreenFrame.class);
 	}
+	
+	@Test
+	public void test() throws InterruptedException {
+		frame.open();
+		Thread.currentThread().join();
+	}
+	
 }
