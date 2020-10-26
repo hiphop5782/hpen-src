@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!-- 이 설정파일은 스프링의 도움 없이 마이바티스를 독자적으로 사용할 때 필요한 설정파일 -->
+
+<!-- DTD 선언 : 문서의 유형을 정의하고 사용 가능한 태그 정보를 로드 -->
+<!DOCTYPE configuration
+ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-config.dtd">
+ 
+<configuration>
+
+	<!-- 
+		별칭 부여 공간 : 클래스의 전체 경로를 별칭을 부여하여 편하게 호출하도록 설정
+	 -->
+	<typeAliases>
+		<!-- <typeAlias type="클래스 전체 경로" alias="별칭"/> -->
+		
+	</typeAliases>
+
+	<!-- 
+		environments : 
+			사용환경에 대한 정의. 개발/배포환경을 구분하기 위해 사용
+			만약 스프링에 연동시키면 이 부분은 생략이 가능 
+	-->
+	<environments default="development">
+	
+		<!-- 개발용 환경 -->
+		<environment id="development">
+			
+			<!-- 데이터베이스 커밋/롤백을 자동으로 수행 -->
+			<transactionManager type="JDBC" />
+			
+			<!-- 
+				데이터베이스 연결정보(스프링과 연동되면 필요가 없음) 
+				- POOLED : DBCP 방식(개수 제한 관리)
+				- UNPOOLED : 일반 방식(신규 생성)
+			-->
+			<dataSource type="POOLED">
+				<property name="driver" value="org.h2.Driver" />
+				<property name="url" value="jdbc:h2:mem:options" />
+				<property name="username" value="sa" />
+				<property name="password" value="" />
+			</dataSource>
+		</environment>
+		
+	</environments>
+	
+	<!-- 
+		Mapper란 sql 명령만 가지고 있는 파일을 말함
+		- mappers는 mapper 파일의 위치를 지정
+	 -->
+	<mappers>
+		<!-- <mapper resource="mybatis/mapper/example-mapper.xml" /> -->
+		<mapper resource="com/hacademy/hpen/database/mapper/capture-mapper.xml"/>
+	</mappers>
+	
+</configuration>
+
+
+

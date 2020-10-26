@@ -96,7 +96,7 @@ public class CaptureConfiguration {
 	 */
 	public void init() {
 		try {
-			Properties props = PropertyLoader.load("capture.properties");
+//			Properties props = PropertyLoader.load("capture.properties");
 			
 		}
 		catch(Exception e) {
