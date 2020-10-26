@@ -1,6 +1,6 @@
 package com.hacademy.hpen.ui.option;
 
-import java.util.Properties;
+import java.io.Serializable;
 
 import com.hacademy.hpen.util.loader.annotation.Component;
 
@@ -11,7 +11,12 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 @Getter
 @Slf4j
-public class CaptureConfiguration {
+public class CaptureConfiguration extends AppConfiguration{
+	public CaptureConfiguration() {
+		super("CaptureConfiguration");
+		// TODO Auto-generated constructor stub
+	}
+
 	/**
 	 * 	배경 속성
 	 * 	- background
@@ -97,7 +102,6 @@ public class CaptureConfiguration {
 	public void init() {
 		try {
 //			Properties props = PropertyLoader.load("capture.properties");
-			
 		}
 		catch(Exception e) {
 			log.error("capture.properties 불러오기 오류", e);
@@ -109,5 +113,10 @@ public class CaptureConfiguration {
 	 */
 	private boolean between(int v, int a, int b) {
 		return v >= a && v <= b;
+	}
+
+	@Override
+	public void afterLoad(Object object) {
+		
 	}
 }
