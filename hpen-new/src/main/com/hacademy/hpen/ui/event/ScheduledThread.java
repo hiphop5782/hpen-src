@@ -1,4 +1,4 @@
-package com.hacademy.hpen.ui.capture;
+package com.hacademy.hpen.ui.event;
 
 import com.hacademy.hpen.util.loader.annotation.Component;
 
