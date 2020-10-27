@@ -17,12 +17,15 @@ import com.hacademy.hpen.ui.event.ScheduledThread;
 import com.hacademy.hpen.ui.option.CaptureConfiguration;
 import com.hacademy.hpen.util.clipboard.ClipboardManager;
 import com.hacademy.hpen.util.cursor.CursorManager;
+import com.hacademy.hpen.util.image.ImageManager;
 import com.hacademy.hpen.util.loader.annotation.Autowired;
 import com.hacademy.hpen.util.loader.annotation.Component;
 import com.hacademy.hpen.util.screen.ScreenManager;
 
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Component
 public class CaptureFullScreenFrame extends MultiOptionFrame{
 	
@@ -38,6 +41,9 @@ public class CaptureFullScreenFrame extends MultiOptionFrame{
 	private ClipboardManager clipboardManager;
 	
 	@Autowired
+	private ImageManager imageManager;
+	
+	@Autowired
 	private ScheduledThread painter;
 	
 	@Autowired
@@ -49,14 +55,22 @@ public class CaptureFullScreenFrame extends MultiOptionFrame{
 			if(rect.width > 0 && rect.height > 0) {
 				BufferedImage capture = screenManager.getImage(rect);
 				
-				switch(captureConfiguration.getCaptureAction()) {
-				case CaptureConfiguration.SAVE_CLIPBOARD:
-					clipboardManager.copyImageToClipboard(capture);
-					break;
-				case CaptureConfiguration.SAVE_TEMP_FILE:
-				case CaptureConfiguration.SAVE_AS_FILE:
+				try {
+					switch(captureConfiguration.getCaptureAction()) {
+					case CaptureConfiguration.SAVE_CLIPBOARD:
+						clipboardManager.copyImageToClipboard(capture);
+						break;
+					case CaptureConfiguration.SAVE_TEMP_FILE:
+						imageManager.saveImageAsPngTempFile(capture);
+						break;
+					case CaptureConfiguration.SAVE_AS_FILE:
+						imageManager.saveImageAsWithDialog(capture, CaptureFullScreenFrame.this);
+						break;
+					}
 				}
-//				ImageIO.write(capture, "png", new File("D:/temp.png"));
+				catch(Exception err) {
+					log.error("저장 오류 발생", err);
+				}
 			}
 			exitProcess();
 		}

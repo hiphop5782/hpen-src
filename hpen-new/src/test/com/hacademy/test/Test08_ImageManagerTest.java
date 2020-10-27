@@ -28,8 +28,8 @@ public class Test08_ImageManagerTest {
 	
 	@Test
 	public void test() throws IOException {
-		
-		imManager.saveImageAsWithDialog(scManager.getCurrentMonitorImage(), null);
+//		imManager.saveImageAsWithDialog(scManager.getCurrentMonitorImage(), null);
+		imManager.saveImageAsPngTempFile(scManager.getCurrentMonitorImage());
 	}
 	
 }

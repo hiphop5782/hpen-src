@@ -18,6 +18,8 @@ import lombok.extern.slf4j.Slf4j;
 @ToString
 public class CaptureConfiguration implements Serializable{
 	
+	private static final long serialVersionUID = 1L;
+
 	@Autowired
 	private ConfigurationManager configurationManager;
 	

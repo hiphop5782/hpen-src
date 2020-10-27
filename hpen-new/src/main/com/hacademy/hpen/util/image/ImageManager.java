@@ -44,7 +44,7 @@ public class ImageManager {
 		baseDir.mkdirs();
 		File[] files = baseDir.listFiles();
 		int count = files == null? 0 : files.length;
-		File target = new File("capture"+df.format(count+1));
+		File target = new File(baseDir, "capture"+df.format(count+1)+"."+hint.getValue());
 		saveImageAsFile(image, target, hint);
 	}
 	
