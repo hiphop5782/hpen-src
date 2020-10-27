@@ -10,8 +10,11 @@ public class ObjectCopyManager {
 		if(a.getClass() != b.getClass()) throw new IllegalArgumentException("Diffrent Type");
 		
 		for(Field field : a.getClass().getDeclaredFields()) {
-			field.setAccessible(true);
-			field.set(b, field.get(a));
+			try {
+				field.setAccessible(true);
+				field.set(b, field.get(a));
+			}
+			catch(Exception e) {}
 		}
 		return b;
 	}
