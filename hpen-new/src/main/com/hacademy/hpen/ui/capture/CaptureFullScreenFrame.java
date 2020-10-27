@@ -7,7 +7,6 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.Stroke;
-import java.awt.event.KeyAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 
@@ -15,6 +14,7 @@ import com.hacademy.hpen.ui.MultiOptionFrame;
 import com.hacademy.hpen.ui.event.MouseEventListener;
 import com.hacademy.hpen.ui.event.MouseStatus;
 import com.hacademy.hpen.ui.event.ScheduledThread;
+import com.hacademy.hpen.ui.option.CaptureConfiguration;
 import com.hacademy.hpen.util.clipboard.ClipboardManager;
 import com.hacademy.hpen.util.cursor.CursorManager;
 import com.hacademy.hpen.util.loader.annotation.Autowired;
@@ -40,12 +40,22 @@ public class CaptureFullScreenFrame extends MultiOptionFrame{
 	@Autowired
 	private ScheduledThread painter;
 	
+	@Autowired
+	private CaptureConfiguration captureConfiguration;
+	
 	private MouseEventListener listener = new MouseEventListener() {
 		public void whenMouseRelease(MouseEvent e) {
 			Rectangle rect = status.getRect();
 			if(rect.width > 0 && rect.height > 0) {
 				BufferedImage capture = screenManager.getImage(rect);
-				clipboardManager.copyImageToClipboard(capture);
+				
+				switch(captureConfiguration.getCaptureAction()) {
+				case CaptureConfiguration.SAVE_CLIPBOARD:
+					clipboardManager.copyImageToClipboard(capture);
+					break;
+				case CaptureConfiguration.SAVE_TEMP_FILE:
+				case CaptureConfiguration.SAVE_AS_FILE:
+				}
 //				ImageIO.write(capture, "png", new File("D:/temp.png"));
 			}
 			exitProcess();

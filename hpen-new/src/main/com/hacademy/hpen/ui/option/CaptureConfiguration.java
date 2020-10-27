@@ -1,21 +1,30 @@
 package com.hacademy.hpen.ui.option;
 
 import java.io.Serializable;
+import java.text.DecimalFormat;
 
+import com.hacademy.hpen.util.loader.annotation.Autowired;
 import com.hacademy.hpen.util.loader.annotation.Component;
+import com.hacademy.hpen.util.object.ObjectCopyManager;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 
 @Component
 @Getter
 @Slf4j
-public class CaptureConfiguration extends AppConfiguration{
-	public CaptureConfiguration() {
-		super("CaptureConfiguration");
-		// TODO Auto-generated constructor stub
-	}
+@ToString
+public class CaptureConfiguration implements Serializable{
+	
+	@Autowired
+	private ConfigurationManager configurationManager;
+	
+	@Autowired
+	private ObjectCopyManager objectCopyManager;
+	
+	public CaptureConfiguration() {}
 
 	/**
 	 * 	배경 속성
@@ -63,7 +72,10 @@ public class CaptureConfiguration extends AppConfiguration{
 	 * 	- captureFilePrefix : 캡쳐 파일 저장 시 접두사
 	 * 	- captureFileSequence : 캡쳐 파일 시작번호
 	 */
-	private String captureAction = "clipboard";
+	public static final String SAVE_CLIPBOARD = "clipboard";
+	public static final String SAVE_TEMP_FILE = "saveTempFile";
+	public static final String SAVE_AS_FILE = "saveAsFile";
+	private String captureAction = SAVE_CLIPBOARD;
 	public void setCaptureAction(String action) {
 		switch(action.toLowerCase()) {
 		case "clipboard":
@@ -94,18 +106,15 @@ public class CaptureConfiguration extends AppConfiguration{
 		if(captureFileSequence < 0) return;
 		this.captureFileSequence = captureFileSequence;
 	}
-	
-	/**
-	 * 시작 시 파일에서 정보를 불러오도록 설정
-	 * 만약 파일이 없을 경우에는 기본 정보로 설정
-	 */
-	public void init() {
-		try {
-//			Properties props = PropertyLoader.load("capture.properties");
-		}
-		catch(Exception e) {
-			log.error("capture.properties 불러오기 오류", e);
-		}
+	public static final int SEQUENCE_DEFAULT_SIZE = 6;
+	public String getCaptureFileSequenceWithFormat() {
+		return getCaptureFileSequenceWithFormat(SEQUENCE_DEFAULT_SIZE);
+	}
+	public String getCaptureFileSequenceWithFormat(int size) {
+		StringBuffer buffer = new StringBuffer();
+		for(int i=0;i<size;i++) buffer.append("0");
+		DecimalFormat fmt = new DecimalFormat(buffer.toString());
+		return fmt.format(captureFileSequence);
 	}
 	
 	/**
@@ -114,9 +123,16 @@ public class CaptureConfiguration extends AppConfiguration{
 	private boolean between(int v, int a, int b) {
 		return v >= a && v <= b;
 	}
-
-	@Override
-	public void afterLoad(Object object) {
-		
+	
+	public void init() {
+		try {
+			CaptureConfiguration conf = configurationManager.load(getClass());
+			objectCopyManager.copy(conf, this);
+			log.debug("CaptureConfiguration 불러오기 성공 = {}", this);
+		}
+		catch(Exception e) {
+			log.error("CaptureConfiguration 불러오기 실패", e);
+		}
 	}
+
 }
