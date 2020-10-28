@@ -2,10 +2,14 @@ package com.hacademy.hpen.ui.option;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
+import javax.swing.JButton;
 import javax.swing.JColorChooser;
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 
 import com.hacademy.hpen.ui.option.process.CaptureConfiguration;
@@ -26,10 +30,20 @@ public class CaptureConfigurationPanel extends JPanel{
 	@Autowired
 	private CaptureConfiguration conf;
 	
+	private Map<String, JComponent> components = new HashMap<>();
+	
 	public CaptureConfigurationPanel() {}
 	
 	public void init() {
+		component();
 		display();
+	}
+	private void component() {
+		components.put("pause", c.checkbox(conf.getBackground() == CaptureConfiguration.PAUSE));
+		components.put("pixel", c.checkbox());
+		components.put("mouse", c.checkbox());
+		components.put("guide", c.checkbox());
+		
 	}
 	private void display() {
 		FormLayout layout = new FormLayout(
@@ -40,15 +54,15 @@ public class CaptureConfigurationPanel extends JPanel{
 		builder.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
 		builder.appendSeparator("캡쳐 옵션");
-		builder.append(c.label("화면 정지"), c.checkbox(conf.getBackground() == CaptureConfiguration.PAUSE));
-		builder.append(c.label("픽셀 표시"), c.checkbox());
+		builder.append(c.label("화면 정지"), components.get("pause"));
+		builder.append(c.label("픽셀 표시"), components.get("pixel"));
         builder.nextLine();
         
         builder.appendSeparator("마우스 가이드 설정");
-        builder.append(c.label("마우스 표시"), c.checkbox());
+        builder.append(c.label("마우스 표시"), components.get("mouse"));
         builder.nextLine();
         
-        builder.append(c.label("가이드 표시"), c.checkbox());
+        builder.append(c.label("가이드 표시"), components.get("guide"));
         builder.nextLine();
         
         ButtonGroup g1 = new ButtonGroup();
@@ -79,6 +93,10 @@ public class CaptureConfigurationPanel extends JPanel{
         builder.nextLine();
         
         String saveLocation = conf.getCaptureFileSavePath() == null ? "" : conf.getCaptureFileSavePath();
+        
+        JButton b1 = c.button("위치 찾기", e->{
+        	
+        });
         builder.append(c.label("저장 위치"));
         builder.append(c.field(saveLocation), 3);
         builder.append(c.button("위치 찾기", e->{
