@@ -1,5 +1,6 @@
-package com.hacademy.hpen.ui.option;
+package com.hacademy.hpen.ui.option.process;
 
+import java.awt.Color;
 import java.io.Serializable;
 import java.text.DecimalFormat;
 
@@ -34,21 +35,30 @@ public class CaptureConfiguration implements Serializable{
 	 * 		- transparent : 배경 투명 설정(기본값)
 	 * 		- pause : 이미지로 고정 화면 처리
 	 */
+	public static final String TRANSPARENT = "transparent";
+	public static final String PAUSE = "pause";
 	private String background = "transparent";
 	public void setBackground(String type) {
 		switch(type.toLowerCase()) {
-		case "transparent":
-		case "pause":
-			background = type;
+		case TRANSPARENT:
+			background = TRANSPARENT; break;
+		case PAUSE:
+			background = PAUSE; break;
 		}
 	}
 	
 	/**
 	 * 	화면 속성
 	 * 	- borderThickness : 가이드 및 캡쳐영역 테두리 두께
+	 * 		- 두껍게 : 5
+	 * 		- 보통 : 3
+	 * 		- 가늘게 : 1
 	 * 	- mouseGuideColor : 마우스 보조선 색상
 	 * 	- captureAreaColor : 캡쳐 영역 색상
 	 */
+	public static final int THIN = 1;
+	public static final int NORMAL = 3;
+	public static final int THICK = 5;
 	private int borderThickness = 3;
 	public void setBorderThickness(int thickness) {
 		if(between(thickness, 1, 10)) {
@@ -57,9 +67,9 @@ public class CaptureConfiguration implements Serializable{
 	}
 	
 	@Setter
-	private String mouseGuideColor = "black";
+	private Color mouseGuideColor = Color.black;
 	@Setter
-	private String captureAreaColor = "blue";
+	private Color captureAreaColor = Color.blue;
 	
 	/**
 	 * 	캡쳐 속성

@@ -6,8 +6,8 @@ import java.lang.reflect.InvocationTargetException;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.hacademy.hpen.ui.option.CaptureConfiguration;
-import com.hacademy.hpen.ui.option.ConfigurationManager;
+import com.hacademy.hpen.ui.option.process.CaptureConfiguration;
+import com.hacademy.hpen.ui.option.process.ConfigurationManager;
 import com.hacademy.hpen.util.loader.InMemoryObjectLoader;
 
 import lombok.extern.slf4j.Slf4j;

@@ -14,7 +14,7 @@ import com.hacademy.hpen.ui.MultiOptionFrame;
 import com.hacademy.hpen.ui.event.MouseEventListener;
 import com.hacademy.hpen.ui.event.MouseStatus;
 import com.hacademy.hpen.ui.event.ScheduledThread;
-import com.hacademy.hpen.ui.option.CaptureConfiguration;
+import com.hacademy.hpen.ui.option.process.CaptureConfiguration;
 import com.hacademy.hpen.util.clipboard.ClipboardManager;
 import com.hacademy.hpen.util.cursor.CursorManager;
 import com.hacademy.hpen.util.image.ImageManager;
