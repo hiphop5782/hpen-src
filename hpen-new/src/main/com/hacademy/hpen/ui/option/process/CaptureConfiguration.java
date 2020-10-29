@@ -48,6 +48,44 @@ public class CaptureConfiguration implements Serializable{
 	}
 	
 	/**
+	 * 	영역 픽셀 표시 속성
+	 * 	- pixel
+	 * 		- show : 표시
+	 * 		- hide : 숨김 
+	 */
+	public static final String SHOW = "show";
+	public static final String HIDE = "hide";
+	private String pixel = SHOW;
+	public void setPixel(String pixel) {
+		switch(pixel) {
+		case SHOW: pixel = SHOW; break;
+		case HIDE: pixel = HIDE; break;
+		}
+	}
+	
+	/**
+	 * 마우스 표시 여부
+	 */
+	private String mouse = HIDE;
+	public void setMouse(String mouse) {
+		switch(mouse) {
+		case SHOW: mouse = SHOW; break;
+		case HIDE: mouse = HIDE; break;
+		}
+	}
+	
+	/**
+	 * 마우스 가이드 표시 여부
+	 */
+	private String guide = SHOW;
+	public void setGuide(String guide) {
+		switch(guide) {
+		case SHOW: guide = SHOW; break;
+		case HIDE: guide = HIDE; break;
+		}
+	}
+	
+	/**
 	 * 	화면 속성
 	 * 	- borderThickness : 가이드 및 캡쳐영역 테두리 두께
 	 * 		- 두껍게 : 5

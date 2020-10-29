@@ -1,7 +1,6 @@
 package com.hacademy.hpen.util.component;
 
 import java.awt.Color;
-import java.awt.event.ActionListener;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -62,19 +61,17 @@ public class ComponentManager {
 	/**
 	 * 	swing button factory
 	 */
-	public JButton button(String text, ActionListener listener) {
+	public JButton button(String text) {
 		JButton button = new JButton(text);
-		button.addActionListener(listener);
 		return button;
 	}
-	public JButton button(Color color, ActionListener listener) {
-		JButton button = new JButton();
+	public JButton button(Color color) {
+		JButton button = button("");
 		button.setBackground(color);
-		button.addActionListener(listener);
 		return button;
 	}
-	public JButton button(String text, Color color, ActionListener listener) {
-		JButton button = button(text, listener);
+	public JButton button(String text, Color color) {
+		JButton button = button(text);
 		button.setBackground(color);
 		return button;
 	}
@@ -90,5 +87,14 @@ public class ComponentManager {
 		return combo;
 	}
 	
-	
+	/**
+	 * 	get opposite color & contrast color
+	 */
+	public Color getContrastColor(Color color) {
+		double y = (299 * color.getRed() + 587 * color.getGreen() + 114 * color.getBlue()) / 1000;
+		return y >= 128 ? Color.black : Color.white;	
+	}
+	public Color getOppositeColor(Color color) {
+		return new Color(255 - color.getRed(), 255 - color.getGreen(), 255 - color.getBlue(), color.getAlpha());
+	}
 }
