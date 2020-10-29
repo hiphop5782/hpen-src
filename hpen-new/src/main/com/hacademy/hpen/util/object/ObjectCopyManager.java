@@ -1,6 +1,7 @@
 package com.hacademy.hpen.util.object;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 
 import com.hacademy.hpen.util.loader.annotation.Component;
 
@@ -12,9 +13,19 @@ public class ObjectCopyManager {
 		for(Field field : a.getClass().getDeclaredFields()) {
 			try {
 				field.setAccessible(true);
-				field.set(b, field.get(a));
+				
+				//final 항목은 pass
+				if(Modifier.isFinal(field.getModifiers())) {
+					continue;
+				}
+				
+				Field copyField = b.getClass().getField(field.getName());
+				copyField.setAccessible(true);
+				copyField.set(null, field.get(a));
 			}
-			catch(Exception e) {}
+			catch(Exception e) {
+				e.printStackTrace();
+			}
 		}
 		return b;
 	}

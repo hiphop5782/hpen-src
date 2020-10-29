@@ -45,6 +45,12 @@ public class CaptureConfiguration implements Serializable{
 		case PAUSE:
 			background = PAUSE; break;
 		}
+		save();
+	}
+	public void setPause(boolean pause) {
+		if(pause) background = PAUSE;
+		else background = TRANSPARENT;
+		save();
 	}
 	
 	/**
@@ -56,33 +62,32 @@ public class CaptureConfiguration implements Serializable{
 	public static final String SHOW = "show";
 	public static final String HIDE = "hide";
 	private String pixel = SHOW;
-	public void setPixel(String pixel) {
-		switch(pixel) {
-		case SHOW: pixel = SHOW; break;
-		case HIDE: pixel = HIDE; break;
-		}
+	public void setPixel(boolean pixel) {
+		if(pixel) this.pixel = SHOW;
+		else this.pixel = HIDE;
+		save();
 	}
 	
 	/**
 	 * 마우스 표시 여부
 	 */
 	private String mouse = HIDE;
-	public void setMouse(String mouse) {
-		switch(mouse) {
-		case SHOW: mouse = SHOW; break;
-		case HIDE: mouse = HIDE; break;
-		}
+	public void setMouse(boolean mouse) {
+		if(mouse)
+			this.mouse = SHOW;
+		else
+			this.mouse = HIDE;
+		save();
 	}
 	
 	/**
 	 * 마우스 가이드 표시 여부
 	 */
 	private String guide = SHOW;
-	public void setGuide(String guide) {
-		switch(guide) {
-		case SHOW: guide = SHOW; break;
-		case HIDE: guide = HIDE; break;
-		}
+	public void setGuide(boolean guide) {
+		if(guide) this.guide = SHOW;
+		else this.guide = HIDE;
+		save();
 	}
 	
 	/**
@@ -101,6 +106,7 @@ public class CaptureConfiguration implements Serializable{
 	public void setBorderThickness(int thickness) {
 		if(between(thickness, 1, 10)) {
 			borderThickness = thickness;
+			save();
 		}
 	}
 	
@@ -128,19 +134,23 @@ public class CaptureConfiguration implements Serializable{
 	private String captureAction = SAVE_CLIPBOARD;
 	public void setCaptureAction(String action) {
 		switch(action.toLowerCase()) {
-		case "clipboard":
-		case "saveTempFile":
-		case "saveAsFile":
-			captureAction = action;
+		case "clipboard": captureAction = SAVE_CLIPBOARD; break;
+		case "saveTempFile": captureAction = SAVE_TEMP_FILE; break;
+		case "saveAsFile": captureAction = SAVE_AS_FILE; break;
+		default:return;
 		}
+		save();
 	}
+	public static final String PNG = "png";
+	public static final String JPG = "jpg";
 	private String captureFileType = "png";
 	public void setCaptureFileType(String captureFileType) {
 		switch(captureFileType.toLowerCase()) {
-		case "png":
-		case "jpg":
-			this.captureFileType = captureFileType;
+		case PNG: captureFileType = PNG; break;
+		case JPG: captureFileType = JPG; break;
+		default: return;
 		}
+		save();
 	}
 	
 	private String captureFileSavePath = System.getProperty("user.dir") + "/capture";
@@ -149,12 +159,14 @@ public class CaptureConfiguration implements Serializable{
 	public void setCaptureFilePrefix(String captureFilePrefix) {
 		if(captureFilePrefix == null) captureFilePrefix = "";
 		this.captureFilePrefix = captureFilePrefix;
+		save();
 	}
 	
 	private int captureFileSequence = 1;
 	public void setCaptureFileSequence(int captureFileSequence) {
 		if(captureFileSequence < 0) return;
 		this.captureFileSequence = captureFileSequence;
+		save();
 	}
 	public static final int SEQUENCE_DEFAULT_SIZE = 6;
 	public String getCaptureFileSequenceWithFormat() {
@@ -182,6 +194,16 @@ public class CaptureConfiguration implements Serializable{
 		}
 		catch(Exception e) {
 			log.error("CaptureConfiguration 불러오기 실패", e);
+		}
+	}
+	
+	public void save() {
+		try {
+			System.out.println(this);
+//			configurationManager.save(this);
+		}
+		catch(Exception e) {
+			e.printStackTrace();
 		}
 	}
 
