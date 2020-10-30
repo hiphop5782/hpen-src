@@ -78,12 +78,12 @@ public class CaptureConfigurationPanel extends JPanel{
 		
 		//마우스 표시 옵션
 		components.get("mouse", JCheckBox.class).setSelected(
-			conf.getMouse() == CaptureConfiguration.SHOW
+			CaptureConfiguration.SHOW.equals(conf.getMouse()) 
 		);
 		
 		//마우스 가이드 표시 옵션
 		components.get("guide", JCheckBox.class).setSelected(
-			conf.getGuide() == CaptureConfiguration.SHOW
+			CaptureConfiguration.SHOW.equals(conf.getGuide())
 		);
 		
 		//가이드 두께 라디오버튼
@@ -119,22 +119,22 @@ public class CaptureConfigurationPanel extends JPanel{
 	}
 	private void event() {
 		//화면 정지 옵션
-		components.get("pause", JCheckBox.class).addChangeListener(e->{
+		components.get("pause", JCheckBox.class).addActionListener(e->{
 			conf.setPause(components.isSelected("pause"));
 		});
 		
 		//픽셀 표시 옵션
-		components.get("pixel", JCheckBox.class).addChangeListener(e->{
+		components.get("pixel", JCheckBox.class).addActionListener(e->{
 			conf.setPixel(components.isSelected("pixel"));
 		});
 		
 		//마우스 표시 옵션
-		components.get("mouse", JCheckBox.class).addChangeListener(e->{
+		components.get("mouse", JCheckBox.class).addActionListener(e->{
 			conf.setMouse(components.isSelected("mouse"));
 		});
 		
 		//마우스 가이드 표시 옵션
-		components.get("guide", JCheckBox.class).addChangeListener(e->{
+		components.get("guide", JCheckBox.class).addActionListener(e->{
 			conf.setGuide(components.isSelected("guide"));
 		});
 		

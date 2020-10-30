@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.lang.reflect.InvocationTargetException;
+import java.net.URL;
+import java.util.Enumeration;
 
 import com.hacademy.hpen.util.loader.annotation.Component;
 
@@ -16,6 +18,19 @@ import com.hacademy.hpen.util.loader.annotation.Component;
 public class ConfigurationManager {
 	
 	private final String root = System.getProperty("user.home") + "/.hpen";
+	
+	/**
+	 * root를 확인하여 설정이 없으면 생성
+	 * @throws IOException 
+	 */
+	public void init() throws IOException {
+		ClassLoader loader = this.getClass().getClassLoader();
+		Enumeration<URL> urls = loader.getResources(this.getClass().getPackageName().replace(".", "/"));
+		while(urls.hasMoreElements()) {
+			URL url = urls.nextElement();
+			
+		}
+	}
 	
 	public <T>T load(Class<T> clazz) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
 		File target = new File(root, clazz.getSimpleName());

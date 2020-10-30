@@ -1,6 +1,7 @@
 package com.hacademy.hpen.ui.option.process;
 
 import java.awt.Color;
+import java.io.File;
 import java.io.Serializable;
 import java.text.DecimalFormat;
 
@@ -16,16 +17,16 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 @Getter
 @Slf4j
-@ToString
+@ToString(exclude= {"configurationManager", "objectCopyManager"})
 public class CaptureConfiguration implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
 
 	@Autowired
-	private ConfigurationManager configurationManager;
+	private transient ConfigurationManager configurationManager;
 	
 	@Autowired
-	private ObjectCopyManager objectCopyManager;
+	private transient ObjectCopyManager objectCopyManager;
 	
 	public CaptureConfiguration() {}
 
@@ -35,8 +36,8 @@ public class CaptureConfiguration implements Serializable{
 	 * 		- transparent : 배경 투명 설정(기본값)
 	 * 		- pause : 이미지로 고정 화면 처리
 	 */
-	public static final String TRANSPARENT = "transparent";
-	public static final String PAUSE = "pause";
+	public static final transient String TRANSPARENT = "transparent";
+	public static final transient String PAUSE = "pause";
 	private String background = "transparent";
 	public void setBackground(String type) {
 		switch(type.toLowerCase()) {
@@ -59,8 +60,8 @@ public class CaptureConfiguration implements Serializable{
 	 * 		- show : 표시
 	 * 		- hide : 숨김 
 	 */
-	public static final String SHOW = "show";
-	public static final String HIDE = "hide";
+	public static final transient String SHOW = "show";
+	public static final transient String HIDE = "hide";
 	private String pixel = SHOW;
 	public void setPixel(boolean pixel) {
 		if(pixel) this.pixel = SHOW;
@@ -99,9 +100,9 @@ public class CaptureConfiguration implements Serializable{
 	 * 	- mouseGuideColor : 마우스 보조선 색상
 	 * 	- captureAreaColor : 캡쳐 영역 색상
 	 */
-	public static final int THIN = 1;
-	public static final int NORMAL = 3;
-	public static final int THICK = 5;
+	public static final transient int THIN = 1;
+	public static final transient int NORMAL = 3;
+	public static final transient int THICK = 5;
 	private int borderThickness = 3;
 	public void setBorderThickness(int thickness) {
 		if(between(thickness, 1, 10)) {
@@ -128,9 +129,9 @@ public class CaptureConfiguration implements Serializable{
 	 * 	- captureFilePrefix : 캡쳐 파일 저장 시 접두사
 	 * 	- captureFileSequence : 캡쳐 파일 시작번호
 	 */
-	public static final String SAVE_CLIPBOARD = "clipboard";
-	public static final String SAVE_TEMP_FILE = "saveTempFile";
-	public static final String SAVE_AS_FILE = "saveAsFile";
+	public static final transient String SAVE_CLIPBOARD = "clipboard";
+	public static final transient String SAVE_TEMP_FILE = "saveTempFile";
+	public static final transient String SAVE_AS_FILE = "saveAsFile";
 	private String captureAction = SAVE_CLIPBOARD;
 	public void setCaptureAction(String action) {
 		switch(action.toLowerCase()) {
@@ -141,8 +142,8 @@ public class CaptureConfiguration implements Serializable{
 		}
 		save();
 	}
-	public static final String PNG = "png";
-	public static final String JPG = "jpg";
+	public static final transient String PNG = "png";
+	public static final transient String JPG = "jpg";
 	private String captureFileType = "png";
 	public void setCaptureFileType(String captureFileType) {
 		switch(captureFileType.toLowerCase()) {
@@ -153,7 +154,7 @@ public class CaptureConfiguration implements Serializable{
 		save();
 	}
 	
-	private String captureFileSavePath = System.getProperty("user.dir") + "/capture";
+	private String captureFileSavePath = System.getProperty("user.dir") + File.separator + "capture";
 	
 	private String captureFilePrefix = "capture";
 	public void setCaptureFilePrefix(String captureFilePrefix) {
@@ -168,7 +169,7 @@ public class CaptureConfiguration implements Serializable{
 		this.captureFileSequence = captureFileSequence;
 		save();
 	}
-	public static final int SEQUENCE_DEFAULT_SIZE = 6;
+	public static final transient int SEQUENCE_DEFAULT_SIZE = 6;
 	public String getCaptureFileSequenceWithFormat() {
 		return getCaptureFileSequenceWithFormat(SEQUENCE_DEFAULT_SIZE);
 	}
@@ -189,8 +190,10 @@ public class CaptureConfiguration implements Serializable{
 	public void init() {
 		try {
 			CaptureConfiguration conf = configurationManager.load(getClass());
+			log.debug("conf = {}", conf);
+			log.debug("this = {}", this);
 			objectCopyManager.copy(conf, this);
-			log.debug("CaptureConfiguration 불러오기 성공 = {}", this);
+			save();
 		}
 		catch(Exception e) {
 			log.error("CaptureConfiguration 불러오기 실패", e);
@@ -199,8 +202,8 @@ public class CaptureConfiguration implements Serializable{
 	
 	public void save() {
 		try {
-			System.out.println(this);
-//			configurationManager.save(this);
+			configurationManager.save(this);
+			log.debug("save complete");
 		}
 		catch(Exception e) {
 			e.printStackTrace();
