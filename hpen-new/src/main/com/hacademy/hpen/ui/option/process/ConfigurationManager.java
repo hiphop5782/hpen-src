@@ -25,7 +25,7 @@ public class ConfigurationManager {
 	 */
 	public void init() throws IOException {
 		ClassLoader loader = this.getClass().getClassLoader();
-		Enumeration<URL> urls = loader.getResources(this.getClass().getPackageName().replace(".", "/"));
+		Enumeration<URL> urls = loader.getResources(this.getClass().getPackage().getName().replace(".", "/"));
 		while(urls.hasMoreElements()) {
 			URL url = urls.nextElement();
 			

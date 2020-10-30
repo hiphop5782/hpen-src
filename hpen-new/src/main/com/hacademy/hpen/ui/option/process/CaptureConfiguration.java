@@ -53,6 +53,12 @@ public class CaptureConfiguration implements Serializable{
 		else background = TRANSPARENT;
 		save();
 	}
+	public boolean isPause() {
+		return PAUSE.equals(background);
+	}
+	public boolean isTransparent() {
+		return TRANSPARENT.equals(background);
+	}
 	
 	/**
 	 * 	영역 픽셀 표시 속성
@@ -68,6 +74,9 @@ public class CaptureConfiguration implements Serializable{
 		else this.pixel = HIDE;
 		save();
 	}
+	public boolean isPixelVisible() {
+		return SHOW.equals(pixel);
+	}
 	
 	/**
 	 * 마우스 표시 여부
@@ -80,6 +89,9 @@ public class CaptureConfiguration implements Serializable{
 			this.mouse = HIDE;
 		save();
 	}
+	public boolean isMouseVisible() {
+		return SHOW.equals(mouse);
+	}
 	
 	/**
 	 * 마우스 가이드 표시 여부
@@ -89,6 +101,9 @@ public class CaptureConfiguration implements Serializable{
 		if(guide) this.guide = SHOW;
 		else this.guide = HIDE;
 		save();
+	}
+	public boolean isGuideVisible() {
+		return SHOW.equals(guide);
 	}
 	
 	/**
@@ -110,11 +125,27 @@ public class CaptureConfiguration implements Serializable{
 			save();
 		}
 	}
+	public boolean isThin() {
+		return borderThickness == THIN;
+	}
+	public boolean isNormal() {
+		return borderThickness == NORMAL;
+	}
+	public boolean isThick() {
+		return borderThickness == THICK;
+	}
 	
-	@Setter
 	private Color mouseGuideColor = Color.black;
-	@Setter
+	public void setMouseGuideColor(Color mouseGuideColor) {
+		this.mouseGuideColor = mouseGuideColor;
+		save();
+	}
+
 	private Color captureAreaColor = Color.blue;
+	public void setCaptureAreaColor(Color captureAreaColor) {
+		this.captureAreaColor = captureAreaColor;
+		save();
+	}
 	
 	/**
 	 * 	캡쳐 속성
@@ -142,21 +173,51 @@ public class CaptureConfiguration implements Serializable{
 		}
 		save();
 	}
+	public boolean isSaveClipboard() {
+		return SAVE_CLIPBOARD.equals(captureAction);
+	}
+	public boolean isSaveTempFile() {
+		return SAVE_TEMP_FILE.equals(captureAction);
+	}
+	public boolean isSaveAsFile() {
+		return SAVE_AS_FILE.equals(captureAction);
+	}
+	
 	public static final transient String PNG = "png";
 	public static final transient String JPG = "jpg";
 	private String captureFileType = "png";
 	public void setCaptureFileType(String captureFileType) {
 		switch(captureFileType.toLowerCase()) {
-		case PNG: captureFileType = PNG; break;
-		case JPG: captureFileType = JPG; break;
+		case PNG: this.captureFileType = PNG; break;
+		case JPG: this.captureFileType = JPG; break;
 		default: return;
 		}
 		save();
 	}
+	public String getCaptureFileType() {
+		return captureFileType;
+	}
+	public String[] getAllCaptureFileType() {
+		return new String[]{PNG, JPG};
+	}
+	public boolean isPng() {
+		return PNG.equals(captureFileType);
+	}
+	public boolean isJpg() {
+		return JPG.equals(captureFileType);
+	}
 	
 	private String captureFileSavePath = System.getProperty("user.dir") + File.separator + "capture";
+	public void setCaptureFileSavePath(String captureFileSavePath) {
+		this.captureFileSavePath = captureFileSavePath;
+		save();
+	}
 	
 	private String captureFilePrefix = "capture";
+	public void setConfigurationManager(ConfigurationManager configurationManager) {
+		this.configurationManager = configurationManager;
+		save();
+	}
 	public void setCaptureFilePrefix(String captureFilePrefix) {
 		if(captureFilePrefix == null) captureFilePrefix = "";
 		this.captureFilePrefix = captureFilePrefix;
@@ -190,9 +251,9 @@ public class CaptureConfiguration implements Serializable{
 	public void init() {
 		try {
 			CaptureConfiguration conf = configurationManager.load(getClass());
+			objectCopyManager.copy(conf, this);
 			log.debug("conf = {}", conf);
 			log.debug("this = {}", this);
-			objectCopyManager.copy(conf, this);
 			save();
 		}
 		catch(Exception e) {

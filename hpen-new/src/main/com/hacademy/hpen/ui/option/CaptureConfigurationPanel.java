@@ -2,14 +2,20 @@ package com.hacademy.hpen.ui.option;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JColorChooser;
+import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JTextField;
 
 import com.hacademy.hpen.ui.option.process.CaptureConfiguration;
 import com.hacademy.hpen.ui.option.process.ComponentMap;
@@ -51,70 +57,55 @@ public class CaptureConfigurationPanel extends JPanel{
 		components.put("guideThickness2", c.radio(g1, "보통"));
 		components.put("guideThickness3", c.radio(g1, "두껍게"));
 		
-		components.put("guideColorButton", c.button("클릭 후 설정", conf.getMouseGuideColor()));
+		components.put("guideColorButton", c.button("클릭 후 설정"));
 		
 		ButtonGroup g2 = new ButtonGroup();
-		components.put("saveType1", c.radio(g2, "클립보드", conf.getCaptureAction() == CaptureConfiguration.SAVE_CLIPBOARD));
-		components.put("saveType2", c.radio(g2, "임시파일", conf.getCaptureAction() == CaptureConfiguration.SAVE_TEMP_FILE));
-		components.put("saveType3", c.radio(g2, "물어보기", conf.getCaptureAction() == CaptureConfiguration.SAVE_AS_FILE));
+		components.put("saveType1", c.radio(g2, "클립보드"));
+		components.put("saveType2", c.radio(g2, "임시파일"));
+		components.put("saveType3", c.radio(g2, "물어보기"));
 		
-		components.put("saveFilePath", c.field(conf.getCaptureFileSavePath() == null ? "" : conf.getCaptureFileSavePath()));
+		components.put("saveFilePath", c.field());
 		components.put("saveFilePathFindButton", c.button("위치 찾기"));
 		
 		components.put("saveFilePrefix", c.field());
-		components.put("saveFileSuffix", c.combo("PNG", "JPG"));
+		
+		ButtonGroup g3 = new ButtonGroup();
+		components.put("saveFileSuffix1", c.radio(g3, "PNG 파일"));
+		components.put("saveFileSuffix2", c.radio(g3, "JPG 파일"));
 		components.put("saveFileSequence", c.field());
 	}
 	private void value() {
 		//화면 정지 옵션
-		components.get("pause", JCheckBox.class).setSelected(
-			conf.getBackground() == CaptureConfiguration.PAUSE
-		);
+		components.get("pause", JCheckBox.class).setSelected(conf.isPause());
 		
 		//픽셀 표시 옵션
-		components.get("pixel", JCheckBox.class).setSelected(
-			conf.getPixel() == CaptureConfiguration.SHOW
-		);
+		components.get("pixel", JCheckBox.class).setSelected(conf.isPixelVisible());
 		
 		//마우스 표시 옵션
-		components.get("mouse", JCheckBox.class).setSelected(
-			CaptureConfiguration.SHOW.equals(conf.getMouse()) 
-		);
+		components.get("mouse", JCheckBox.class).setSelected(conf.isMouseVisible());
 		
 		//마우스 가이드 표시 옵션
-		components.get("guide", JCheckBox.class).setSelected(
-			CaptureConfiguration.SHOW.equals(conf.getGuide())
-		);
+		components.get("guide", JCheckBox.class).setSelected(conf.isGuideVisible());
 		
 		//가이드 두께 라디오버튼
-		components.get("guideThickness1", JRadioButton.class).setSelected(
-			conf.getBorderThickness() == CaptureConfiguration.THIN
-		);
-		components.get("guideThickness2", JRadioButton.class).setSelected(
-			conf.getBorderThickness() == CaptureConfiguration.NORMAL
-		);
-		components.get("guideThickness3", JRadioButton.class).setSelected(
-			conf.getBorderThickness() == CaptureConfiguration.THICK
-		);
+		components.get("guideThickness1", JRadioButton.class).setSelected(conf.isThin());
+		components.get("guideThickness2", JRadioButton.class).setSelected(conf.isNormal());
+		components.get("guideThickness3", JRadioButton.class).setSelected(conf.isThick());
 		//가이드 버튼 색상
-		components.get("guideColorButton", JButton.class).setBackground(
-			conf.getMouseGuideColor()
-		);
-		components.get("guideColorButton", JButton.class).setForeground(
-			c.getContrastColor(conf.getMouseGuideColor())
-		);
+		components.get("guideColorButton", JButton.class).setBackground(conf.getMouseGuideColor());
+		components.get("guideColorButton", JButton.class).setForeground(c.getContrastColor(conf.getMouseGuideColor()));
 		
 		//저장 방식 라디오버튼
-		components.get("saveType1", JRadioButton.class).setSelected(
-			conf.getCaptureAction() == CaptureConfiguration.SAVE_CLIPBOARD
-		);
-		components.get("saveType2", JRadioButton.class).setSelected(
-			conf.getCaptureAction() == CaptureConfiguration.SAVE_TEMP_FILE
-		);
-		components.get("saveType3", JRadioButton.class).setSelected(
-			conf.getCaptureAction() == CaptureConfiguration.SAVE_AS_FILE
-		);
+		components.get("saveType1", JRadioButton.class).setSelected(conf.isSaveClipboard());
+		components.get("saveType2", JRadioButton.class).setSelected(conf.isSaveTempFile());
+		components.get("saveType3", JRadioButton.class).setSelected(conf.isSaveAsFile());
 		
+		//저장 경로
+		components.get("saveFilePath", JTextField.class).setText(conf.getCaptureFileSavePath());
+		components.get("saveFilePrefix", JTextField.class).setText(conf.getCaptureFilePrefix());
+		components.get("saveFileSuffix1", JRadioButton.class).setSelected(conf.isPng());
+		components.get("saveFileSuffix2", JRadioButton.class).setSelected(conf.isJpg());
+		components.get("saveFileSequence", JTextField.class).setText(String.valueOf(conf.getCaptureFileSequence()));
 		
 	}
 	private void event() {
@@ -167,6 +158,61 @@ public class CaptureConfigurationPanel extends JPanel{
 		});
 		components.get("saveType3", JRadioButton.class).addActionListener(e->{
 			conf.setCaptureAction(CaptureConfiguration.SAVE_AS_FILE);
+		});
+		
+		//저장 경로
+		components.get("saveFilePath", JTextField.class).addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent e) {
+				conf.setCaptureFileSavePath(components.get("saveFilePath", JTextField.class).getText());
+			}
+		});
+		components.get("saveFilePathFindButton", JButton.class).addActionListener(e->{
+			String root = conf.getCaptureFileSavePath();
+			if(root == null || root.isEmpty()) root = ".";
+			JFileChooser chooser = new JFileChooser(root);
+			chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+			if(chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+				String path = chooser.getSelectedFile().getAbsolutePath();
+				conf.setCaptureFileSavePath(path);
+				components.get("saveFilePath", JTextField.class).setText(path);
+			}
+		});
+		components.get("saveFilePrefix", JTextField.class).addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent e) {
+				conf.setCaptureFilePrefix(components.get("saveFilePrefix", JTextField.class).getText());
+			}
+		});
+		components.get("saveFilePrefix", JTextField.class).addActionListener(e->{
+			conf.setCaptureFilePrefix(components.get("saveFilePrefix", JTextField.class).getText());
+		});
+		components.get("saveFileSuffix1", JRadioButton.class).addActionListener(e->{
+			conf.setCaptureFileType(CaptureConfiguration.PNG);
+		});
+		components.get("saveFileSuffix2", JRadioButton.class).addActionListener(e->{
+			conf.setCaptureFileType(CaptureConfiguration.JPG);
+		});
+		components.get("saveFileSequence", JTextField.class).addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent e) {
+				try {
+					int seq = Integer.parseInt(components.get("saveFileSequence", JTextField.class).getText());
+					conf.setCaptureFileSequence(seq);
+				}
+				catch(Exception err) {
+					JOptionPane.showMessageDialog(CaptureConfigurationPanel.this, "시작번호는 숫자로 입력해야 합니다", "알림", JOptionPane.PLAIN_MESSAGE);
+				}
+			}
+		});
+		components.get("saveFileSequence", JTextField.class).addActionListener(e->{
+			try {
+				int seq = Integer.parseInt(components.get("saveFileSequence", JTextField.class).getText());
+				conf.setCaptureFileSequence(seq);
+			}
+			catch(Exception err) {
+				JOptionPane.showMessageDialog(CaptureConfigurationPanel.this, "시작번호는 숫자로 입력해야 합니다", "알림", JOptionPane.PLAIN_MESSAGE);
+			}
 		});
 		
 	}
@@ -222,7 +268,7 @@ public class CaptureConfigurationPanel extends JPanel{
         builder.nextLine();
         
         builder.append(c.label("파일 확장자"));
-        builder.append(components.get("saveFileSuffix"));
+        builder.append(components.get("saveFileSuffix1"), components.get("saveFileSuffix2"));
         builder.nextLine();
         
         builder.append(c.label("파일 시작 번호"));

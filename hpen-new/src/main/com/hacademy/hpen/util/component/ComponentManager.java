@@ -3,6 +3,7 @@ package com.hacademy.hpen.util.component;
 import java.awt.Color;
 
 import javax.swing.ButtonGroup;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -79,10 +80,10 @@ public class ComponentManager {
 	/**
 	 *	swing dropdown list factory 
 	 */
-	public <T>JComboBox<T> combo(T ... unit){
-		JComboBox<T> combo = new JComboBox<T>();
-		for(T t : unit) {
-			combo.addItem(t);
+	public JComboBox<String> combo(String ... item){
+		JComboBox<String> combo = new JComboBox<>();
+		for(int i=0; i<item.length; i++) {
+			combo.addItem(item[i]);
 		}
 		return combo;
 	}

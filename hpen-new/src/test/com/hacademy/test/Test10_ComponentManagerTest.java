@@ -34,7 +34,6 @@ public class Test10_ComponentManagerTest {
 		frame.setSize(550, 550);
 		frame.setContentPane(panel);
 		frame.setVisible(true);
-		System.out.println(this.getClass().getName());
 		Thread.currentThread().join();
 	}
 	
