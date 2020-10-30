@@ -165,10 +165,10 @@ public class CaptureConfiguration implements Serializable{
 	public static final transient String SAVE_AS_FILE = "saveAsFile";
 	private String captureAction = SAVE_CLIPBOARD;
 	public void setCaptureAction(String action) {
-		switch(action.toLowerCase()) {
-		case "clipboard": captureAction = SAVE_CLIPBOARD; break;
-		case "saveTempFile": captureAction = SAVE_TEMP_FILE; break;
-		case "saveAsFile": captureAction = SAVE_AS_FILE; break;
+		switch(action) {
+		case SAVE_CLIPBOARD: captureAction = SAVE_CLIPBOARD; break;
+		case SAVE_TEMP_FILE: captureAction = SAVE_TEMP_FILE; break;
+		case SAVE_AS_FILE: captureAction = SAVE_AS_FILE; break;
 		default:return;
 		}
 		save();
@@ -196,6 +196,9 @@ public class CaptureConfiguration implements Serializable{
 	}
 	public String getCaptureFileType() {
 		return captureFileType;
+	}
+	public String getCaptureFileExtension() {
+		return "."+getCaptureFileType();
 	}
 	public String[] getAllCaptureFileType() {
 		return new String[]{PNG, JPG};
@@ -239,6 +242,10 @@ public class CaptureConfiguration implements Serializable{
 		for(int i=0;i<size;i++) buffer.append("0");
 		DecimalFormat fmt = new DecimalFormat(buffer.toString());
 		return fmt.format(captureFileSequence);
+	}
+	public void plusCaptureFileSequence() {
+		this.captureFileSequence++;
+		save();
 	}
 	
 	/**

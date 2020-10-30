@@ -9,6 +9,7 @@ import java.awt.Rectangle;
 import java.awt.Stroke;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.io.File;
 
 import com.hacademy.hpen.ui.MultiOptionFrame;
 import com.hacademy.hpen.ui.event.MouseEventListener;
@@ -20,9 +21,11 @@ import com.hacademy.hpen.util.cursor.CursorManager;
 import com.hacademy.hpen.util.image.ImageManager;
 import com.hacademy.hpen.util.loader.annotation.Autowired;
 import com.hacademy.hpen.util.loader.annotation.Component;
+import com.hacademy.hpen.util.screen.ImageType;
 import com.hacademy.hpen.util.screen.ScreenManager;
 
 import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -51,7 +54,15 @@ public class CaptureFullScreenFrame extends MultiOptionFrame{
 	
 	private MouseEventListener listener = new MouseEventListener() {
 		public void whenMouseRelease(MouseEvent e) {
+			//영역 계산
+			int thickness = captureConfiguration.getBorderThickness();
 			Rectangle rect = status.getRect();
+			rect.x += thickness/2;
+			rect.y += thickness/2;
+			rect.width -= thickness;
+			rect.height -= thickness;
+			
+			//옵션별 처리
 			if(rect.width > 0 && rect.height > 0) {
 				BufferedImage capture = screenManager.getImage(rect);
 				
@@ -61,7 +72,13 @@ public class CaptureFullScreenFrame extends MultiOptionFrame{
 						clipboardManager.copyImageToClipboard(capture);
 						break;
 					case CaptureConfiguration.SAVE_TEMP_FILE:
-						imageManager.saveImageAsPngTempFile(capture);
+						File dir = new File(captureConfiguration.getCaptureFileSavePath());
+						if(!dir.isDirectory()) dir.delete();
+						if(!dir.exists()) dir.mkdirs();
+						String filename = captureConfiguration.getCaptureFilePrefix() + captureConfiguration.getCaptureFileSequenceWithFormat() + captureConfiguration.getCaptureFileExtension();
+						File target = new File(dir, filename);
+						imageManager.saveImageAsFile(capture, target, ImageType.valueOf(captureConfiguration.getCaptureFileType().toUpperCase()));
+						captureConfiguration.plusCaptureFileSequence();
 						break;
 					case CaptureConfiguration.SAVE_AS_FILE:
 						imageManager.saveImageAsWithDialog(capture, CaptureFullScreenFrame.this);
@@ -79,21 +96,20 @@ public class CaptureFullScreenFrame extends MultiOptionFrame{
 	/**
 	 * Guide color 설정
 	 */
-	private Color mouseGuideColor = Color.black;
-	private Color tempShapeBorderColor = Color.blue;
+	private Color mouseGuideColor;
+	private Color tempShapeBorderColor;
 	private Color tempShapeAreaColor = new Color(0,0,0,0);
-	@Getter
-	private Stroke stroke = new BasicStroke(2f);
+	@Setter @Getter
+	private Stroke stroke;
 	
 	public CaptureFullScreenFrame() {
-		super(CAPTURE_MODE);
+		super(CAPTURE_TRANSPARENT_MODE);
 	}
 	
 	public void init() {
 		status.setListener(listener);
 		addMouseMotionListener(status);
 		addMouseListener(status);
-		setCursor(CursorManager.EMPTY_CURSOR);
 		painter.setFps(24);
 		painter.setListener(()->{
 			repaint();
@@ -101,7 +117,20 @@ public class CaptureFullScreenFrame extends MultiOptionFrame{
 	}
 	
 	public void open() {
-		setScreenRect(screenManager.getCurrentMonitorRect());
+		if(captureConfiguration.isPause()) { 
+			setScreenRect(screenManager.getCurrentMonitorRect(), screenManager.getCurrentMonitorImage());
+			setFrameMode(CAPTURE_PAUSE_MODE);
+		}
+		else { 
+			setScreenRect(screenManager.getCurrentMonitorRect());
+			setFrameMode(CAPTURE_TRANSPARENT_MODE);
+		}
+		mouseGuideColor = captureConfiguration.getMouseGuideColor();
+		tempShapeBorderColor = captureConfiguration.getCaptureAreaColor();
+		setStroke(new BasicStroke(captureConfiguration.getBorderThickness()));
+		if(!captureConfiguration.isMouseVisible()) {
+			setCursor(CursorManager.EMPTY_CURSOR);
+		}
 		painter.start();
 		setVisible(true);
 	}
@@ -113,10 +142,14 @@ public class CaptureFullScreenFrame extends MultiOptionFrame{
 		Graphics2D g2d = (Graphics2D)g;
 		
 		//필수
-		g2d.setComposite(AlphaComposite.Src);
+		if(g2d.getComposite() != AlphaComposite.Src) {
+			g2d.setComposite(AlphaComposite.Src);
+		}
 
 		//stroke 설정
-		g2d.setStroke(stroke);
+		if(g2d.getStroke() != stroke) {
+			g2d.setStroke(stroke);
+		}
 		
 		if(status.isDrag()) {
 			//테두리 그리기
@@ -127,7 +160,7 @@ public class CaptureFullScreenFrame extends MultiOptionFrame{
 			g2d.setColor(tempShapeAreaColor);
 			g2d.fillRect(status.getLeft(), status.getTop(), status.getWidth(), status.getHeight());
 		}
-		else {
+		else if(captureConfiguration.isGuideVisible()){
 			g2d.setColor(mouseGuideColor);
 			g2d.drawLine(status.getX(), 0, status.getX(), getHeight());
 			g2d.drawLine(0, status.getY(), getWidth(), status.getY());

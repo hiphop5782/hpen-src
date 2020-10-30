@@ -4,13 +4,15 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JColorChooser;
-import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -41,8 +43,12 @@ public class CaptureConfigurationPanel extends JPanel{
 	public CaptureConfigurationPanel() {}
 	
 	public void init() {
+		ExecutorService service = Executors.newSingleThreadExecutor();
+		service.execute(()->{
+			try {TimeUnit.MILLISECONDS.sleep(200);}catch(Exception e) {}
+			value();
+		});
 		component();
-		value();
 		event();
 		display();
 	}
@@ -58,6 +64,7 @@ public class CaptureConfigurationPanel extends JPanel{
 		components.put("guideThickness3", c.radio(g1, "두껍게"));
 		
 		components.put("guideColorButton", c.button("클릭 후 설정"));
+		components.put("captureAreaBorderColorButton", c.button("클릭 후 설정"));
 		
 		ButtonGroup g2 = new ButtonGroup();
 		components.put("saveType1", c.radio(g2, "클립보드"));
@@ -94,6 +101,9 @@ public class CaptureConfigurationPanel extends JPanel{
 		//가이드 버튼 색상
 		components.get("guideColorButton", JButton.class).setBackground(conf.getMouseGuideColor());
 		components.get("guideColorButton", JButton.class).setForeground(c.getContrastColor(conf.getMouseGuideColor()));
+		//캡쳐 영역 테두리 색상
+		components.get("captureAreaBorderColorButton", JButton.class).setBackground(conf.getCaptureAreaColor());
+		components.get("captureAreaBorderColorButton", JButton.class).setForeground(c.getContrastColor(conf.getCaptureAreaColor()));
 		
 		//저장 방식 라디오버튼
 		components.get("saveType1", JRadioButton.class).setSelected(conf.isSaveClipboard());
@@ -146,6 +156,15 @@ public class CaptureConfigurationPanel extends JPanel{
 				conf.setMouseGuideColor(color);
 				components.get("guideColorButton", JButton.class).setBackground(color);
 				components.get("guideColorButton", JButton.class).setForeground(c.getContrastColor(color));
+			}
+		});
+		
+		components.get("captureAreaBorderColorButton", JButton.class).addActionListener(e->{
+			Color color = JColorChooser.showDialog(this, "캡쳐 영역 테두리 색상 선택", conf.getCaptureAreaColor());
+			if(color != null) {
+				conf.setCaptureAreaColor(color);
+				components.get("captureAreaBorderColorButton", JButton.class).setBackground(color);
+				components.get("captureAreaBorderColorButton", JButton.class).setForeground(c.getContrastColor(color));
 			}
 		});
 		
@@ -246,6 +265,10 @@ public class CaptureConfigurationPanel extends JPanel{
         
         builder.append(c.label("가이드 색상"));
         builder.append(components.get("guideColorButton"));
+        builder.nextLine();
+        
+        builder.append(c.label("캡쳐 테두리 색상"));
+        builder.append(components.get("captureAreaBorderColorButton"));
         builder.nextLine();
         
         builder.appendSeparator("저장 설정");

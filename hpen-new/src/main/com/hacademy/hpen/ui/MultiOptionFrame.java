@@ -4,11 +4,13 @@ import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.image.BufferedImage;
 
 import javax.swing.JFrame;
 
@@ -46,7 +48,8 @@ public abstract class MultiOptionFrame extends JFrame{
 	public static final int TRANSPARENT_MODE = 0x8;
 	public static final int KEYPREVENT_MODE = 0x10;
 	public static final int KEYPASS_MODE = 0x20;
-	public static final int CAPTURE_MODE = FULLSCREEN_MODE | TRANSPARENT_MODE | KEYPREVENT_MODE;
+	public static final int CAPTURE_TRANSPARENT_MODE = FULLSCREEN_MODE | TRANSPARENT_MODE | KEYPREVENT_MODE;
+	public static final int CAPTURE_PAUSE_MODE = FULLSCREEN_MODE | PAUSE_MODE | KEYPREVENT_MODE;
 	public static final int NOTE_MODE = FULLSCREEN_MODE | TRANSPARENT_MODE | KEYPREVENT_MODE;
 	
 	/**
@@ -103,9 +106,16 @@ public abstract class MultiOptionFrame extends JFrame{
 	 */
 	@Getter
 	private Rectangle screenRect;
+	@Getter
+	private BufferedImage bg;
 	protected void setScreenRect(Rectangle screenRect) {
 		this.screenRect = screenRect;
+		this.bg = null;
 		setBounds(screenRect);
+	}
+	protected void setScreenRect(Rectangle screenRect, BufferedImage image) {
+		this.setScreenRect(screenRect);
+		this.bg = image;
 	}
 	
 	
@@ -123,9 +133,6 @@ public abstract class MultiOptionFrame extends JFrame{
 		
 		if(is(TRANSPARENT_MODE)) {//투명 배경 설정
 			setBackground(transparentColor);
-		}
-		else {//배경 캡쳐 설정
-			
 		}
 	}
 	
@@ -178,7 +185,10 @@ public abstract class MultiOptionFrame extends JFrame{
 	 * 	정지 화면 페인트 작업
 	 */
 	protected void pausePaint(Graphics2D g) {
+		if(g.getComposite() != AlphaComposite.Src)
+			g.setComposite(AlphaComposite.Src);
 		
+		g.drawImage(bg, 0, 0, getWidth(), getHeight(), this);
 	}
 	
 	/**
