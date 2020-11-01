@@ -11,8 +11,12 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
+import java.io.File;
 
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
+
+import com.hacademy.hpen.util.screen.ScreenManager;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -35,6 +39,9 @@ import lombok.extern.slf4j.Slf4j;
 public abstract class MultiOptionFrame extends JFrame{
 	
 	private static final long serialVersionUID = 1L;
+	
+	//Autowired가 작용되지 않는 관계로 생성해 두었지만 없엘 방법을 찾아야함
+	protected ScreenManager screenManager = new ScreenManager();
 	
 	/**
 	 * 상태값
@@ -95,7 +102,13 @@ public abstract class MultiOptionFrame extends JFrame{
 	/**
 	 * 생성		
 	 */
-	public MultiOptionFrame(int frameMode) {
+	public MultiOptionFrame() {
+		setUndecorated(true);
+		setResizable(false);
+		setFocusTraversalKeysEnabled(false);//탭키 잠금
+	}
+	
+	public void prepare(int frameMode) {
 		setFrameMode(frameMode);
 		frameSetting();
 		eventSetting();
@@ -104,20 +117,20 @@ public abstract class MultiOptionFrame extends JFrame{
 	/**
 	 * 	Display Rectangle 설정
 	 */
-	@Getter
 	private Rectangle screenRect;
 	@Getter
 	private BufferedImage bg;
 	protected void setScreenRect(Rectangle screenRect) {
 		this.screenRect = screenRect;
-		this.bg = null;
+		System.out.println("setScreenRect : "+is(PAUSE_MODE));
+		if(is(PAUSE_MODE)) {
+			this.bg = screenManager.getImage(screenRect);
+		}
+		else {
+			this.bg = null;
+		}
 		setBounds(screenRect);
 	}
-	protected void setScreenRect(Rectangle screenRect, BufferedImage image) {
-		this.setScreenRect(screenRect);
-		this.bg = image;
-	}
-	
 	
 	/**
 	 * 프레임 설정
@@ -127,12 +140,11 @@ public abstract class MultiOptionFrame extends JFrame{
 	 * - PAUSE_MODE : 배경 캡쳐 설정
 	 */
 	protected void frameSetting() {
-		setUndecorated(true);
-		setResizable(false);
-		setFocusTraversalKeysEnabled(false);//탭키 잠금
-		
 		if(is(TRANSPARENT_MODE)) {//투명 배경 설정
 			setBackground(transparentColor);
+		}
+		else {
+			
 		}
 	}
 	
@@ -165,11 +177,21 @@ public abstract class MultiOptionFrame extends JFrame{
 	 */
 	@Override
 	public void paint(Graphics g) {
-		if(is(TRANSPARENT_MODE))
-			transparentPaint((Graphics2D)g);
-		else
-			pausePaint((Graphics2D)g);
+		if(is(TRANSPARENT_MODE)) {
+			Graphics2D g2d = (Graphics2D)g;
+			transparentPaint(g2d);
+			advancedPaint(g2d);
+		}
+		else {
+			Image im = createImage(getWidth(), getHeight());
+			Graphics2D g2d = (Graphics2D)im.getGraphics();
+			pausePaint(g2d);
+			advancedPaint(g2d);
+			g.drawImage(im, 0, 0, getWidth(), getHeight(), this);
+		}
 	}
+	
+	public abstract void advancedPaint(Graphics2D g);
 	
 	/**
 	 *	투명 화면 페인트 작업
@@ -185,9 +207,9 @@ public abstract class MultiOptionFrame extends JFrame{
 	 * 	정지 화면 페인트 작업
 	 */
 	protected void pausePaint(Graphics2D g) {
-		if(g.getComposite() != AlphaComposite.Src)
+		if(!g.getComposite().equals(AlphaComposite.Src)) {
 			g.setComposite(AlphaComposite.Src);
-		
+		}
 		g.drawImage(bg, 0, 0, getWidth(), getHeight(), this);
 	}
 	

@@ -10,6 +10,8 @@ import java.awt.Stroke;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import com.hacademy.hpen.ui.MultiOptionFrame;
 import com.hacademy.hpen.ui.event.MouseEventListener;
@@ -36,9 +38,6 @@ public class CaptureFullScreenFrame extends MultiOptionFrame{
 
 	@Autowired
 	private MouseStatus status;
-	
-	@Autowired
-	private ScreenManager screenManager;
 	
 	@Autowired
 	private ClipboardManager clipboardManager;
@@ -98,13 +97,11 @@ public class CaptureFullScreenFrame extends MultiOptionFrame{
 	 */
 	private Color mouseGuideColor;
 	private Color tempShapeBorderColor;
-	private Color tempShapeAreaColor = new Color(0,0,0,0);
+	private Color tempShapeAreaColor;
 	@Setter @Getter
 	private Stroke stroke;
 	
-	public CaptureFullScreenFrame() {
-		super(CAPTURE_TRANSPARENT_MODE);
-	}
+	public CaptureFullScreenFrame() {}
 	
 	public void init() {
 		status.setListener(listener);
@@ -114,19 +111,17 @@ public class CaptureFullScreenFrame extends MultiOptionFrame{
 		painter.setListener(()->{
 			repaint();
 		});
+		Executors.newSingleThreadScheduledExecutor().schedule(()->{
+			super.prepare(captureConfiguration.isPause() ? CAPTURE_PAUSE_MODE : CAPTURE_TRANSPARENT_MODE);
+		}, 50, TimeUnit.MILLISECONDS);
 	}
 	
 	public void open() {
-		if(captureConfiguration.isPause()) { 
-			setScreenRect(screenManager.getCurrentMonitorRect(), screenManager.getCurrentMonitorImage());
-			setFrameMode(CAPTURE_PAUSE_MODE);
-		}
-		else { 
-			setScreenRect(screenManager.getCurrentMonitorRect());
-			setFrameMode(CAPTURE_TRANSPARENT_MODE);
-		}
+		setFrameMode(captureConfiguration.isPause() ? CAPTURE_PAUSE_MODE : CAPTURE_TRANSPARENT_MODE);
+		setScreenRect(screenManager.getCurrentMonitorRect());
 		mouseGuideColor = captureConfiguration.getMouseGuideColor();
 		tempShapeBorderColor = captureConfiguration.getCaptureAreaColor();
+		tempShapeAreaColor = captureConfiguration.isPause() ? null : new Color(0,0,0,0);
 		setStroke(new BasicStroke(captureConfiguration.getBorderThickness()));
 		if(!captureConfiguration.isMouseVisible()) {
 			setCursor(CursorManager.EMPTY_CURSOR);
@@ -134,43 +129,41 @@ public class CaptureFullScreenFrame extends MultiOptionFrame{
 		painter.start();
 		setVisible(true);
 	}
-	
-	@Override
-	public void paint(Graphics g) {
-		super.paint(g);
-		
-		Graphics2D g2d = (Graphics2D)g;
-		
-		//필수
-		if(g2d.getComposite() != AlphaComposite.Src) {
-			g2d.setComposite(AlphaComposite.Src);
-		}
-
-		//stroke 설정
-		if(g2d.getStroke() != stroke) {
-			g2d.setStroke(stroke);
-		}
-		
-		if(status.isDrag()) {
-			//테두리 그리기
-			g2d.setColor(tempShapeBorderColor);
-			g2d.drawRect(status.getLeft(), status.getTop(), status.getWidth(), status.getHeight());
-			
-			//캡쳐영역 투명처리
-			g2d.setColor(tempShapeAreaColor);
-			g2d.fillRect(status.getLeft(), status.getTop(), status.getWidth(), status.getHeight());
-		}
-		else if(captureConfiguration.isGuideVisible()){
-			g2d.setColor(mouseGuideColor);
-			g2d.drawLine(status.getX(), 0, status.getX(), getHeight());
-			g2d.drawLine(0, status.getY(), getWidth(), status.getY());
-		}
-	}
 
 	@Override
 	public void exitProcess() {
 		painter.kill();
 		setVisible(false);
+	}
+	
+	@Override
+	public void advancedPaint(Graphics2D g) {
+		//필수
+		if(g.getComposite() != AlphaComposite.Src) {
+			g.setComposite(AlphaComposite.Src);
+		}
+
+		//stroke 설정
+		if(g.getStroke() != stroke) {
+			g.setStroke(stroke);
+		}
+		
+		if(status.isDrag()) {
+			//테두리 그리기
+			g.setColor(tempShapeBorderColor);
+			g.drawRect(status.getLeft(), status.getTop(), status.getWidth(), status.getHeight());
+			
+			//캡쳐영역 투명처리
+			if(captureConfiguration.isTransparent()) {
+				g.setColor(tempShapeAreaColor);
+				g.fillRect(status.getLeft(), status.getTop(), status.getWidth(), status.getHeight());
+			}
+		}
+		else if(captureConfiguration.isGuideVisible()){
+			g.setColor(mouseGuideColor);
+			g.drawLine(status.getX(), 0, status.getX(), getHeight());
+			g.drawLine(0, status.getY(), getWidth(), status.getY());
+		}
 	}
 	
 }

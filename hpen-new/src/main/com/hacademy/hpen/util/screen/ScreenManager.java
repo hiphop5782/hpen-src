@@ -22,15 +22,17 @@ import com.hacademy.hpen.util.loader.annotation.Component;
 @Component
 public class ScreenManager {
 	private Robot r;
-	public ScreenManager() {}
-	
-	public void init() {
+	public ScreenManager() {
 		try {
 			r = new Robot();
 		}
 		catch(Exception e) {
 			System.err.println("create robot error");
 		}
+	}
+	
+	public void init() {
+		
 	}
 
 	public BufferedImage getCurrentMonitorImage() {
