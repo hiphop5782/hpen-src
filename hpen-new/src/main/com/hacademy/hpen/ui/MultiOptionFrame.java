@@ -57,6 +57,7 @@ public abstract class MultiOptionFrame extends JFrame{
 	public static final int KEYPASS_MODE = 0x20;
 	public static final int CAPTURE_TRANSPARENT_MODE = FULLSCREEN_MODE | TRANSPARENT_MODE | KEYPREVENT_MODE;
 	public static final int CAPTURE_PAUSE_MODE = FULLSCREEN_MODE | PAUSE_MODE | KEYPREVENT_MODE;
+	public static final int HOLD_MODE = SELECTION_MODE | PAUSE_MODE | KEYPREVENT_MODE;
 	public static final int NOTE_MODE = FULLSCREEN_MODE | TRANSPARENT_MODE | KEYPREVENT_MODE;
 	
 	/**
