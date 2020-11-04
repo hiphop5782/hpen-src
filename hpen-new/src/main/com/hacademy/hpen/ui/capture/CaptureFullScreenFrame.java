@@ -20,6 +20,7 @@ import com.hacademy.hpen.ui.event.ScheduledThread;
 import com.hacademy.hpen.ui.option.process.CaptureConfiguration;
 import com.hacademy.hpen.util.clipboard.ClipboardManager;
 import com.hacademy.hpen.util.cursor.CursorManager;
+import com.hacademy.hpen.util.delay.DelayManager;
 import com.hacademy.hpen.util.image.ImageManager;
 import com.hacademy.hpen.util.loader.annotation.Autowired;
 import com.hacademy.hpen.util.loader.annotation.Component;
@@ -44,6 +45,9 @@ public class CaptureFullScreenFrame extends MultiOptionFrame{
 	
 	@Autowired
 	private ImageManager imageManager;
+	
+	@Autowired
+	private DelayManager delayManager;
 	
 	@Autowired
 	private ScheduledThread painter;
@@ -107,13 +111,9 @@ public class CaptureFullScreenFrame extends MultiOptionFrame{
 		status.setListener(listener);
 		addMouseMotionListener(status);
 		addMouseListener(status);
-		painter.setFps(24);
-		painter.setListener(()->{
-			repaint();
-		});
-		Executors.newSingleThreadScheduledExecutor().schedule(()->{
+		delayManager.setTimeout(50L, ()->{
 			super.prepare(captureConfiguration.isPause() ? CAPTURE_PAUSE_MODE : CAPTURE_TRANSPARENT_MODE);
-		}, 50, TimeUnit.MILLISECONDS);
+		});
 	}
 	
 	public void open() {
@@ -126,6 +126,10 @@ public class CaptureFullScreenFrame extends MultiOptionFrame{
 		if(!captureConfiguration.isMouseVisible()) {
 			setCursor(CursorManager.EMPTY_CURSOR);
 		}
+		painter.setFps(24);
+		painter.setListener(()->{
+			repaint();
+		});
 		painter.start();
 		setVisible(true);
 	}

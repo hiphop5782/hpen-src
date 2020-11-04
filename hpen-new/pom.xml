@@ -43,11 +43,11 @@
 			<scope>test</scope>
 		</dependency>
 
-		<!-- jkey master -->
+		<!-- global keyboard listener -->
 		<dependency>
-			<groupId>com.github.tulskiy</groupId>
-			<artifactId>jkeymaster</artifactId>
-			<version>1.3</version>
+		  	<groupId>lc.kra.system</groupId>
+		  	<artifactId>system-hook</artifactId>
+		  	<version>3.8</version>
 		</dependency>
 
 		<!-- form layout -->

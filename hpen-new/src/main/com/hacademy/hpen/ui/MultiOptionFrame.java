@@ -58,7 +58,8 @@ public abstract class MultiOptionFrame extends JFrame{
 	public static final int CAPTURE_TRANSPARENT_MODE = FULLSCREEN_MODE | TRANSPARENT_MODE | KEYPREVENT_MODE;
 	public static final int CAPTURE_PAUSE_MODE = FULLSCREEN_MODE | PAUSE_MODE | KEYPREVENT_MODE;
 	public static final int HOLD_MODE = SELECTION_MODE | PAUSE_MODE | KEYPREVENT_MODE;
-	public static final int NOTE_MODE = FULLSCREEN_MODE | TRANSPARENT_MODE | KEYPREVENT_MODE;
+	public static final int NOTE_TRANSPARENT_MODE = FULLSCREEN_MODE | TRANSPARENT_MODE | KEYPREVENT_MODE;
+	public static final int NOTE_PAUSE_MODE = FULLSCREEN_MODE | PAUSE_MODE | KEYPREVENT_MODE;
 	
 	/**
 	 * TRANSPARENT_MODE에서 사용할 색상
@@ -123,7 +124,7 @@ public abstract class MultiOptionFrame extends JFrame{
 	private BufferedImage bg;
 	protected void setScreenRect(Rectangle screenRect) {
 		this.screenRect = screenRect;
-		System.out.println("setScreenRect : "+is(PAUSE_MODE));
+		
 		if(is(PAUSE_MODE)) {
 			this.bg = screenManager.getImage(screenRect);
 		}
