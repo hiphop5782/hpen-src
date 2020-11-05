@@ -93,7 +93,7 @@ public class CaptureFullScreenFrame extends MultiOptionFrame{
 					log.error("저장 오류 발생", err);
 				}
 			}
-			exitProcess();
+			exit();
 		}
 	};
 	
