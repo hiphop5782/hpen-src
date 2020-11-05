@@ -170,7 +170,7 @@ public abstract class MultiOptionFrame extends JFrame{
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
-				exitProcess();
+				exit();
 			}
 		});
 		
@@ -248,15 +248,14 @@ public abstract class MultiOptionFrame extends JFrame{
 	 */
 	public void exit() {
 		log.debug("exit frame");
+		setVisible(false);
 		if(keyHook != null) {
 			Executors.newSingleThreadExecutor().execute(()->{
 				keyHook.shutdownHook();
 				log.debug("shutdown keyboardhook");
 			});
 		}
-		exitProcess();
 	}
-	public abstract void exitProcess();
 }
 
 

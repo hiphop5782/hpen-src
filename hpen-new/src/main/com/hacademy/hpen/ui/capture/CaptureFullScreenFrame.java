@@ -136,9 +136,9 @@ public class CaptureFullScreenFrame extends MultiOptionFrame{
 	}
 
 	@Override
-	public void exitProcess() {
+	public void exit() {
+		super.exit();
 		painter.kill();
-		setVisible(false);
 	}
 	
 	@Override

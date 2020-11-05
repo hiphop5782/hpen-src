@@ -1,6 +1,7 @@
 package com.hacademy.hpen.ui.event;
 
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
 
 public class MouseEventListener {
 	public void whenMouseMove(MouseEvent e) {}
@@ -10,5 +11,5 @@ public class MouseEventListener {
 	public void whenMouseRelease(MouseEvent e) {}
 	public void whenMouseEnter(MouseEvent e) {}
 	public void whenMouseLeave(MouseEvent e) {}
-	public void whenMouseWheel(MouseEvent e) {}
+	public void whenMouseWheel(MouseWheelEvent e) {}
 }
