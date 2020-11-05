@@ -6,7 +6,7 @@ import java.lang.reflect.InvocationTargetException;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.hacademy.hpen.ui.note.NoteFullScreeFrame;
+import com.hacademy.hpen.ui.note.NoteFullScreenFrame;
 import com.hacademy.hpen.util.loader.InMemoryObjectLoader;
 
 import lombok.extern.slf4j.Slf4j;
@@ -14,13 +14,13 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class Test11_NoteFrameTest {
 	InMemoryObjectLoader loader;
-	NoteFullScreeFrame frame;
+	NoteFullScreenFrame frame;
 	
 	@Before
 	public void before() throws IllegalArgumentException, IllegalAccessException, InstantiationException, InvocationTargetException, NoSuchMethodException, SecurityException, IOException {
 		loader = new InMemoryObjectLoader("com.hacademy.hpen");
 		log.debug("components = {}", loader.componentSize());
-		frame = loader.getBean(NoteFullScreeFrame.class);
+		frame = loader.getBean(NoteFullScreenFrame.class);
 	}
 	
 	@Test

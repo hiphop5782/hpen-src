@@ -5,6 +5,8 @@ import java.awt.Graphics2D;
 import com.hacademy.hpen.ui.MultiOptionFrame;
 import com.hacademy.hpen.util.loader.annotation.Component;
 
+import lc.kra.system.keyboard.GlobalKeyboardHook;
+
 @Component
 public class CaptureHoldScreenFrame extends MultiOptionFrame{
 
@@ -26,6 +28,12 @@ public class CaptureHoldScreenFrame extends MultiOptionFrame{
 
 	@Override
 	public void exitProcess() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setKeyHook(GlobalKeyboardHook keyHook) {
 		// TODO Auto-generated method stub
 		
 	}

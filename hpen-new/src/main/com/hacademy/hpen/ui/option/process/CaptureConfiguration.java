@@ -259,8 +259,8 @@ public class CaptureConfiguration implements Serializable{
 		try {
 			CaptureConfiguration conf = configurationManager.load(getClass());
 			objectCopyManager.copy(conf, this);
-			log.debug("conf = {}", conf);
-			log.debug("this = {}", this);
+			log.debug("load = {}", conf);
+			log.debug("copy = {}", this);
 			save();
 		}
 		catch(Exception e) {
@@ -271,10 +271,10 @@ public class CaptureConfiguration implements Serializable{
 	public void save() {
 		try {
 			configurationManager.save(this);
-			log.debug("save complete");
+			log.debug("capture configuration save complete");
 		}
 		catch(Exception e) {
-			e.printStackTrace();
+			log.error("capture configuration save error", e);
 		}
 	}
 

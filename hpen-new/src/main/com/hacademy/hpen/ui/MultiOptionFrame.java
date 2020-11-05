@@ -12,12 +12,19 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
+import com.hacademy.hpen.util.delay.DelayManager;
 import com.hacademy.hpen.util.screen.ScreenManager;
 
+import lc.kra.system.GlobalHookMode;
+import lc.kra.system.keyboard.GlobalKeyboardHook;
+import lc.kra.system.keyboard.event.GlobalKeyEvent;
+import lc.kra.system.keyboard.event.GlobalKeyListener;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -153,7 +160,12 @@ public abstract class MultiOptionFrame extends JFrame{
 	/**
 	 * 이벤트 설정
 	 */
+	private GlobalKeyboardHook keyHook;
 	protected void eventSetting() {
+		if(is(KEYPREVENT_MODE))
+			keyHook = new GlobalKeyboardHook(GlobalHookMode.FINAL);
+		else if(is(KEYPASS_MODE))
+			keyHook = new GlobalKeyboardHook();
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		addWindowListener(new WindowAdapter() {
 			@Override
@@ -161,16 +173,32 @@ public abstract class MultiOptionFrame extends JFrame{
 				exitProcess();
 			}
 		});
-		addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(KeyEvent e) {
-				switch(e.getKeyCode()) {
-				case KeyEvent.VK_ESCAPE:
-					exitProcess();
+		
+		if(keyHook != null) {
+			setKeyHook(keyHook);
+			keyHook.addKeyListener(new GlobalKeyListener() {
+				public void keyReleased(GlobalKeyEvent event) {}
+				public void keyPressed(GlobalKeyEvent event) {
+					if(event.getVirtualKeyCode() == GlobalKeyEvent.VK_ESCAPE) {
+						exit();
+					}
 				}
-			}
-		});
+			});
+		}
+		else {
+			addKeyListener(new KeyAdapter() {
+				@Override
+				public void keyPressed(KeyEvent e) {
+					switch(e.getKeyCode()) {
+					case KeyEvent.VK_ESCAPE:
+						exit();
+					}
+				}
+			});
+		}
 	}
+	
+	public abstract void setKeyHook(GlobalKeyboardHook keyHook);
 	
 	/**
 	 * 페인트 방식 정의
@@ -218,6 +246,16 @@ public abstract class MultiOptionFrame extends JFrame{
 	/**
 	 * 종료 작업
 	 */
+	public void exit() {
+		log.debug("exit frame");
+		if(keyHook != null) {
+			Executors.newSingleThreadExecutor().execute(()->{
+				keyHook.shutdownHook();
+				log.debug("shutdown keyboardhook");
+			});
+		}
+		exitProcess();
+	}
 	public abstract void exitProcess();
 }
 

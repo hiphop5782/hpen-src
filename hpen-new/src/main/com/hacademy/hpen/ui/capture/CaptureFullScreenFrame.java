@@ -27,6 +27,7 @@ import com.hacademy.hpen.util.loader.annotation.Component;
 import com.hacademy.hpen.util.screen.ImageType;
 import com.hacademy.hpen.util.screen.ScreenManager;
 
+import lc.kra.system.keyboard.GlobalKeyboardHook;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -168,6 +169,12 @@ public class CaptureFullScreenFrame extends MultiOptionFrame{
 			g.drawLine(status.getX(), 0, status.getX(), getHeight());
 			g.drawLine(0, status.getY(), getWidth(), status.getY());
 		}
+	}
+
+	@Override
+	public void setKeyHook(GlobalKeyboardHook keyHook) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }
