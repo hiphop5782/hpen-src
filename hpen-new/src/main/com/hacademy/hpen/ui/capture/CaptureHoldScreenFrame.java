@@ -27,12 +27,6 @@ public class CaptureHoldScreenFrame extends MultiOptionFrame{
 	}
 
 	@Override
-	public void exitProcess() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public void setKeyHook(GlobalKeyboardHook keyHook) {
 		// TODO Auto-generated method stub
 		

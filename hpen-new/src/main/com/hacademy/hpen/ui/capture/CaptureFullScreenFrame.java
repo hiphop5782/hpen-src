@@ -3,15 +3,12 @@ package com.hacademy.hpen.ui.capture;
 import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.Stroke;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 import com.hacademy.hpen.ui.MultiOptionFrame;
 import com.hacademy.hpen.ui.event.MouseEventListener;
@@ -25,7 +22,6 @@ import com.hacademy.hpen.util.image.ImageManager;
 import com.hacademy.hpen.util.loader.annotation.Autowired;
 import com.hacademy.hpen.util.loader.annotation.Component;
 import com.hacademy.hpen.util.screen.ImageType;
-import com.hacademy.hpen.util.screen.ScreenManager;
 
 import lc.kra.system.keyboard.GlobalKeyboardHook;
 import lombok.Getter;
@@ -118,6 +114,7 @@ public class CaptureFullScreenFrame extends MultiOptionFrame{
 	}
 	
 	public void open() {
+		status.setListener(listener);
 		setFrameMode(captureConfiguration.isPause() ? CAPTURE_PAUSE_MODE : CAPTURE_TRANSPARENT_MODE);
 		setScreenRect(screenManager.getCurrentMonitorRect());
 		mouseGuideColor = captureConfiguration.getMouseGuideColor();
@@ -173,7 +170,6 @@ public class CaptureFullScreenFrame extends MultiOptionFrame{
 
 	@Override
 	public void setKeyHook(GlobalKeyboardHook keyHook) {
-		// TODO Auto-generated method stub
 		
 	}
 	

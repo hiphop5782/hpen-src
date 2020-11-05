@@ -43,15 +43,16 @@ public class NoteFullScreenFrame extends MultiOptionFrame{
 	
 	private MouseEventListener mouseListener = new MouseEventListener() {
 		public void whenMouseMove(MouseEvent e) {
-			//System.out.println(mouseStatus.getX()+","+mouseStatus.getY());
-			
+			System.out.println(mouseStatus.getX()+","+mouseStatus.getY());
 		};
 		public void whenMouseWheel(MouseWheelEvent e) {
 			if(e.getWheelRotation() < 0) {
 				conf.increasePointerThickness();
+				setCursor(CursorManager.createCircleCursor(conf.getPointerThickness()));
 			}
 			else if(e.getWheelRotation() > 0){
 				conf.decreasePointerThickness();
+				setCursor(CursorManager.createCircleCursor(conf.getPointerThickness()));
 			}
 		}
 	};
@@ -67,6 +68,7 @@ public class NoteFullScreenFrame extends MultiOptionFrame{
 	}
 	
 	public void open() {
+		mouseStatus.setListener(mouseListener);
 		setFrameMode(conf.isPause() ? NOTE_PAUSE_MODE : NOTE_TRANSPARENT_MODE);//option
 		setScreenRect(screenManager.getCurrentMonitorRect());
 		setCursor(CursorManager.createCircleCursor(conf.getPointerColor(), conf.getPointerThickness()));//option
