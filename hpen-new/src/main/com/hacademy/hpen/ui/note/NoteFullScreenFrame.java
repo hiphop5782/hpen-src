@@ -1,15 +1,17 @@
 package com.hacademy.hpen.ui.note;
 
-import java.awt.Color;
-import java.awt.Cursor;
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import com.hacademy.hpen.ui.MultiOptionFrame;
 import com.hacademy.hpen.ui.event.MouseEventListener;
 import com.hacademy.hpen.ui.event.MouseStatus;
 import com.hacademy.hpen.ui.event.ScheduledThread;
+import com.hacademy.hpen.ui.note.element.Node;
+import com.hacademy.hpen.ui.note.element.Rect;
 import com.hacademy.hpen.ui.option.process.NoteConfiguration;
 import com.hacademy.hpen.util.cursor.CursorManager;
 import com.hacademy.hpen.util.delay.DelayManager;
@@ -38,12 +40,26 @@ public class NoteFullScreenFrame extends MultiOptionFrame{
 	@Autowired
 	private MouseStatus mouseStatus;
 	
+	private List<Node> nodes = new CopyOnWriteArrayList<>();
+	
 	@Autowired
 	private NoteConfiguration conf;
 	
 	private MouseEventListener mouseListener = new MouseEventListener() {
 		public void whenMouseMove(MouseEvent e) {
-			System.out.println(mouseStatus.getX()+","+mouseStatus.getY());
+			System.out.println("move - " + mouseStatus);
+		};
+		public void whenMouseDragged(MouseEvent e) {
+			System.out.println("drag - " + mouseStatus);
+		};
+		public void whenMouseRelease(MouseEvent e) {
+			System.out.println("release - "+mouseStatus);
+			Rect rect = new Rect();
+			rect.setX(mouseStatus.getX());
+			rect.setY(mouseStatus.getY());
+			rect.setWidth(mouseStatus.getWidth());
+			rect.setHeight(mouseStatus.getHeight());
+			nodes.add(rect);
 		};
 		public void whenMouseWheel(MouseWheelEvent e) {
 			if(e.getWheelRotation() < 0) {
@@ -82,7 +98,9 @@ public class NoteFullScreenFrame extends MultiOptionFrame{
 	
 	@Override
 	public void advancedPaint(Graphics2D g) {
-		
+		for(Node node : nodes) {
+			g.drawImage(node.getImage(), node.getX(), node.getY(), node.getWidth(), node.getHeight(), this);
+		}
 	}
 
 	@Override
