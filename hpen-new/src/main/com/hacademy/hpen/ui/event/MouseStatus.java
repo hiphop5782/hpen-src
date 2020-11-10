@@ -100,6 +100,7 @@ public class MouseStatus implements MouseMotionListener, MouseListener, MouseWhe
 			listener.whenMouseWheel(e);
 	}
 	public Rectangle getRect() {
+		if(!isDrag()) return null;
 		return new Rectangle(getLeft(), getTop(), getWidth(), getHeight());
 	}
 }

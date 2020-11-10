@@ -1,7 +1,5 @@
 package com.hacademy.hpen.ui.note;
 
-import java.awt.Color;
-import java.awt.Cursor;
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
@@ -10,6 +8,8 @@ import com.hacademy.hpen.ui.MultiOptionFrame;
 import com.hacademy.hpen.ui.event.MouseEventListener;
 import com.hacademy.hpen.ui.event.MouseStatus;
 import com.hacademy.hpen.ui.event.ScheduledThread;
+import com.hacademy.hpen.ui.note.element.Node;
+import com.hacademy.hpen.ui.note.element.Rect;
 import com.hacademy.hpen.ui.option.process.NoteConfiguration;
 import com.hacademy.hpen.util.cursor.CursorManager;
 import com.hacademy.hpen.util.delay.DelayManager;
@@ -20,7 +20,9 @@ import com.hacademy.hpen.util.screen.ScreenManager;
 import lc.kra.system.keyboard.GlobalKeyboardHook;
 import lc.kra.system.keyboard.event.GlobalKeyEvent;
 import lc.kra.system.keyboard.event.GlobalKeyListener;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Component
 public class NoteFullScreenFrame extends MultiOptionFrame{
 	
@@ -38,21 +40,58 @@ public class NoteFullScreenFrame extends MultiOptionFrame{
 	@Autowired
 	private MouseStatus mouseStatus;
 	
+	/**
+	 * Drawing Status
+	 * 0 : free drawing
+	 * 1 : rect
+	 * 2 : oval
+	 * 3 : line
+	 */
+	private int drawStatus;
+	public static final int DRAW_FREE = 0;
+	public static final int DRAW_RECT = 1;
+	public static final int DRAW_OVAL = 2;
+	public static final int DRAW_LINE = 3;
+	public static final int DRAW_TEXT = 4;
+	private Node flashNode;
+	
 	@Autowired
 	private NoteConfiguration conf;
 	
 	private MouseEventListener mouseListener = new MouseEventListener() {
 		public void whenMouseMove(MouseEvent e) {
-			System.out.println(mouseStatus.getX()+","+mouseStatus.getY());
+			//System.out.println(mouseStatus.getX()+","+mouseStatus.getY());
 		};
 		public void whenMouseWheel(MouseWheelEvent e) {
-			if(e.getWheelRotation() < 0) {
-				conf.increasePointerThickness();
-				setCursor(CursorManager.createCircleCursor(conf.getPointerThickness()));
+			if(drawStatus == DRAW_TEXT) {
+				
 			}
-			else if(e.getWheelRotation() > 0){
-				conf.decreasePointerThickness();
-				setCursor(CursorManager.createCircleCursor(conf.getPointerThickness()));
+			else {
+				if(e.getWheelRotation() < 0) {
+					conf.increasePointerThickness();
+					setCursor(CursorManager.createCircleCursor(conf.getPointerThickness()));
+				}
+				else if(e.getWheelRotation() > 0){
+					conf.decreasePointerThickness();
+					setCursor(CursorManager.createCircleCursor(conf.getPointerThickness()));
+				}
+			}
+		}
+		public void whenMouseDragged(MouseEvent e) {
+			log.debug("drag {}", e.getButton());
+			//좌클릭 드래그
+			log.debug("drawStatus = {}", drawStatus);
+			switch(drawStatus) {
+			case DRAW_RECT:
+				flashNode = new Rect(
+						mouseStatus.getLeft(), 
+						mouseStatus.getTop(), 
+						mouseStatus.getWidth(), 
+						mouseStatus.getHeight(),
+						conf.getPointerThickness(),
+						conf.getPointerColor()
+						);
+				return;
 			}
 		}
 	};
@@ -82,7 +121,11 @@ public class NoteFullScreenFrame extends MultiOptionFrame{
 	
 	@Override
 	public void advancedPaint(Graphics2D g) {
-		
+
+		//임시 도형
+		if(flashNode != null) {
+			g.drawImage(flashNode.getGraphic(), flashNode.getX(), flashNode.getY(), flashNode.getWidth(), flashNode.getHeight(), this);
+		}
 	}
 
 	@Override
@@ -144,6 +187,9 @@ public class NoteFullScreenFrame extends MultiOptionFrame{
 				case GlobalKeyEvent.VK_F12:
 					conf.setPointerColor(conf.getF12Color());
 					setCursor(CursorManager.createCircleCursor(conf.getF12Color(), conf.getPointerThickness()));
+					break;
+				case GlobalKeyEvent.VK_Q:
+					drawStatus = DRAW_RECT;
 					break;
 				}
 			}

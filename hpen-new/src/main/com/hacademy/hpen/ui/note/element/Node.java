@@ -1,9 +1,11 @@
 package com.hacademy.hpen.ui.note.element;
 
-import java.awt.Graphics;
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+
+import lombok.Getter;
 
 /**
  *	도형의 기본이 되는 컴포넌트
@@ -12,7 +14,10 @@ import java.awt.image.BufferedImage;
  *	- 영역 내에서 어떻게 그리는지에 대해서는 도형마다 자율적으로 설정 
  */
 public abstract class Node {
-	protected int x, y, width, height;
+	@Getter
+	protected int x, y, width, height, thickness;
+	@Getter
+	protected Color color;
 	private Image image;
 	public Image getGraphic() {
 		if(image == null) {

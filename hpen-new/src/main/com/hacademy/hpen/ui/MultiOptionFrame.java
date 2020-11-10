@@ -166,6 +166,7 @@ public abstract class MultiOptionFrame extends JFrame{
 			keyHook = new GlobalKeyboardHook(GlobalHookMode.FINAL);
 		else if(is(KEYPASS_MODE))
 			keyHook = new GlobalKeyboardHook();
+		
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		addWindowListener(new WindowAdapter() {
 			@Override
