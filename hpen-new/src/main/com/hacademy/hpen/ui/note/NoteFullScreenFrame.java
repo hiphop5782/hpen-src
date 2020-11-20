@@ -67,11 +67,14 @@ public class NoteFullScreenFrame extends MultiOptionFrame{
 		};
 		public void whenMouseRelease(MouseEvent e) {
 			System.out.println("release - "+mouseStatus);
-			Rect rect = new Rect();
-			rect.setX(mouseStatus.getX());
-			rect.setY(mouseStatus.getY());
-			rect.setWidth(mouseStatus.getWidth());
-			rect.setHeight(mouseStatus.getHeight());
+			Rect rect = new Rect(
+							mouseStatus.getLeft(), 
+							mouseStatus.getTop(), 
+							mouseStatus.getWidth(), 
+							mouseStatus.getHeight(),
+							conf.getPointerThickness(),
+							conf.getPointerColor()
+						);
 			nodes.add(rect);
 			//System.out.println(mouseStatus.getX()+","+mouseStatus.getY());
 		};
@@ -120,6 +123,8 @@ public class NoteFullScreenFrame extends MultiOptionFrame{
 	}
 	
 	public void open() {
+		if(isVisible()) return;
+		
 		mouseStatus.setListener(mouseListener);
 		setFrameMode(conf.isPause() ? NOTE_PAUSE_MODE : NOTE_TRANSPARENT_MODE);//option
 		setScreenRect(screenManager.getCurrentMonitorRect());
@@ -138,7 +143,7 @@ public class NoteFullScreenFrame extends MultiOptionFrame{
 			g.drawImage(node.getImage(), node.getX(), node.getY(), node.getWidth(), node.getHeight(), this);
 			//임시 도형
 			if(flashNode != null) {
-				g.drawImage(flashNode.getGraphic(), flashNode.getX(), flashNode.getY(), flashNode.getWidth(), flashNode.getHeight(), this);
+				g.drawImage(flashNode.getImage(), flashNode.getX(), flashNode.getY(), flashNode.getWidth(), flashNode.getHeight(), this);
 			}
 		}
 	}
