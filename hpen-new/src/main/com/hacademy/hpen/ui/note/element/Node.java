@@ -21,7 +21,7 @@ public abstract class Node {
 	protected int thickness = 1;
 	private Image image;
 	public Image getImage() {
-		if(image == null) {
+		if(image == null && width > 0 && height > 0) {
 			image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 			Graphics2D g = (Graphics2D)image.getGraphics();
 			g.setColor(color);

@@ -109,13 +109,13 @@ public class CaptureFullScreenFrame extends MultiOptionFrame{
 		addMouseMotionListener(status);
 		addMouseListener(status);
 		delayManager.setTimeout(50L, ()->{
-			super.prepare(captureConfiguration.isPause() ? CAPTURE_PAUSE_MODE : CAPTURE_TRANSPARENT_MODE);
+			super.prepare(captureConfiguration.isPause() ? CAPTURE_MODE : CAPTURE_TRANSPARENT_MODE);
 		});
 	}
 	
 	public void open() {
 		status.setListener(listener);
-		setFrameMode(captureConfiguration.isPause() ? CAPTURE_PAUSE_MODE : CAPTURE_TRANSPARENT_MODE);
+		setFrameMode(captureConfiguration.isPause() ? CAPTURE_MODE : CAPTURE_TRANSPARENT_MODE);
 		setScreenRect(screenManager.getCurrentMonitorRect());
 		mouseGuideColor = captureConfiguration.getMouseGuideColor();
 		tempShapeBorderColor = captureConfiguration.getCaptureAreaColor();

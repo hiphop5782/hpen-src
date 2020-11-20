@@ -118,7 +118,7 @@ public class NoteFullScreenFrame extends MultiOptionFrame{
 		addMouseWheelListener(mouseStatus);
 		addMouseListener(mouseStatus);
 		delayManager.setTimeout(50L, ()->{
-			super.prepare(conf.isPause() ? NOTE_PAUSE_MODE : NOTE_TRANSPARENT_MODE);//option
+			super.prepare(conf.isPause() ? NOTE_MODE : NOTE_TRANSPARENT_MODE);//option
 		});
 	}
 	
@@ -126,7 +126,7 @@ public class NoteFullScreenFrame extends MultiOptionFrame{
 		if(isVisible()) return;
 		
 		mouseStatus.setListener(mouseListener);
-		setFrameMode(conf.isPause() ? NOTE_PAUSE_MODE : NOTE_TRANSPARENT_MODE);//option
+		setFrameMode(conf.isPause() ? NOTE_MODE : NOTE_TRANSPARENT_MODE);//option
 		setScreenRect(screenManager.getCurrentMonitorRect());
 		setCursor(CursorManager.createCircleCursor(conf.getPointerColor(), conf.getPointerThickness()));//option
 		painter.setFps(24);//option

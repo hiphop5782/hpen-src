@@ -56,17 +56,13 @@ public abstract class MultiOptionFrame extends JFrame{
 	 * - SELECTION_MODE와 FULLSCREE_MODE 동시적용 불가
 	 * - PAUSE_MODE와 TRANSPARENT_MODE 동시적용 불가
 	 */
-	public static final int SELECTION_MODE = 0x1;
-	public static final int FULLSCREEN_MODE = 0x2;
-	public static final int PAUSE_MODE = 0x4;
-	public static final int TRANSPARENT_MODE = 0x8;
-	public static final int KEYPREVENT_MODE = 0x10;
-	public static final int KEYPASS_MODE = 0x20;
+	public static final int FULLSCREEN_MODE = 0x1;
+	public static final int TRANSPARENT_MODE = 0x2;
+	public static final int KEYPREVENT_MODE = 0x4;
 	public static final int CAPTURE_TRANSPARENT_MODE = FULLSCREEN_MODE | TRANSPARENT_MODE | KEYPREVENT_MODE;
-	public static final int CAPTURE_PAUSE_MODE = FULLSCREEN_MODE | PAUSE_MODE | KEYPREVENT_MODE;
-	public static final int HOLD_MODE = SELECTION_MODE | PAUSE_MODE | KEYPREVENT_MODE;
-	public static final int NOTE_TRANSPARENT_MODE = FULLSCREEN_MODE | TRANSPARENT_MODE | KEYPREVENT_MODE;
-	public static final int NOTE_PAUSE_MODE = FULLSCREEN_MODE | PAUSE_MODE | KEYPREVENT_MODE;
+	public static final int CAPTURE_MODE = FULLSCREEN_MODE | KEYPREVENT_MODE;
+	public static final int NOTE_TRANSPARENT_MODE = FULLSCREEN_MODE | TRANSPARENT_MODE;
+	public static final int NOTE_MODE = FULLSCREEN_MODE;
 	
 	/**
 	 * TRANSPARENT_MODE에서 사용할 색상
@@ -81,13 +77,13 @@ public abstract class MultiOptionFrame extends JFrame{
 	@Getter
 	private int frameMode;
 	public void setFrameMode(int frameMode) {
-		if(checkBoth(frameMode, FULLSCREEN_MODE, SELECTION_MODE) 
-				&& checkBoth(frameMode, PAUSE_MODE, TRANSPARENT_MODE)
-				&& checkBoth(frameMode, KEYPREVENT_MODE, KEYPASS_MODE)) {
-			this.frameMode = frameMode;
-			return;
-		}
-		throw new IllegalArgumentException("잘못된 Frame mode 설정");
+		this.frameMode = frameMode;
+	}
+	public void addFrameMode(int frameMode) {
+		this.frameMode |= frameMode;
+	}
+	public void removeFrameMode(int frameMode) {
+		this.frameMode &= ~frameMode;
 	}
 	
 	/**
@@ -132,11 +128,11 @@ public abstract class MultiOptionFrame extends JFrame{
 	protected void setScreenRect(Rectangle screenRect) {
 		this.screenRect = screenRect;
 		
-		if(is(PAUSE_MODE)) {
-			this.bg = screenManager.getImage(screenRect);
+		if(is(TRANSPARENT_MODE)) {
+			this.bg = null;
 		}
 		else {
-			this.bg = null;
+			this.bg = screenManager.getImage(screenRect);
 		}
 		setBounds(screenRect);
 	}
@@ -164,7 +160,7 @@ public abstract class MultiOptionFrame extends JFrame{
 	protected void eventSetting() {
 		if(is(KEYPREVENT_MODE))
 			keyHook = new GlobalKeyboardHook(GlobalHookMode.FINAL);
-		else if(is(KEYPASS_MODE))
+		else
 			keyHook = new GlobalKeyboardHook();
 		
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
