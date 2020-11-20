@@ -2,13 +2,12 @@ package com.hacademy.hpen.ui.note.element;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 
 import lombok.Data;
-
+import lombok.Getter;
 /**
  *	도형의 기본이 되는 컴포넌트
  *	- 모든 도형은 한개의 이미지 형태로 관리
