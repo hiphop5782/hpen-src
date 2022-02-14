@@ -18,10 +18,11 @@ import lombok.Data;
 @Component
 public class MouseStatus implements MouseMotionListener, MouseListener, MouseWheelListener{
 	private int x, y, dx, dy;
+	private int xScreen, yScreen, dxScreen, dyScreen;
 	private boolean press;
 	private MouseEventListener listener;
 	public void clearDrag() { 
-		dx = dy = -1; 
+		dx = dy = dxScreen = dyScreen = -1;
 	}
 	public boolean isDrag() {
 		return press && dx >= 0 && dy >= 0;
@@ -42,7 +43,9 @@ public class MouseStatus implements MouseMotionListener, MouseListener, MouseWhe
 	public void mouseDragged(MouseEvent e) {
 		switch(e.getModifiersEx()) {
 		case MouseEvent.BUTTON1_DOWN_MASK:
-			dx = e.getX(); dy = e.getY(); break;
+			dx = e.getX(); dy = e.getY();
+			dxScreen = e.getXOnScreen(); dyScreen = e.getYOnScreen();
+			break;
 		default:
 			moveProcess(e);	break;
 		}
@@ -52,6 +55,8 @@ public class MouseStatus implements MouseMotionListener, MouseListener, MouseWhe
 	private void moveProcess(MouseEvent e) {
 		x = e.getX();
 		y = e.getY();
+		xScreen = e.getXOnScreen(); 
+		yScreen = e.getYOnScreen();
 		clearDrag();
 	}
 	@Override
@@ -94,6 +99,18 @@ public class MouseStatus implements MouseMotionListener, MouseListener, MouseWhe
 	public int getBottom() {
 		return Math.max(y, dy);
 	}
+	public int getLeftOnScreen() {
+		return Math.min(xScreen, dxScreen);
+	}
+	public int getRightOnScreen() {
+		return Math.max(xScreen, dxScreen);
+	}
+	public int getTopOnScreen() {
+		return Math.min(yScreen, dyScreen);
+	}
+	public int getBottomOnScreen() {
+		return Math.max(yScreen, dyScreen);
+	}
 	@Override
 	public void mouseWheelMoved(MouseWheelEvent e) {
 		if(listener != null)
@@ -102,5 +119,9 @@ public class MouseStatus implements MouseMotionListener, MouseListener, MouseWhe
 	public Rectangle getRect() {
 		if(!isDrag()) return null;
 		return new Rectangle(getLeft(), getTop(), getWidth(), getHeight());
+	}
+	public Rectangle getRectOnScreen() {
+		if(!isDrag()) return null;
+		return new Rectangle(getLeftOnScreen(), getTopOnScreen(), getWidth(), getHeight());
 	}
 }

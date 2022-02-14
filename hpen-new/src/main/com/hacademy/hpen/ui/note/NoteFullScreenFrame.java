@@ -25,7 +25,7 @@ import lc.kra.system.keyboard.event.GlobalKeyListener;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@Component
+//@Component
 public class NoteFullScreenFrame extends MultiOptionFrame{
 	
 	private static final long serialVersionUID = 1L;

@@ -7,6 +7,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
@@ -15,6 +16,7 @@ import java.util.jar.JarFile;
 
 import com.hacademy.hpen.util.loader.annotation.Autowired;
 import com.hacademy.hpen.util.loader.annotation.Component;
+import com.hacademy.hpen.util.loader.annotation.Prototype;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -146,13 +148,38 @@ public class InMemoryObjectLoader {
 	 */
 	private void inject() throws IllegalArgumentException, IllegalAccessException {
 		for(Class<?> c : components.keySet()) {
-			for(Field f : c.getDeclaredFields()) {
+			inject(c, components.get(c));
+		}
+	}
+	
+	private void inject(Class<?> c, Object o) throws IllegalArgumentException, IllegalAccessException {
+		log.debug("[inject] {}", c);
+
+		for(Field f : c.getDeclaredFields()) {
+			if(f.getAnnotation(Autowired.class) != null) {
 				if(components.containsKey(f.getType())) {
+					log.debug("[inject find] {}({})", f.getName(), f.getType());
+					
 					f.setAccessible(true);
-					Object o = components.get(c);
+					
 					f.set(o, components.get(f.getType()));
+					log.debug("[inject finish] {}", f.get(o));
 				}
 			}
+			else if(f.getAnnotation(Prototype.class) != null) {
+				try {
+					Class<?> cls = f.getType();
+					Object obj = cls.getDeclaredConstructor().newInstance();
+					f.setAccessible(true);
+					f.set(o, obj);
+					log.debug("[inject prototype]");
+				}
+				catch(Exception ex) {}
+			}
+		}
+		
+		if(c.getSuperclass() != null) {
+			inject(c.getSuperclass(), o);//상위 클래스 재귀호출
 		}
 	}
 	

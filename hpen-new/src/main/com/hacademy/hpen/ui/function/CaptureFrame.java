@@ -1,4 +1,4 @@
-package com.hacademy.hpen.ui.capture;
+package com.hacademy.hpen.ui.function;
 
 import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
@@ -6,34 +6,41 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.Stroke;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.concurrent.Executors;
 
-import com.hacademy.hpen.ui.MultiOptionFrame;
+import com.hacademy.hpen.ui.DefaultFrame;
 import com.hacademy.hpen.ui.event.MouseEventListener;
 import com.hacademy.hpen.ui.event.MouseStatus;
 import com.hacademy.hpen.ui.event.ScheduledThread;
 import com.hacademy.hpen.ui.option.process.CaptureConfiguration;
 import com.hacademy.hpen.util.clipboard.ClipboardManager;
-import com.hacademy.hpen.util.cursor.CursorManager;
 import com.hacademy.hpen.util.delay.DelayManager;
 import com.hacademy.hpen.util.image.ImageManager;
 import com.hacademy.hpen.util.loader.annotation.Autowired;
 import com.hacademy.hpen.util.loader.annotation.Component;
+import com.hacademy.hpen.util.loader.annotation.Prototype;
 import com.hacademy.hpen.util.screen.ImageType;
 
+import lc.kra.system.GlobalHookMode;
 import lc.kra.system.keyboard.GlobalKeyboardHook;
+import lc.kra.system.keyboard.event.GlobalKeyEvent;
+import lc.kra.system.keyboard.event.GlobalKeyListener;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Component
-public class CaptureFullScreenFrame extends MultiOptionFrame{
-	
+public class CaptureFrame extends DefaultFrame{
 	private static final long serialVersionUID = 1L;
-
+	
 	@Autowired
 	private MouseStatus status;
 	
@@ -46,7 +53,6 @@ public class CaptureFullScreenFrame extends MultiOptionFrame{
 	@Autowired
 	private DelayManager delayManager;
 	
-	@Autowired
 	private ScheduledThread painter;
 	
 	@Autowired
@@ -57,14 +63,17 @@ public class CaptureFullScreenFrame extends MultiOptionFrame{
 			//영역 계산
 			int thickness = captureConfiguration.getBorderThickness();
 			Rectangle rect = status.getRect();
-			rect.x += thickness/2;
-			rect.y += thickness/2;
-			rect.width -= thickness;
-			rect.height -= thickness;
+			Rectangle rectOnScreen = status.getRectOnScreen();
+			if(rect == null) return;
+			log.debug("mouse release : rect = {}, rectOnScreen = {}", rect, rectOnScreen);
+			rect.x += thickness;						rectOnScreen.x += thickness;
+			rect.y += thickness;						rectOnScreen.y += thickness;
+			rect.width -= thickness * 2;			rectOnScreen.width -= thickness * 2;
+			rect.height -= thickness * 2;		rectOnScreen.height -= thickness * 2;
 			
 			//옵션별 처리
 			if(rect.width > 0 && rect.height > 0) {
-				BufferedImage capture = screenManager.getImage(rect);
+				BufferedImage capture = screenManager.getImage(rectOnScreen);
 				
 				try {
 					switch(captureConfiguration.getCaptureAction()) {
@@ -81,7 +90,7 @@ public class CaptureFullScreenFrame extends MultiOptionFrame{
 						captureConfiguration.plusCaptureFileSequence();
 						break;
 					case CaptureConfiguration.SAVE_AS_FILE:
-						imageManager.saveImageAsWithDialog(capture, CaptureFullScreenFrame.this);
+						imageManager.saveImageAsWithDialog(capture, CaptureFrame.this);
 						break;
 					}
 				}
@@ -89,41 +98,56 @@ public class CaptureFullScreenFrame extends MultiOptionFrame{
 					log.error("저장 오류 발생", err);
 				}
 			}
-			exit();
+			close();
 		}
 	};
 	
-	/**
-	 * Guide color 설정
-	 */
-	private Color mouseGuideColor;
-	private Color tempShapeBorderColor;
-	private Color tempShapeAreaColor;
-	@Setter @Getter
-	private Stroke stroke;
+	public CaptureFrame() {}
 	
-	public CaptureFullScreenFrame() {}
-	
-	public void init() {
-		status.setListener(listener);
-		addMouseMotionListener(status);
-		addMouseListener(status);
-		delayManager.setTimeout(50L, ()->{
-			super.prepare(captureConfiguration.isPause() ? CAPTURE_MODE : CAPTURE_TRANSPARENT_MODE);
-		});
-	}
+	private GlobalKeyboardHook keyHook;
 	
 	public void open() {
-		status.setListener(listener);
-		setFrameMode(captureConfiguration.isPause() ? CAPTURE_MODE : CAPTURE_TRANSPARENT_MODE);
-		setScreenRect(screenManager.getCurrentMonitorRect());
-		mouseGuideColor = captureConfiguration.getMouseGuideColor();
-		tempShapeBorderColor = captureConfiguration.getCaptureAreaColor();
-		tempShapeAreaColor = captureConfiguration.isPause() ? null : new Color(0,0,0,0);
-		setStroke(new BasicStroke(captureConfiguration.getBorderThickness()));
-		if(!captureConfiguration.isMouseVisible()) {
-			setCursor(CursorManager.EMPTY_CURSOR);
+		//keyboard event
+		this.keyHook = new GlobalKeyboardHook(GlobalHookMode.FINAL);
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				close();
+			}
+		});
+		
+		if(keyHook != null) {
+			keyHook.addKeyListener(new GlobalKeyListener() {
+				public void keyReleased(GlobalKeyEvent event) {}
+				public void keyPressed(GlobalKeyEvent event) {
+					if(event.getVirtualKeyCode() == GlobalKeyEvent.VK_ESCAPE) {
+						close();
+					}
+				}
+			});
 		}
+		else {
+			addKeyListener(new KeyAdapter() {
+				@Override
+				public void keyPressed(KeyEvent e) {
+					switch(e.getKeyCode()) {
+					case KeyEvent.VK_ESCAPE:
+						close();
+					}
+				}
+			});
+		}
+		
+		//mouse event
+		addMouseMotionListener(status);
+		addMouseListener(status);
+		status.setListener(listener);
+		
+		//configuration loading
+		stroke = new BasicStroke(captureConfiguration.getBorderThickness());
+		
+		//paint thread
+		painter = new ScheduledThread();
 		painter.setFps(24);
 		painter.setListener(()->{
 			repaint();
@@ -131,15 +155,36 @@ public class CaptureFullScreenFrame extends MultiOptionFrame{
 		painter.start();
 		setVisible(true);
 	}
-
-	@Override
-	public void exit() {
-		super.exit();
+	public void close() {
+		if(!this.isVisible()) return;
+		
+		log.debug("close frame");
+		setVisible(false);
+		if(keyHook != null) {
+			Executors.newSingleThreadExecutor().execute(()->{
+				keyHook.shutdownHook();
+				log.debug("shutdown keyboardhook");
+			});
+		}
 		painter.kill();
+		
+		removeMouseMotionListener(status);
+		removeMouseListener(status);
+		status.setListener(null);
 	}
 	
+	/**
+	 * Guide color 설정
+	 */
+	private Color mouseGuideColor = Color.black;
+	private Color tempShapeBorderColor = Color.blue;
+	private Color tempShapeAreaColor = new Color(0, 0, 0, 0);
+	@Setter @Getter
+	private Stroke stroke;
+	
 	@Override
-	public void advancedPaint(Graphics2D g) {
+	public void paintExtra(Graphics2D g) {
+		log.debug("paintExtra");
 		//필수
 		if(g.getComposite() != AlphaComposite.Src) {
 			g.setComposite(AlphaComposite.Src);
@@ -156,9 +201,15 @@ public class CaptureFullScreenFrame extends MultiOptionFrame{
 			g.drawRect(status.getLeft(), status.getTop(), status.getWidth(), status.getHeight());
 			
 			//캡쳐영역 투명처리
-			if(captureConfiguration.isTransparent()) {
+			if(isTransparent()) {
+				int thickness = captureConfiguration.getBorderThickness();
 				g.setColor(tempShapeAreaColor);
-				g.fillRect(status.getLeft(), status.getTop(), status.getWidth(), status.getHeight());
+				g.fillRect(
+						status.getLeft() + thickness , 
+						status.getTop() + thickness, 
+						status.getWidth() - thickness * 2, 
+						status.getHeight() - thickness * 2
+					);
 			}
 		}
 		else if(captureConfiguration.isGuideVisible()){
@@ -167,11 +218,4 @@ public class CaptureFullScreenFrame extends MultiOptionFrame{
 			g.drawLine(0, status.getY(), getWidth(), status.getY());
 		}
 	}
-
-	@Override
-	public void setKeyHook(GlobalKeyboardHook keyHook) {
-		
-	}
-	
 }
-

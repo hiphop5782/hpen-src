@@ -118,7 +118,7 @@ public class CaptureConfiguration implements Serializable{
 	public static final transient int THIN = 1;
 	public static final transient int NORMAL = 3;
 	public static final transient int THICK = 5;
-	private int borderThickness = 3;
+	private int borderThickness = NORMAL;
 	public void setBorderThickness(int thickness) {
 		if(between(thickness, 1, 10)) {
 			borderThickness = thickness;

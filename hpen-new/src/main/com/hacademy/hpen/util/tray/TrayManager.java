@@ -1,23 +1,24 @@
 package com.hacademy.hpen.util.tray;
 
 import java.awt.MenuItem;
-import java.awt.MenuShortcut;
 import java.awt.PopupMenu;
 import java.awt.SystemTray;
 import java.awt.TrayIcon;
-import java.awt.event.KeyEvent;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 
 import javax.imageio.ImageIO;
 
-import com.hacademy.hpen.ui.capture.CaptureFullScreenFrame;
+import com.hacademy.hpen.ui.function.CaptureFrame;
+import com.hacademy.hpen.ui.function.HoldFrame;
 import com.hacademy.hpen.ui.note.NoteFullScreenFrame;
 import com.hacademy.hpen.util.loader.annotation.Autowired;
 import com.hacademy.hpen.util.loader.annotation.Component;
 
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Component
 public class TrayManager {
 	
@@ -25,14 +26,17 @@ public class TrayManager {
 	private NoteFullScreenFrame noteFullScreenFrame;
 	
 	@Autowired
-	private CaptureFullScreenFrame captureFullScreenFrame;
+	private CaptureFrame captureFrame;
+	
+	@Autowired
+	private HoldFrame holdFrame;
 	
 	@Getter
 	private TrayIcon tray;
 	
 	public void init() {
 		if(!SystemTray.isSupported()) {
-			System.err.println("Tray not support");
+			log.error("Tray not support");
 			System.exit(-1);
 		}
 		
@@ -43,27 +47,35 @@ public class TrayManager {
 			event();
 		}
 		catch(Exception e) {
-			System.err.println("아이콘 로딩 실패");
+			log.error("아이콘 로딩 실패", e);
 		}
 	}
 	
 	private PopupMenu popup = new PopupMenu();
-	private MenuItem noteMenu = new MenuItem("필기하기");
-	private MenuItem captureMenu = new MenuItem("캡쳐하기");
+	private MenuItem note = new MenuItem("필기하기");
+	private MenuItem capture = new MenuItem("캡쳐하기");
+	private MenuItem hold = new MenuItem("화면고정");
 	
 	private void display() throws UnsupportedEncodingException {
 		tray.setPopupMenu(popup);
 		
-		popup.add(noteMenu);
-		popup.add(captureMenu);
+		popup.add(capture);
+		popup.add(hold);
+		popup.addSeparator();
+		popup.add(note);
 	}
 	
 	private void event() {
-		noteMenu.addActionListener(e->{
-			noteFullScreenFrame.open();
+		note.addActionListener(e->{
+//			noteFullScreenFrame.open();
 		});
-		captureMenu.addActionListener(e->{
-			
+		capture.addActionListener(e->{
+			captureFrame.setFillCurrentMonitor();
+			captureFrame.open();
+		});
+		hold.addActionListener(e->{
+			holdFrame.setFillCurrentMonitor();
+			holdFrame.open();
 		});
 	}
 }
