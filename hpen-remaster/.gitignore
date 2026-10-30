@@ -1,0 +1,12 @@
+node_modules/
+dist/
+release/
+*.log
+.npm-cache/
+package/
+npm-bootstrap.tgz
+.smoke-profile/
+smoke-result.json
+smoke-progress.json
+capture-stage.json
+.local-tools/

@@ -1,0 +1,26 @@
+{
+  "appId": "com.hacademy.hpen.remaster",
+  "productName": "hPen Remaster",
+  "directories": { "output": "release" },
+  "files": ["dist/**/*", "package.json"],
+  "asar": true,
+  "win": {
+    "target": ["portable", "nsis"],
+    "icon": "assets/hpen-build.ico",
+    "executableName": "hPen",
+    "requestedExecutionLevel": "asInvoker"
+  },
+  "portable": { "artifactName": "hPen-Portable-${version}-${arch}.exe" },
+  "nsis": {
+    "artifactName": "hPen-Setup-${version}-${arch}.exe",
+    "oneClick": false,
+    "perMachine": false,
+    "allowElevation": false,
+    "allowToChangeInstallationDirectory": true,
+    "createDesktopShortcut": true,
+    "createStartMenuShortcut": true,
+    "shortcutName": "hPen Remaster",
+    "runAfterFinish": false,
+    "deleteAppDataOnUninstall": false
+  }
+}
