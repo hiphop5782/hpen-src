@@ -34,12 +34,21 @@ else {
       const owner = BrowserWindow.fromWebContents(event.sender);
       if (!owner || (owner !== win && owner !== overlay) || event.senderFrame !== owner.webContents.mainFrame) throw new Error('Invalid sender');
     };
-    let captureWasVisible=false,captureWasSettings=false,captureWasPassThrough=false;
+    let captureWasVisible=false,captureWasSettings=false,captureWasPassThrough=false,captureKeepsOverlay=false;
     const captureController=installCapture({trusted,smoke,
-      hide:()=>{captureWasVisible=!!overlay?.isVisible();captureWasSettings=win.isVisible();captureWasPassThrough=passThrough;overlay?.webContents.send('stop-capture');overlay?.hide();win.hide();},
+      prepare:includeVisibleInk=>{
+        captureWasVisible=!!overlay?.isVisible();captureWasSettings=win.isVisible();captureWasPassThrough=passThrough;captureKeepsOverlay=includeVisibleInk&&captureWasVisible;
+        win.hide();
+        if(captureKeepsOverlay) overlay?.webContents.send('capture-ui-hidden',true);
+        else {overlay?.webContents.send('stop-capture');overlay?.hide();}
+      },
+      inlineBounds:display=>{if(!overlay)return null;const bounds=overlay.getBounds();return{x:bounds.x-display.bounds.x,y:bounds.y-display.bounds.y,width:bounds.width,height:bounds.height};},
+      showInline:source=>overlay?.webContents.send('capture-selection',source),
+      hideInline:()=>overlay?.webContents.send('capture-selection',null),
       restore:message=>{
         if(quitting)return;
         if(overlay){
+          overlay.webContents.send('capture-ui-hidden',false);
           passThrough=captureWasPassThrough;overlay.setIgnoreMouseEvents(passThrough,{forward:true});
           if(captureWasVisible){overlay.show();if(!passThrough)overlay.focus();}
           overlay.webContents.send('input-mode',passThrough);
@@ -63,7 +72,7 @@ else {
       if (!overlay) return;
       if (!overlay.isVisible()) {
         passThrough=false; overlay.setIgnoreMouseEvents(false);
-        win.hide(); overlay.show(); overlay.focus();
+        win.hide();overlay.webContents.send('stop-capture');overlay.show();overlay.focus();
         overlay.webContents.send('input-mode',false);
         return;
       }
@@ -116,7 +125,7 @@ else {
         overlay.on('closed', () => { overlay = null; });
         await overlay.loadFile(path.join(__dirname,'index.html'), { query: { mode: 'overlay' } });
       }
-      passThrough = false; overlay.setIgnoreMouseEvents(false); overlay.webContents.send('input-mode', false);
+      passThrough = false; overlay.setIgnoreMouseEvents(false);overlay.webContents.send('stop-capture');overlay.webContents.send('input-mode', false);
       win.webContents.send('stop-capture'); win.hide(); overlay.show(); overlay.focus();
     }
     ipcMain.handle('overlay', async (event, id: string) => { trusted(event); await openOverlay(id); });
@@ -168,8 +177,16 @@ else {
       const parsed=JSON.parse(await readFile(settingsPath,'utf8'));
       if(validShortcut(parsed.magnify) && validShortcut(parsed.input) && (!parsed.input || parsed.input!==parsed.magnify)) saved={...defaultShortcuts,...parsed};
     } catch { /* First run or unreadable preferences: use defaults. */ }
+    let migrated=false;
     if(saved.input==='Control+Space') {
       saved.input=defaultShortcuts.input;
+      migrated=true;
+    } else if(saved.input==='Control+`' && saved.capture==='Shift+`') {
+      saved.input=defaultShortcuts.input;
+      saved.capture=defaultShortcuts.capture;
+      migrated=true;
+    }
+    if(migrated) {
       await writeFile(settingsPath,JSON.stringify(saved,null,2));
     }
     applyShortcuts(saved.magnify,saved.input,saved.capture);
@@ -184,7 +201,7 @@ else {
     const icon = nativeImage.createFromPath(path.join(__dirname, 'assets', 'hpen.ico'));
     tray = new Tray(icon);
     tray.setToolTip('hPen — 실시간 돋보기');
-    tray.setContextMenu(Menu.buildFromTemplate([{ label: '화면 필기 열기', click: () => { void openOverlay(selectedDisplay).catch(e=>dialog.showErrorBox('필기 열기 실패',String(e))); } }, { label: '필기 / 원래 앱 조작 전환', click: toggleInput }, { label: '필기 숨김', click: () => { overlay?.webContents.send('stop-capture'); overlay?.hide(); } }, { label: '설정', click: showSettings }, { label: '종료', click: () => app.quit() }]));
+    tray.setContextMenu(Menu.buildFromTemplate([{ label: '화면 필기 열기', click: () => { void openOverlay(selectedDisplay).catch(e=>dialog.showErrorBox('필기 열기 실패',String(e))); } }, { label: '필기 모드 / 앱 제어 모드 전환', click: toggleInput }, { label: '필기 숨김', click: () => { overlay?.webContents.send('stop-capture'); overlay?.hide(); } }, { label: '설정', click: showSettings }, { label: '종료', click: () => app.quit() }]));
     tray.on('double-click', () => { void openOverlay(selectedDisplay); });
     win.on('close', event => { if (!quitting) { event.preventDefault(); win.webContents.send('stop-capture'); win.hide(); } });
     screen.on('display-removed', () => { overlay?.webContents.send('stop-capture'); overlay?.hide(); win.webContents.send('display-changed'); win.show(); });

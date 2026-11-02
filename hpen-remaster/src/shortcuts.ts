@@ -1,4 +1,4 @@
-export const defaultShortcuts = { magnify: '', input: 'Control+`', capture: 'Shift+`' };
+export const defaultShortcuts = { magnify: '', input: 'Alt+`', capture: 'Control+`' };
 
 export function validShortcut(value: unknown): value is string {
   return typeof value === 'string' && (value === '' || /^(?:(?:Control|Shift|Alt|Super)\+)+(?:[A-Z0-9`]|Space|F(?:[1-9]|1[0-9]|2[0-4]))$/.test(value));

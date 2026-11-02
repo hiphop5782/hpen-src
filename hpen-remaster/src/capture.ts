@@ -1,14 +1,13 @@
 import { selectionRect, type Selection } from './capture-geometry';
-const api=(window as unknown as {hpen:{captureSource():Promise<{data:string;logical:{width:number;height:number}}>;commitCapture(rect:Selection):Promise<string>;cancelCapture():Promise<void>}}).hpen;
+const api=(window as unknown as {hpen:{captureSource():Promise<{data:string;logical:{width:number;height:number};includesInk:boolean}>;commitCapture(rect:Selection):Promise<string>;cancelCapture():Promise<void>}}).hpen;
 const canvas=document.getElementById('selection') as HTMLCanvasElement,ctx=canvas.getContext('2d')!,hint=document.getElementById('hint')!;
-const image=new Image();let anchor:{x:number;y:number}|null=null,rect:Selection|null=null,busy=false,ready=false;
+const image=new Image(),composite=document.createElement('canvas'),compositeContext=composite.getContext('2d')!;
+let anchor:{x:number;y:number}|null=null,rect:Selection|null=null,busy=false,ready=false;
 function draw() {
   canvas.width=Math.round(innerWidth*devicePixelRatio);canvas.height=Math.round(innerHeight*devicePixelRatio);
-  ctx.drawImage(image,0,0,canvas.width,canvas.height);
-  ctx.fillStyle='#0008';ctx.fillRect(0,0,canvas.width,canvas.height);
+  ctx.drawImage(composite,0,0,canvas.width,canvas.height);
   if(rect) {
-    const sx=image.width/innerWidth,sy=image.height/innerHeight;
-    ctx.drawImage(image,rect.x*sx,rect.y*sy,rect.width*sx,rect.height*sy,rect.x*devicePixelRatio,rect.y*devicePixelRatio,rect.width*devicePixelRatio,rect.height*devicePixelRatio);
+    const sx=composite.width/innerWidth,sy=composite.height/innerHeight;
     ctx.strokeStyle='#76e0c2';ctx.lineWidth=2*devicePixelRatio;ctx.strokeRect(rect.x*devicePixelRatio,rect.y*devicePixelRatio,rect.width*devicePixelRatio,rect.height*devicePixelRatio);
     hint.textContent=`${Math.round(rect.width*sx)} × ${Math.round(rect.height*sy)} px · 놓으면 클립보드 복사 + 파일 저장 · Esc 취소`;
   }
@@ -19,8 +18,15 @@ canvas.onpointerup=async e=>{
   if(!anchor||busy)return;rect=selectionRect(anchor,{x:e.clientX,y:e.clientY},innerWidth,innerHeight);anchor=null;
   if(rect.width<2||rect.height<2){hint.textContent='너비와 높이가 2px 이상인 영역을 다시 선택하세요.';return;}
   busy=true;hint.textContent='복사 및 저장 중…';
-  try {await api.commitCapture(rect);}catch(error){busy=false;hint.textContent=String(error);}
+  try {
+    await api.commitCapture(rect);
+  }catch(error){busy=false;hint.textContent=String(error);}
 };
 canvas.onpointercancel=()=>{anchor=null;rect=null;if(ready)draw();};
 document.onkeydown=e=>{if(e.key==='Escape'&&!busy)void api.cancelCapture();};
-void api.captureSource().then(source=>{image.onload=()=>{ready=true;draw();};image.src=source.data;}).catch(error=>{hint.textContent=String(error);});
+const load=(target:HTMLImageElement,source:string)=>new Promise<void>((resolve,reject)=>{target.onload=()=>resolve();target.onerror=()=>reject(new Error('캡처 이미지를 불러올 수 없습니다.'));target.src=source;});
+void api.captureSource().then(async source=>{
+  await load(image,source.data);
+  composite.width=image.width;composite.height=image.height;compositeContext.drawImage(image,0,0);
+  ready=true;draw();
+}).catch(error=>{hint.textContent=String(error);});
